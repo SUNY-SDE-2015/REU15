@@ -1,0 +1,166 @@
+Received: from spamfilter.clarkson.edu (128.153.5.37) by intmail.clarkson.edu
+ (10.90.2.37) with Microsoft SMTP Server id 14.2.347.0; Wed, 18 Jun 2014
+ 13:37:53 -0400
+X-ASG-Debug-ID: 1403113072-05af7f49a2211430001-vAIE2s
+Received: from us-smtp-delivery-163.mimecast.com
+ (us-smtp-delivery-163.mimecast.com [63.128.21.163]) by
+ spamfilter.clarkson.edu with ESMTP id t8CqEHQusyUsiiQ8 for
+ <kblack@clarkson.edu>; Wed, 18 Jun 2014 13:37:53 -0400 (EDT)
+X-Barracuda-Envelope-From: thomas@siam.org
+X-Barracuda-Apparent-Source-IP: 63.128.21.163
+X-Barracuda-User-Whitelist: kblack@clarkson.edu
+Received: from mailer.siam.org (mailer.siam.org [38.98.219.156]) (Using TLS)
+ by us-mta-4.us.mimecast.lan; Wed, 18 Jun 2014 13:37:52 -0400
+Received: from SUS428.siam.org ([::1]) by sus428.siam.org ([::1]) with mapi id
+ 14.03.0174.001; Wed, 18 Jun 2014 13:39:04 -0400
+From: Kelly Thomas <Thomas@siam.org>
+To: "kblack@clarkson.edu" <kblack@clarkson.edu>
+Subject: RE: RE: Request to use matlab files in a github repository
+Thread-Topic: RE: Request to use matlab files in a github repository
+X-ASG-Orig-Subj: RE: RE: Request to use matlab files in a github repository
+Thread-Index: AQHPixavkpO4x9Wbakuh6xDqhgdvfpt3IdIg
+Date: Wed, 18 Jun 2014 17:39:03 +0000
+Message-ID: <EB6A38801C033B4E8377D211DD713AD41FB590@sus428.siam.org>
+References: <D7778D971D8D7449B4BE19E250992B6C2E9710@sus428.siam.org>
+ <53A1C528.4000109@clarkson.edu>
+In-Reply-To: <53A1C528.4000109@clarkson.edu>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [192.168.225.71]
+X-MC-Unique: Ftuzn8xETR6IW571NoZqKw-1
+Content-Type: text/plain; charset="WINDOWS-1252"
+Content-Transfer-Encoding: quoted-printable
+X-Barracuda-Connect: us-smtp-delivery-163.mimecast.com[63.128.21.163]
+X-Barracuda-Start-Time: 1403113072
+X-Barracuda-URL: http://spamfilter.clarkson.edu:80/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at clarkson.edu
+X-Barracuda-BRTS-Status: 1
+Return-Path: thomas@siam.org
+X-MS-Exchange-Organization-AuthSource: exch05.ad.clarkson.edu
+X-MS-Exchange-Organization-AuthAs: Anonymous
+MIME-Version: 1.0
+
+Dear Dr. Black:
+
+I apologize for the delay in replying to your inquiry.  SIAM is happy to gi=
+ve permission.  Please acknowledge the full bibliographic reference to the =
+original article.
+
+Sincerely,
+
+Kelly Thomas
+Managing Editor, SIAM
+
+-----Original Message-----
+From: Kelly Black [mailto:kblack@clarkson.edu]=20
+Sent: Wednesday, June 18, 2014 1:00 PM
+To: Kelly Thomas
+Subject: Fwd: RE: Request to use matlab files in a github repository
+
+Dear Kelly Thomas,
+
+I asked for permission to make use of some matlab code that was published i=
+n the education section of the SIAM review. We would like to use the code a=
+nd make it available to others (with appropriate attributions to SIAM and t=
+he author) in a way that would allow them to copy and use the code as well.=
+ Can we make use of the code? The exchange can be found in the replies belo=
+w.
+
+Sincerely,
+kelly Black
+
+
+-------- Original Message --------
+Subject: RE: Request to use matlab files in a github repository
+Date: Thu, 12 Jun 2014 17:46:51 +0000
+From: Elizabeth Greenspan <Greenspan@siam.org>
+To: 'Des Higham' <d.j.higham@strath.ac.uk>, "kblack@clarkson.edu"
+<kblack@clarkson.edu>
+
+Hi Des:
+
+Thanks for your e-mail.  I'm going to forward this request to Kelly Thomas =
+(Thomas@siam.org) here at SIAM because she handles the official granting of=
+ permission.
+
+E
+
+
+
+-----Original Message-----
+From: Des Higham [mailto:d.j.higham@strath.ac.uk]
+Sent: Thursday, June 12, 2014 1:43 PM
+To: kblack@clarkson.edu; Elizabeth Greenspan
+Cc: Des Higham
+Subject: RE: Request to use matlab files in a github repository
+
+Dear Kelly,
+ cc Elizabeth Greenspan,
+
+ Thanks for your message.
+
+ Yes, I have no problem with this---the short MATLAB codes are already in t=
+he public domain via my own website, and  I encourage people to use and exp=
+eriment with them.
+
+ I am copying in Elizabeth Greenspan at SIAM for info: Elizabeth, the codes=
+ appear in a SIAM Review Review article:
+  An algorithmic introduction to numerical simulation of stochastic differe=
+ntial equations, by D. J. Higham, SIAM Review, Education Section, 43, 2001,=
+ 525-546.
+
+ Thanks for your interest in this work.
+
+Best wishes,
+Des Higham
+
+
+________________________________________
+From: Kelly Black [kblack@clarkson.edu]
+Sent: 12 June 2014 17:53
+To: Des Higham
+Subject: Request to use matlab files in a github repository
+
+Dear Dr. Higham,
+
+I am a faculty member at Clarkson University in the United States. We have =
+a summer program for undergraduate students to introduce them to research i=
+n mathematics. I have a group of three students, and as part of our work we=
+ are reading your paper An Algorithmic Introduction to Numerical Simulation=
+ of Stochastic Differential equations. We are grateful that you make them a=
+vailable, and we find them to be a great way to introduce the idea of stoch=
+astic integration and gain some experience with the basic ideas.
+
+I am having my students use your matlab files, and making changes to experi=
+ment with them. We have been sharing the files, but it has been awkward to =
+work together on these particular files. Part of the reason is that we are =
+using github.com to share our work.
+
+The github website allows us to share files and keep them coordinated.
+The website requires that all public repositories make all work available f=
+or free and use a license that allows people to share our work. (We are usi=
+ng the MIT license for all of our codes.) We would like to add our codes ba=
+sed on your matlab files.
+
+Is it okay to add your files to our repository? We would add a copyright he=
+ader with your name as the original author. The copyright header would also=
+ include a copy of the MIT license giving anybody else permission to copy a=
+nd change the code:
+http://opensource.org/licenses/MIT
+
+We would be grateful if you would allow us to share your work, and it would=
+ be extremely helpful for us.
+
+Sincerely,
+Kelly Black
+--
+_______________________________________________________          __o
+Kelly Black                     Phone: (315) 268-3831  \       _`\<,_
+Department of Math. and C.S.    FAX:   (315) 268-2371   \_____(_)/ (_)
+Clarkson University             e-mail: kjblack@gmail.com
+Potsdam NY 13699-5815
+
+
+
