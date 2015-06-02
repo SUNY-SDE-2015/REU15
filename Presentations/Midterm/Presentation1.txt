@@ -1,0 +1,10 @@
+\documentstyle{beamer}
+
+
+\begin{document}
+
+
+
+
+
+\end{document}
