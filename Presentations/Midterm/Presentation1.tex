@@ -1,7 +1,42 @@
-\documentstyle{beamer}
-\usepackage{graphicx}
+\documentclass{beamer}
+
+\usepackage{etoolbox}
+%\usepackage{graphicx}
+
+\usetheme{Frankfurt}%
+\usecolortheme{beaver}
+\logo{\includegraphics[height=.125in]{img/ugaLogo}}
+
+\input{latexDefinitions}
+
+
+\setbeamercolor{palette primary}{fg=georgiaRed,bg=white}
+\setbeamercolor{palette secondary}{fg=georgiaRed,bg=white}
+\setbeamercolor{palette tertiary}{fg=georgiaRed,bg=white}
+\setbeamercolor{palette quaternary}{bg=mediumGray,fg=black}
+\setbeamercolor{block title}{fg=black,bg=black!15}
+\setbeamercolor{block body}{fg=black,bg=black!10}
+\setbeamercolor{titlelike}{bg=georgiaRed,fg=black} % parent=palette quaternary}
+
+
+\setbeamercolor{upper separation line head}{bg=red}
+\setbeamercolor{headline}{bg=red}
+\setbeamertemplate{headline}
+{%
+\begin{beamercolorbox}{section in head/foot}
+\insertsectionnavigationhorizontal{.75\textwidth}{}{}
+\hfill \insertpagenumber /\insertdocumentendpage
+\end{beamercolorbox}%
+}
+\setbeamercolor{section number projected}{bg=red,fg=black}
+\setbeamercolor{subsection number projected}{bg=red,fg=black}
+%\setbeamercolor{frametitle}{bg=lightgray,fg=black}
+
+
 
 \begin{document}
+
+
 Hola a todos :)
 
 再见
