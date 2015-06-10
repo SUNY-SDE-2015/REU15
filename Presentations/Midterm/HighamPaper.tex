@@ -84,14 +84,14 @@ $dW(j)$ is an independent random variable of the form $N(0,\Delta t)$
 \begin{center}
 What does $\int_{a}^{b} f(t)dB$ mean? \bigskip \pause  $\int_{a}^{b} B(t)dB$?\pause \\
 
-¿An analogy of the Riemann-Stietjes sum?\\ \pause 
-%\begin{equation*}
-%\sum_{i=1}^{n}B(t_{j-1})\left( B(t_{j})-B(t_{j-1})\right) 
-%\end{equation*}
-%\pause
+%¿Can we use an analogy of the Riemann-Stietjes sum?\\ \pause 
+\begin{equation*}
+\sum_{i=1}^{n}B(t_{j-1})\left( B(t_{j})-B(t_{j-1})\right) ?
+\end{equation*}
+\pause
 \bigskip
 
-In $[0,T]$ with $\Delta t=1/500$:\\ \pause
+In $[0,1]$ with $\Delta t=1/500$:\\ \pause
 $It\hat{o}=-0.42765$\\ \pause
 $Stratonovich=0.088892$
 \end{center}
@@ -125,9 +125,4 @@ I(f):=\lim_{n \to \infty}\sum_{i=1}^{n}a_i(B(t_i)-B(t_{i-1}))
 \item $Var[I(f)]=\int_{a}^{b}f^2(t)dt$
 \end{itemize}
 \end{block}
-
-%\begin{eqnarray*}
-%E[I(f)]&=&0\\
-%Var[I(f)]&=&\int_{a}^{b}f^2(t)dt
-%\end{eqnarray*}
 \end{frame}
