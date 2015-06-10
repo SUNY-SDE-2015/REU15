@@ -4,7 +4,6 @@
   \begin{itemize}
 	\item Mathematical models are an abstraction of reality.
 	\item There are three types of responses. 
-	%\renewcommand{\Roman{enumii}}
 	\begin{enumerate}
 		\item Linear\\
 		$\ y'=\alpha y$
@@ -14,20 +13,26 @@
 		$\ y'= \frac {\alpha y^2}{\beta + y^2}$
 	\end{enumerate}
   \end{itemize}
-\end{frame}\begin{comment}
-
-\begin{frame}
-  \frametitle{Types of Responses}
-   Linear: $y'=\alpha y$\\\begin{figure}
-   \includegraphics[natwidth=162bp, natheight=227bp,width=280bp]{typeI.jpg}
 \end{frame}
-  \end{comment}
 
 \begin{frame}
-  \frametitle{Types of Models}
+  \frametitle{Type I Response}
+   Linear: $y'=\alpha y$\\ Applied to phenomena including chemical reaction kinetics.
+   \includegraphics[scale=.4]{typeI}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Type II Response} Models population growth until carrying capacity is reached.
     Type II: $y'=\frac{\alpha y}{y+L}$
    \includegraphics[natwidth=162bp, natheight=227bp,width=280bp]{typeII.jpg}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Type III Response}
+    Logistic Curve: $y=\frac{15}{1+e^{-x}}$. Used to model neuronal action potentials.
+    \includegraphics[scale=.4]{typeIII.jpg}
+\end{frame}
+
 \begin{frame}
 \frametitle{Coral Reef Dynamics}
 \includegraphics[natwidth=162bp,natheight=227bp,width=280bp]{./coral-reef-triangle.png}
@@ -51,12 +56,12 @@ If we restrict our scope to regions entirely covered by coral, macroalgae, and a
 \begin{array}{rl}
 \frac{dM}{dt}&= aMC-\frac{gM}{M+T} + \gamma MT\\ 
 \frac{dC}{dt}&=rTC-dC-aMC
-\end{array} \end{cases},$$ where $a,d,g,r,\gamma$ are parameters.
+\end{array} \end{cases}.$$ 
 \end{frame}
 
 \begin{frame}
   \frametitle{Nondimensionalization}
-  To simplify systems of equations we scale problems using the technique of nondimensionalization: set $M(t)=\overline{M}\HAT{M}(s)$, $C(t)=\overline{C}\HAT{C}(s)$, $T(t)=\overline{T}\HAT{T}(s)$, and $t=\tau s$. From this we get, $\frac{dM}{dt}=\overline{M}\HAT{M}'\frac{ds}{dt}$, $\frac{dC}{dt}=\overline{C}\HAT{C}'\frac{ds}{dt}$, $\frac{dT}{dt}=\overline{T}\HAT{T}'\frac{ds}{dt}$, and $\frac{ds}{dt}=\frac{1}{\tau}$. Our system then becomes: $$\begin{cases} 
+  To simplify systems of equations we scale problems using the technique of nondimensionalization: set {\begin{itemize}\itemsep0pt\item $M(t)=\overline{M}\HAT{M}(s)$;\\\item $C(t)=\overline{C}\HAT{C}(s)$;\\\item $T(t)=\overline{T}\HAT{T}(s)$, and;\\\item $t=\tau s$. \end{itemize} From this we get: \begin{itemize}\itemsep0pt \item$\frac{dM}{dt}=\overline{M}\HAT{M}'\frac{ds}{dt}$;\\\item $\frac{dC}{dt}=\overline{C}\HAT{C}'\frac{ds}{dt}$;\\\item $\frac{dT}{dt}=\overline{T}\HAT{T}'\frac{ds}{dt}$, and;\\ $\frac{ds}{dt}=\frac{1}{\tau}.$\end{itemize} }Our system then becomes: $$\begin{cases} 
 \begin{array}{rl}
 \frac{\overline{M}}{\tau}\frac{d\HAT{M}}{dt}&= a\overline{M}\overline{C}\HAT{M}\HAT{C}-\frac{g\overline{M}\HAT{M}}{\overline{M}\HAT{M}+\overline{T}\HAT{T}} + \gamma \overline{M}\HAT{M}\overline{T}\HAT{T}\\ 
 \frac{\overline{C}}{\tau}\frac{d\HAT{C}}{dt}&=r\overline{T}\overline{C}\HAT{T}\HAT{C}-d\overline{C}\HAT{C}-a\overline{M}\overline{C}\HAT{M}\HAT{C}
@@ -86,7 +91,13 @@ If we restrict our scope to regions entirely covered by coral, macroalgae, and a
 \begin{array}{rl}
 \frac{d\HAT{M}}{dt}&= \HAT{M}(\HAT{C}+\frac{\gamma}{r}\HAT{T}+\frac{g\gamma}{r^2\HAT{M}+ \frac{r^3}{\gamma}\HAT{T}}) \\ 
 \frac{d\HAT{C}}{dt}&=\HAT{C}(\HAT{T}-\HAT{M}-\frac{d\gamma}{r^2})
-\end{array} \end{cases}$$
+\end{array} \end{cases}$$ Recall, \begin{itemize}\itemsep0pt
+\item $r$ is the rate corals overgrow upon algal turfs\\
+\item $d$ is the mortality rate of corals\\
+\item $a$ is the rate that macroalgae overgrow upon corals\\
+\item $\gamma$ is the rate that macroalgae spread over algal turfs\\
+\item $g$ is the indiscriminate grazing rate of parrotfish.
+\end{itemize}
 \end{frame}
 
 \begin{frame}
