@@ -1,41 +1,37 @@
 
 \section{The Physical System and Modeling}
+\begin{frame}
+  \begin{itemize}
+	\item Mathematical models are an abstraction of reality.
+	\item There are three types of responses. 
+	%\renewcommand{\Roman{enumii}}
+	\begin{enumerate}
+		\item Linear\\
+		$\ y'=\alpha y$
+		\item Exponential\\
+		$\ y' = \frac{\alpha y}{y+ L}$ 
+		\item Logistic\\
+		$\ y'= \frac {\alpha y^2}{\beta + y^2}$
+	\end{enumerate}
+  \end{itemize}
+\end{frame}\begin{comment}
+
+\begin{frame}
+  \frametitle{Types of Responses}
+   Linear: $y'=\alpha y$\\\begin{figure}
+   \includegraphics[natwidth=162bp, natheight=227bp,width=280bp]{typeI.jpg}
+\end{frame}
+  \end{comment}
 
 \begin{frame}
   \frametitle{Types of Models}
-   Type I: $y'=\alpha y$\\
-    \begin{tikzpicture}[domain=0:4]
-      \draw[very thin,color=gray] (-0.1,-1.1) grid (3.9,3.9);
-      \draw[->] (-0.2,0) -- (4.2,0) node[right] {$x$};
-      \draw[->] (0,-1.2) -- (0,4.2) node[above] {$f(x)$};
-     % \draw[color=purple] plot[id=one] function(x)
-     %   node[right]{$f'(x) = x$};
-   %   \draw[color=yellow] plot[id=two] function(x)
-   %     node[right]{$f(x) = e^{x}$};
-    \end{tikzpicture} 
+    Type II: $y'=\frac{\alpha y}{y+L}$
+   \includegraphics[natwidth=162bp, natheight=227bp,width=280bp]{typeII.jpg}
 \end{frame}
-
-\begin{comment}
-
-\begin{frame}
-  \frametitle{Types of Models}
-   Type I: $y'=(b-my)y$
-    \begin{tikzpicture}[domain=0:50]
-      \draw[very thin,color=gray] (-0.1,-1.1) grid (3.9,3.9);
-      \draw[->] (-0.2,0) -- (4.2,0) node[right] {$x$};
-      \draw[->] (0,-1.2) -- (0,4.2) node[above] {$f(x)$};
-      \draw[color=purple] plot[id=one] function(x)
-        node[right]{$f'(x) = (1250)/(x+25)^2 $};
-      \draw[color=yellow] plot[id=two] function(x)
-        node[right]{$f(x) = (50x)/(x+25)$};
-    \end{tikzpicture} 
-\end{frame}
-\end{comment}
 \begin{frame}
 \frametitle{Coral Reef Dynamics}
 \includegraphics[natwidth=162bp,natheight=227bp,width=280bp]{./coral-reef-triangle.png}
 \end{frame}
-
 \begin{frame}
 $$\begin{cases}\begin{array}{rl}
 \frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM}{M+T}+\gamma M T\\
@@ -102,12 +98,7 @@ If we restrict our scope to regions entirely covered by coral, macroalgae, and a
   \end{itemize}
 \end{frame}
 
-\begin{frame}\Large
-Two blood coagulation modeling approaches:\begin{itemize}\itemsep2pt
-\item Follow the factors!
-\item Treat fibrin strand formation as a discrete random walk.
-\end{itemize}
-\end{frame}
+\begin{comment}
 
 \begin{frame}\frametitle{Coagulation Cascade}
 \includegraphics[natwidth=162bp,natheight=227bp,width=280bp]{./coag-cascade.png}
@@ -130,6 +121,8 @@ $$\begin{cases}\begin{array}{rl}
 \frac{dIIa}{dt}\hspace{-.8em}&=k_4[Xa]\frac{[Va]}{k_a+[Va]}-H_4[IIa]
 \end{array}\end{cases},$$ where $\{k_i\}$ are kinetic coefficients and $\{H_i\}$ are dissipation constants. Xu notes that this model lacks the role that platelets play in this model.
 \end{frame}
+\end{comment} 
+
 
 \begin{frame}
 \frametitle{2002 Xu Model}\vspace{-1.5em}
@@ -144,7 +137,7 @@ $$\begin{cases}\begin{array}{rl}
 
 \hspace{1.57em}The role that platelets have in this model is realized by the term $c=c_0+\frac{[IIa]}{1+[IIa]}$, the proportion of platelets that have be activated by thrombin.% (Xu asserts this is a strict, twice differentiable function of $[IIa]$ whose codomain is $[0,1]$).
 \end{frame}
-
+\begin{comment}
 \begin{frame}
 \frametitle{2004 Qiao et. al. Model}\vspace{-1.5em}
 $$\begin{cases}\begin{array}{rl}
@@ -160,7 +153,7 @@ $$\begin{cases}\begin{array}{rl}
 \begin{frame}\frametitle{Moiseyev and Friends' Random Fibrin Walk}
 Basis for the model is the 1998 Keener-Snead model: $$\frac{\partial n}{\partial t}+V\frac{\partial n}{\partial x}=F(1-n)-Gn,$$ where \begin{itemize}\item$n(x,t)dx$ is the fraction of connected links in the interval $[x,x+dx]$ at time $t$;\item $F(x)$ is the rate of link formation; \item $G(x)$ rate of lin dissociation; \item $V$ is the velocity field representing a shear flow.\end{itemize}
 \end{frame}
-
+\end{comment}
 
 %%% Local Variables:
 %%% mode: latex
