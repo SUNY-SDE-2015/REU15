@@ -1,16 +1,16 @@
 
 \section{The Physical System and Modeling}
-\begin{frame}
+\begin{frame}\frametitle{On Models and Modeling}
   \begin{itemize}
 	\item Mathematical models are an abstraction of reality.
 	\item There are three types of responses. 
 	\begin{enumerate}
-		\item Linear\\
+		\item Type I - Linear Growth\\
 		$\ y'=\alpha y$
-		\item Exponential\\
-		$\ y' = \frac{\alpha y}{y+ L}$ 
-		\item Logistic\\
-		$\ y'= \frac {\alpha y^2}{\beta + y^2}$
+		\item Type II - Exponential Growth\\
+		%$\ y' = \frac{\alpha y}{y+ L}$ 
+		\item Type III - Parabolic Growth\\
+		%$\ y'= \frac {\alpha y^2}{\beta + y^2}$
 	\end{enumerate}
   \end{itemize}
 \end{frame}
@@ -18,26 +18,31 @@
 \begin{frame}
   \frametitle{Type I Response}
    Linear: $y'=\alpha y$\\ Applied to phenomena including chemical reaction kinetics.
-   \includegraphics[scale=.4]{typeI}
+   \includegraphics[scale=.4]{RplotType3.png}
 \end{frame}
 
 \begin{frame}
   \frametitle{Type II Response} 
     Type II: $y'=\frac{\alpha y}{y+L}$\\Models population growth until carrying capacity is reached.
-   \includegraphics[natwidth=162bp, natheight=227bp,width=280bp]{typeII.jpg}
+   \includegraphics[natwidth=162bp, natheight=227bp,width=280bp]{RplotType2.png}
 \end{frame}
 
 \begin{frame}
   \frametitle{Type III Response}
     Logistic Curve: $y'=y(1-y)$. Used to model neuronal action potentials.
-    \includegraphics[scale=.4]{typeIII.jpg}
+    \includegraphics[scale=.4]{RplotType1.png}
+\end{frame}
+
+\begin{frame}
+\frametitle{Coral Reef Dynamics}
+\hspace{1.5em}Coral reefs serve as a complex aquatic ecosystem physically supported by calcium carbonate secretions of the colorful stone coral. To model this ecosystem, one approach taken by Li-Wang-Zhang-Hastings is to describe the relationships between macroalgae, algal turfs, and corals.
 \end{frame}
 
 \begin{frame}
 \frametitle{Coral Reef Dynamics}
 \includegraphics[natwidth=162bp,natheight=227bp,width=280bp]{./coral-reef-triangle.png}
 \end{frame}
-\begin{frame}
+\begin{frame}\frametitle{Coral Reef Dynamics}
 $$\begin{cases}\begin{array}{rl}
 \frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM}{M+T}+\gamma M T\\
 \frac{dC}{dt}\hspace{-.8em}&=rTC - dC - aMC\\
@@ -51,8 +56,8 @@ $$\begin{cases}\begin{array}{rl}
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-If we restrict our scope to regions entirely covered by coral, macroalgae, and algalturf, we may suppose that $M+C+T=1$ implying that  $\frac{dT}{dt}=-\frac{dM}{dt}-\frac{dC}{dt}$. This substitution allows us to  reduce our system to, $$\begin{cases} 
+\begin{frame}\frametitle{Coral Reef Dynamics}
+\hspace{1.57em}Note that our scope is limited to regions entirely covered by coral, macroalgae, and algalturf, as $\frac{dT}{dt}=-\frac{dM}{dt}-\frac{dC}{dt}$ implies $M+C+T=constant$, say $constant = 1$.  We reduce our system to, $$\begin{cases} 
 \begin{array}{rl}
 \frac{dM}{dt}&= aMC-\frac{gM}{M+T} + \gamma MT\\ 
 \frac{dC}{dt}&=rTC-dC-aMC
@@ -61,37 +66,28 @@ If we restrict our scope to regions entirely covered by coral, macroalgae, and a
 
 \begin{frame}
   \frametitle{Nondimensionalization}
-  To simplify systems of equations we scale problems using the technique of nondimensionalization: set {\begin{itemize}\itemsep0pt\item $M(t)=\overline{M}\HAT{M}(s)$;\\\item $C(t)=\overline{C}\HAT{C}(s)$;\\\item $T(t)=\overline{T}\HAT{T}(s)$, and;\\\item $t=\tau s$. \end{itemize} From this we get: \begin{itemize}\itemsep0pt \item$\frac{dM}{dt}=\overline{M}\HAT{M}'\frac{ds}{dt}$;\\\item $\frac{dC}{dt}=\overline{C}\HAT{C}'\frac{ds}{dt}$;\\\item $\frac{dT}{dt}=\overline{T}\HAT{T}'\frac{ds}{dt}$, and;\\ $\frac{ds}{dt}=\frac{1}{\tau}.$\end{itemize} }Our system then becomes: $$\begin{cases} 
+  \hspace{1.57em}To simplify systems of equations we scale problems using the technique of nondimensionalization: set {\begin{itemize}\itemsep0pt\item $M(t)=\overline{M}\HAT{M}(s)$;\\\item $C(t)=\overline{C}\HAT{C}(s)$;\\\item $T(t)=\overline{T}\HAT{T}(s)$, and;\\\item $t=\tau s$. \end{itemize} From this we get: \begin{itemize}\itemsep0pt \item$\frac{dM}{dt}=\overline{M}\HAT{M}'\frac{ds}{dt}$;\\\item $\frac{dC}{dt}=\overline{C}\HAT{C}'\frac{ds}{dt}$;\\\item $\frac{dT}{dt}=\overline{T}\HAT{T}'\frac{ds}{dt}$, and;\\ \item $\frac{ds}{dt}=\frac{1}{\tau}.$\end{itemize} }
+  \end{frame}
+ \begin{frame}
+  \frametitle{Nondimensionalization}Our system then becomes: $$\begin{cases} 
 \begin{array}{rl}
 \frac{\overline{M}}{\tau}\frac{d\HAT{M}}{dt}&= a\overline{M}\overline{C}\HAT{M}\HAT{C}-\frac{g\overline{M}\HAT{M}}{\overline{M}\HAT{M}+\overline{T}\HAT{T}} + \gamma \overline{M}\HAT{M}\overline{T}\HAT{T}\\ 
 \frac{\overline{C}}{\tau}\frac{d\HAT{C}}{dt}&=r\overline{T}\overline{C}\HAT{T}\HAT{C}-d\overline{C}\HAT{C}-a\overline{M}\overline{C}\HAT{M}\HAT{C}
 \end{array} \end{cases}$$
 \end{frame}
 {\center
-\begin{frame}$$\begin{cases}
-\begin{array}{rl}
-\frac{\overline{M}}{\tau}\frac{d\HAT{M}}{dt}&= a\overline{M}\overline{C}\HAT{M}\HAT{C}-\frac{g\overline{M}\HAT{M}}{\overline{M}\HAT{M}+\overline{T}\HAT{T}} + \gamma \overline{M}\HAT{M}\overline{T}\HAT{T}\\ 
-\frac{\overline{C}}{\tau}\frac{d\HAT{C}}{dt}&=r\overline{T}\overline{C}\HAT{T}\HAT{C}-d\overline{C}\HAT{C}-a\overline{M}\overline{C}\HAT{M}\HAT{C}
-\end{array} \end{cases}$$$$\begin{cases}
-\begin{array}{rl}
-\frac{d\HAT{M}}{dt}&= a\tau\overline{C}\HAT{M}\HAT{C}-\frac{g\tau\HAT{M}}{\overline{M}\HAT{M}+\overline{T}\HAT{T}} + \gamma \tau\HAT{M}\overline{T}\HAT{T}\\ 
-\frac{d\HAT{C}}{dt}&=r\tau\overline{T}\HAT{T}\HAT{C}-d\tau\HAT{C}-a\tau\overline{M}\overline{C}\HAT{M}\HAT{C}
-\end{array} \end{cases}$$$$\begin{cases}
+\begin{frame}\frametitle{Nondimensionalization}Set $\overline{T}=\frac{r}{\gamma}$, $\overline{C}=\frac{r^2}{a\gamma}$, $\overline{M}=1$, $\tau=\frac{\gamma}{r^2}$. Then, $$\begin{cases}
 \begin{array}{rl}
 \frac{d\HAT{M}}{dt}&= \HAT{M}(a\tau\overline{C}\HAT{C}-\frac{g\tau}{\overline{M}\HAT{M}+\overline{T}\HAT{T}} + \gamma \tau\overline{T}\HAT{T})\\ 
 \frac{d\HAT{C}}{dt}&=\HAT{C}(r\tau\overline{T}\HAT{T}-d\tau-a\tau\overline{M}\overline{C}\HAT{M}
-\end{array} \end{cases}$$ Set $\overline{T}=\frac{r}{\gamma}$, $\overline{C}=\frac{r^2}{a\gamma}$, $\overline{M}=1$, $\tau=\frac{\gamma}{r^2}$.
+\end{array} \end{cases}$$ 
 \end{frame}
 }
-\begin{frame}$$\begin{cases}
+\begin{frame}\frametitle{Nondimensionalization}$$\begin{cases}
 \begin{array}{rl}
-\frac{d\HAT{M}}{dt}&= \HAT{M}(\frac{a\gamma r^2}{r^2\gamma a}\HAT{C}+\frac{\gamma}{r}\HAT{T}+\frac{g\gamma}{r^2\HAT{M}+ \frac{r^3}{\gamma}\HAT{T}}) \\ 
-\frac{d\HAT{C}}{dt}&=\HAT{C}(\frac{r^2\gamma}{r^2\gamma}\HAT{T}-\frac{a\gamma r^2}{r^2\gamma a}\HAT{M}-\frac{d\gamma}{r^2})
-\end{array} \end{cases}$$$$\begin{cases}
-\begin{array}{rl}
-\frac{d\HAT{M}}{dt}&= \HAT{M}(\HAT{C}+\frac{\gamma}{r}\HAT{T}+\frac{g\gamma}{r^2\HAT{M}+ \frac{r^3}{\gamma}\HAT{T}}) \\ 
-\frac{d\HAT{C}}{dt}&=\HAT{C}(\HAT{T}-\HAT{M}-\frac{d\gamma}{r^2})
-\end{array} \end{cases}$$ Recall, \begin{itemize}\itemsep0pt
+\frac{d\HAT{M}}{dt}&= \HAT{M}(\HAT{C}+\HAT{\gamma}\HAT{T}+\frac{\HAT{g}\gamma^2}{\gamma\HAT{M}+ \HAT{T}}), \\ 
+\frac{d\HAT{C}}{dt}&=\HAT{C}(\HAT{T}-\HAT{M}-\HAT{d}\HAT{\gamma}),
+\end{array} \end{cases}$$ where $\HAT{d}=\frac{d}{r}$, $\HAT{\gamma} =\frac{\gamma}{r}$, $\HAT{g}=\frac{g}{\gamma^2}$,  Recall, \begin{itemize}\itemsep0pt
 \item $r$ is the rate corals overgrow upon algal turfs\\
 \item $d$ is the mortality rate of corals\\
 \item $a$ is the rate that macroalgae overgrow upon corals\\
@@ -102,19 +98,18 @@ If we restrict our scope to regions entirely covered by coral, macroalgae, and a
 
 \begin{frame}
   \frametitle{Blood Coagulation}
-  Blood coagulation in response to an injury occurs in three stages: \begin{itemize}
-  \item Initiation stage: injury exposes tissue factor to the site of injury thereby initiating the coagulation process. TF + factor VII = TF-VIIa complex activates factors IX and X. X activates thrombin before plasma protease inhibitor (TFPI) binds to and inactivates TF, Xa, and finally TF-VIIa which terminates this stage.\\
-  \item Amplification stage: thrombin activates platelets and factor V and VIII which drives the formation of a coagulation complex (IXa-VIIIa-Ca-PL, Xa-Va-Ca-PL) serving as an initial plug of the injury. TFPI inactivates thrombin terminating this stage.\\
-  \item Propagation stage: increasing platelet production of thrombin leading to thrombin's cleavage of the initial plug's fibrinogen into fibrin to which the final plug owes its strength.
-  \end{itemize}
+  Blood coagulation in response to an injury occurs in three stages! \end{frame}
+  \begin{frame}\frametitle{Initiation stage}
+ \hspace{1.57em}Injury exposes tissue factor to the site of injury thereby initiating the coagulation process. TF + factor VII = TF-VIIa complex activates factors IX and X. X activates thrombin before plasma protease inhibitor (TFPI) binds to and inactivates TF, Xa, and finally TF-VIIa which terminates this stage.
+ \end{frame}
+ \begin{frame}\frametitle{Amplification Stage}
+ \hspace{1.57em}Thrombin activates platelets and factor V and VIII which drives the formation of a coagulation complex (IXa-VIIIa-Ca-PL, Xa-Va-Ca-PL) serving as an initial plug of the injury. TFPI inactivates thrombin terminating this stage.
+ \end{frame}\begin{frame}\frametitle{Propagation Stage}
+ \hspace{1.57em}Increasing platelet production of thrombin leads to thrombin's cleavage of the initial plug's fibrinogen into fibrin to which the final plug owes its strength.
 \end{frame}
+
 
 \begin{comment}
-
-\begin{frame}\frametitle{Coagulation Cascade}
-\includegraphics[natwidth=162bp,natheight=227bp,width=280bp]{./coag-cascade.png}
-\end{frame}
-
 \begin{frame}\frametitle{Clotting Factor Models}
 \begin{itemize}
 \item 1989 Khamin-Semenov Model - Treated Coagulation as a three stage process as previously described.\\
@@ -134,6 +129,9 @@ $$\begin{cases}\begin{array}{rl}
 \end{frame}
 \end{comment} 
 
+\begin{frame}\frametitle{Coagulation Cascade}
+\includegraphics[scale=.4]{./coag-cascade}
+\end{frame}
 
 \begin{frame}
 \frametitle{2002 Xu Model}\vspace{-1.5em}
