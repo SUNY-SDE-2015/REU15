@@ -2,6 +2,7 @@
 
 \usepackage{etoolbox}
 \usepackage{graphicx}
+\usepackage{enumerate}
 \usepackage{verbatim}
 \usepackage{tikz}
 \newcommand{\HAT}[1]{\expandafter\hat#1}
@@ -40,14 +41,14 @@
 \begin{document}
 
 \author{Valerie A. Carrasquillo, Claudia L. Guerrero, Michael M. Law, and Kyle McGrath}
-\institute{Universidad Metropolitana, Universidad Autónoma del Estado de Hidalgo, University of Florida, and
+\institute{Universidad Metropolitana, Universidad Aut\'onoma del Estado de Hidalgo, University of Florida, and
   SUNY-Potsdam}
 
 \title{Making Corals Come To Life}
 \subtitle{Adventures In Stochastic Differential Equations}
 \date{June 12, 2015.}
 
-\begin{frame}
+\begin{frqame}
   \titlepage
 \end{frame}
 
@@ -56,16 +57,6 @@
   \tableofcontents
 \end{frame}
 
-\begin{frame}
-  \frametitle{What is noise?}
-  \begin{itemize}
-  %\item A random variation.
-  \item Models unpredictable behavior by adding a random variable.
-  \item A random variable, or stochastic variable is a variable whose values are associated to a random phenomenon.
-  \end{itemize}
-\end{frame}
-
-%<<<<<<< HEAD
 \begin{frame}
   \frametitle{Random Walk}
   \begin{itemize}
@@ -92,20 +83,10 @@
 	\end{enumerate}
   \end{itemize}
 \end{frame}
-%=======
 
-<<<<<<< Updated upstream
+\include{Introduction}
 \include{HighamPaper}
 \include{Ito}
-%>>>>>>> origin/master
 \include{modeling}
-=======
-
-\include{sdes}
-\include{results}
-\include{modeling}
-\include{conclusions}
->>>>>>> Stashed changes
-
 
 \end{document}
