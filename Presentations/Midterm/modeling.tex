@@ -22,14 +22,14 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Type II Response} Models population growth until carrying capacity is reached.
-    Type II: $y'=\frac{\alpha y}{y+L}$
+  \frametitle{Type II Response} 
+    Type II: $y'=\frac{\alpha y}{y+L}$\\Models population growth until carrying capacity is reached.
    \includegraphics[natwidth=162bp, natheight=227bp,width=280bp]{typeII.jpg}
 \end{frame}
 
 \begin{frame}
   \frametitle{Type III Response}
-    Logistic Curve: $y=\frac{15}{1+e^{-x}}$. Used to model neuronal action potentials.
+    Logistic Curve: $y'=y(1-y)$. Used to model neuronal action potentials.
     \includegraphics[scale=.4]{typeIII.jpg}
 \end{frame}
 
@@ -71,7 +71,7 @@ If we restrict our scope to regions entirely covered by coral, macroalgae, and a
 \begin{frame}$$\begin{cases}
 \begin{array}{rl}
 \frac{\overline{M}}{\tau}\frac{d\HAT{M}}{dt}&= a\overline{M}\overline{C}\HAT{M}\HAT{C}-\frac{g\overline{M}\HAT{M}}{\overline{M}\HAT{M}+\overline{T}\HAT{T}} + \gamma \overline{M}\HAT{M}\overline{T}\HAT{T}\\ 
-\frac{\overline{C}}{\tau}\frac{d\HAT{C}}{dt}&=r\overline{T}\overline{C}\HAT{T}\HAT{C}-d\overline{C}\HAT{C}-a\overline{M}\overline{M}\HAT{C}\HAT{C}
+\frac{\overline{C}}{\tau}\frac{d\HAT{C}}{dt}&=r\overline{T}\overline{C}\HAT{T}\HAT{C}-d\overline{C}\HAT{C}-a\overline{M}\overline{C}\HAT{M}\HAT{C}
 \end{array} \end{cases}$$$$\begin{cases}
 \begin{array}{rl}
 \frac{d\HAT{M}}{dt}&= a\tau\overline{C}\HAT{M}\HAT{C}-\frac{g\tau\HAT{M}}{\overline{M}\HAT{M}+\overline{T}\HAT{T}} + \gamma \tau\HAT{M}\overline{T}\HAT{T}\\ 
@@ -80,7 +80,7 @@ If we restrict our scope to regions entirely covered by coral, macroalgae, and a
 \begin{array}{rl}
 \frac{d\HAT{M}}{dt}&= \HAT{M}(a\tau\overline{C}\HAT{C}-\frac{g\tau}{\overline{M}\HAT{M}+\overline{T}\HAT{T}} + \gamma \tau\overline{T}\HAT{T})\\ 
 \frac{d\HAT{C}}{dt}&=\HAT{C}(r\tau\overline{T}\HAT{T}-d\tau-a\tau\overline{M}\overline{C}\HAT{M}
-\end{array} \end{cases}$$ Set $\overline{T}=\frac{r}{\gamma}$, $\overline{C}=\frac{r^2}{a\gamma}$, $\overline{M}={r^2}{a\gamma}$, $\tau=\frac{\gamma}{r^2}$.
+\end{array} \end{cases}$$ Set $\overline{T}=\frac{r}{\gamma}$, $\overline{C}=\frac{r^2}{a\gamma}$, $\overline{M}=1$, $\tau=\frac{\gamma}{r^2}$.
 \end{frame}
 }
 \begin{frame}$$\begin{cases}
