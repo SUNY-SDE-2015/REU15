@@ -44,6 +44,7 @@ A random variable $B(t)$ that depends continuously on $t \in [0,T]$ and satisfie
 \end{frame}
 
 \begin{frame}{Computational Purposes}
+\pause
 Discretized Brownian motion: $B(t)$ is specified at discrete t values.
 \begin{eqnarray*}
 && W(0)=0\\
@@ -79,43 +80,35 @@ $dW(j)$ is an independent random variable of the form $N(0,\Delta t)$
 
 \section{Stochastic Integrals}
 
+\begin{frame}{Stochastic Differential Equations}
+\pause
+We'll take an ordinary differential equation that contains a deterministic part and add an additional stochastic term:
+\begin{eqnarray*}
+dx=fdt+gdB
+\end{eqnarray*}
+\end{frame}
+
 \begin{frame}{Stochastic Integrals}
 \pause
 \begin{center}
 What does $\int_{a}^{b} f(t)dB$ mean? \bigskip \pause  $\int_{a}^{b} B(t)dB$?\pause \\
 
-%¿Can we use an analogy of the Riemann-Stietjes sum?\\ \pause 
 \begin{equation*}
 \sum_{i=1}^{n}B(t_{j-1})\left( B(t_{j})-B(t_{j-1})\right) ?
 \end{equation*}
 \pause
 \bigskip
 
-In $[0,1]$ with $\Delta t=1/500$:\\ \pause
-$It\hat{o}=-0.42765$\\ \pause
-$Stratonovich=0.088892$
+In $[0,1]$ with $\Delta t=1/500$:\\ 
+Left hand side=-0.42765\\ 
+Middle point=0.088892
 \end{center}
 \end{frame}
 
-%\begin{frame}
-%Consider the following functions:
-%\[1_{[t_{i-1},t_i)} = \left \{
-%  \begin{array}{lr}
-%1, & t \in [t_{i-1},t_i)\\
-%0, & otherwise
-%  \end{array}
-%\right.
-%\]
-
-%$$f_n=\sum_{i=1}^{n}a_i1_{[t_{i-1},t_i)} $$\\
-
-%We define the stochastic integral as:
-%$$I(f_n):=\sum_{i=1}^{n} a_i(B(t_i)-B(t_{i-1}))$$
-%\end{frame}
 
 \begin{frame}
 \begin{block}{Definition}
-Given f(t) a continuous function with bounded variation. Let $a_i=f(t_{i-1})$, then \textbf{the Weiner integral} is:
+Given f(t) a continuous function with bounded variation. Let $a_i=f(t_{i-1})$, then \textbf{the Wiener integral} is:
 \begin{equation*}
 I(f):=\lim_{n \to \infty}\sum_{i=1}^{n}a_i(B(t_i)-B(t_{i-1}))
 \end{equation*}
