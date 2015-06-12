@@ -5,11 +5,11 @@
 	\item Mathematical models are an abstraction of reality.
 	\item There are three types of responses. 
 	\begin{enumerate}
-		\item Type I - Linear Growth\\
+		\item Type I\\
 		$\ y'=\alpha y$
-		\item Type II - Exponential Growth\\
-		$\ y' = \frac{\alpha y}{y+ L}$ 
-		\item Type III - Parabolic Growth\\
+		\item Type II\\
+		$\ y' = \frac{\alpha y}{y+ \beta}$ 
+		\item Type III\\
 		$\ y'= \frac {\alpha y^2}{\beta + y^2}$
 	\end{enumerate}
   \end{itemize}
@@ -23,13 +23,13 @@
 
 \begin{frame}
   \frametitle{Type II Response} 
-    Type II: $y'=\frac{\alpha y}{y+L}$\\Models population growth until carrying capacity is reached.
+    Type II: $y'=\frac{\alpha y}{y+\beta}$\\Models population growth until carrying capacity is reached.
    \includegraphics[natwidth=162bp, natheight=227bp,width=280bp]{Rplot02.png}
 \end{frame}
 
 \begin{frame}
   \frametitle{Type III Response}
-    Type III: $y'=y(1-y)$. Used to model neuronal action potentials.
+    Type III: $y'=\frac{\alpha y^2}{\beta+y^2}$. Used to model neuronal action potentials.
     \includegraphics[scale=.4]{Rplot01.png}
 \end{frame}
 
