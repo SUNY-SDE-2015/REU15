@@ -5,11 +5,11 @@
 	\item Mathematical models are an abstraction of reality.
 	\item There are three types of responses. 
 	\begin{enumerate}
-		\item Type I - Linear Growth\\
+		\item Type I\\
 		$\ y'=\alpha y$
-		\item Type II - Exponential Growth\\
-		$\ y' = \frac{\alpha y}{y+ L}$ 
-		\item Type III - Parabolic Growth\\
+		\item Type II\\
+		$\ y' = \frac{\alpha y}{y+ \beta}$ 
+		\item Type III\\
 		$\ y'= \frac {\alpha y^2}{\beta + y^2}$
 	\end{enumerate}
   \end{itemize}
@@ -23,14 +23,22 @@
 
 \begin{frame}
   \frametitle{Type II Response} 
+
     Type II: $y'=\frac{\alpha y}{y+L}$\\Models population growth until carrying capacity is reached.
    \includegraphics[scale=0.4]{Rplot01.png}
+
+   % Type II: $y'=\frac{\alpha y}{y+\beta}$\\Models population growth until carrying capacity is reached.
+  % \includegraphics[natwidth=162bp, natheight=227bp,width=280bp]{Rplot02.png}
 \end{frame}
 
 \begin{frame}
   \frametitle{Type III Response}
     Type III: $y'=y(1-y)$. Used to model neuronal action potentials.
     \includegraphics[scale=.4]{Rplot02.png}
+\end{frame}
+\begin{frame}
+    Type III: $y'=\frac{\alpha y^2}{\beta+y^2}$. Used to model neuronal action potentials.
+    \includegraphics[scale=.4]{Rplot01.png}
 \end{frame}
 
 \begin{frame}
@@ -80,7 +88,7 @@ $$\begin{cases}\begin{array}{rl}
 \begin{frame}\frametitle{Nondimensionalization}Set $\overline{T}=\frac{r}{\gamma}$, $\overline{C}=\frac{r^2}{a\gamma}$, $\overline{M}=1$, $\tau=\frac{\gamma}{r^2}$. Then, $$\begin{cases}
 \begin{array}{rl}
 \frac{d\HAT{M}}{dt}&= \HAT{M}(a\tau\overline{C}\HAT{C}-\frac{g\tau}{\overline{M}\HAT{M}+\overline{T}\HAT{T}} + \gamma \tau\overline{T}\HAT{T})\\ 
-\frac{d\HAT{C}}{dt}&=\HAT{C}(r\tau\overline{T}\HAT{T}-d\tau-a\tau\overline{M}\overline{C}\HAT{M}
+\frac{d\HAT{C}}{dt}&=\HAT{C}(r\tau\overline{T}\HAT{T}-d\tau-a\tau\overline{M}\overline{C}\HAT{M})
 \end{array} \end{cases}$$ 
 \end{frame}
 }
