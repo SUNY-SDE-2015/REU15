@@ -1,13 +1,13 @@
 # RungeKutta Approximation and Heun's Method
-r     <- 5;
+r     <- -5;
 a     <- 1/2;
 b     <- 1/2;
 alpha <- 1;
 beta  <- 1;
 
 
-final <- 5;
-steps <- 100000;
+final <- 25;
+steps <- 1000;
 dt    <- final/steps;
 
 
@@ -28,10 +28,17 @@ while(n < steps) {
     n      <- n + 1;
 }
 
- plot(i, 
+plot( i, 
       j,
-      ylim = c(0,30),
-      #log = 'y',
+      type = 'l',
+      xlim = c(0,25),
+      ylim = c(0,5),
+      # log = 'xy',
       ylab = 'Error', 
       xlab = 'Time', 
-      main = 'r = 5 and dt = 10^{-2}')
+      main = 'r = -5 and dt = ')
+      
+file.create("/Users/kylemcgrath/Documents/SDE-REU-2015/SUNY-SDE-2015/REU15/Runge-Kutta/R/error-dat.csv");
+data <- file("/Users/kylemcgrath/Documents/SDE-REU-2015/SUNY-SDE-2015/REU15/Runge-Kutta/R/error-dat.csv");
+write(c("dt","step", "error"), file = data, ncolumns = 3, sep = ", ");
+write(c(dt,i,j), append = TRUE, file = data, ncolumns = 3, sep = ", ")

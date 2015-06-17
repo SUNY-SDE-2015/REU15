@@ -26,11 +26,11 @@ while n<steps
 	n=n+1;
 	s=e^(xi+n*dt);
 	fprintf(fp,"%f,%f,%f,%f\n",xi+n*dt,y,s,abs(s-y));
-	
+
 	hold on
 	plot(xi+n*dt,y,'rx');
 	plot(xi+n*dt,s,'bx');
-	end 
+    end 
 	
 print appvsreal00.jpg
 fclose(fp);
