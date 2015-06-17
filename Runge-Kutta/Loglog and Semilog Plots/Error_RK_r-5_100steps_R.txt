@@ -1,0 +1,69 @@
+> data<-read.csv("Error_RK_r-5_100steps.csv",header=TRUE)
+> x<-data$dt
+> y<-data$Error
+> semilogx<-lm(y~log(x))
+> semilogy<-lm(log(y)~x)
+> loglog<-lm(log(y)~log(x))
+> summary(semilogx)
+
+Call:
+lm(formula = y ~ log(x))
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-5.539e-04 -2.935e-04  1.710e-06  2.282e-04  8.021e-04 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)   
+(Intercept) 0.0034284  0.0007712   4.445  0.00215 **
+log(x)      0.0008137  0.0001990   4.089  0.00349 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.0004376 on 8 degrees of freedom
+Multiple R-squared:  0.6764,    Adjusted R-squared:  0.636 
+F-statistic: 16.72 on 1 and 8 DF,  p-value: 0.003489
+
+> summary(semilogy)
+
+Call:
+lm(formula = log(y) ~ x)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.58457 -0.42159 -0.02594  0.40594  0.60474 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -11.0758     0.2302 -48.118 3.85e-11 ***
+x            55.2869     5.8470   9.456 1.29e-05 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.4864 on 8 degrees of freedom
+Multiple R-squared:  0.9179,    Adjusted R-squared:  0.9076 
+F-statistic: 89.41 on 1 and 8 DF,  p-value: 1.287e-05
+
+> summary(loglog)
+
+Call:
+lm(formula = log(y) ~ log(x))
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.069993 -0.049443 -0.007909  0.026377  0.111435 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -1.13932    0.11220  -10.15 7.57e-06 ***
+log(x)       2.18123    0.02895   75.35 1.07e-12 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.06366 on 8 degrees of freedom
+Multiple R-squared:  0.9986,    Adjusted R-squared:  0.9984 
+F-statistic:  5677 on 1 and 8 DF,  p-value: 1.073e-12
+
+> plot(log(x),(y),main="SemilogX Plot for r=-5 and 100 Steps")
+> plot((x),log(y),main="SemilogY Plot for r=-5 and 100 Steps")
+> plot(log(x),log(y),main="Loglog Plot for r=-5 and 100 Steps")

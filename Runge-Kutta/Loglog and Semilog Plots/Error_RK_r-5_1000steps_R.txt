@@ -1,0 +1,73 @@
+> data<-read.csv("Error_RK_r-5_1000steps.csv",header=TRUE)
+> x<-data$dt
+> y<-data$Error
+> semilogx<-lm(y~log(x))
+> semilogy<-lm(log(y)~x)
+Error in lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) : 
+  NA/NaN/Inf in 'y'
+> loglog<-lm(log(y)~log(x))
+Error in lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) : 
+  NA/NaN/Inf in 'y'
+> summary(semilogx)
+
+Call:
+lm(formula = y ~ log(x))
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-2.329e-04 -7.204e-05  8.770e-06  5.566e-05  1.857e-03 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 7.959e-04  1.360e-04   5.851 6.48e-08 ***
+log(x)      1.283e-04  2.263e-05   5.670 1.44e-07 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.0002089 on 98 degrees of freedom
+Multiple R-squared:  0.247,     Adjusted R-squared:  0.2394 
+F-statistic: 32.15 on 1 and 98 DF,  p-value: 1.44e-07
+
+> summary(semilogy)
+
+Call:
+lm(formula = log(y) ~ x)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.62148 -0.42422 -0.02586  0.41599  0.62502 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -1.0474     0.2382  -4.397   0.0023 ** 
+x            45.6668     6.0515   7.546 6.63e-05 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.5034 on 8 degrees of freedom
+Multiple R-squared:  0.8768,    Adjusted R-squared:  0.8614 
+F-statistic: 56.95 on 1 and 8 DF,  p-value: 6.631e-05
+
+> summary(loglog)
+
+Call:
+lm(formula = log(y) ~ log(x))
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.078235 -0.026522  0.004127  0.036965  0.050350 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  7.32059    0.07820   93.62 1.89e-13 ***
+log(x)       1.84380    0.02017   91.39 2.29e-13 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.04437 on 8 degrees of freedom
+Multiple R-squared:  0.999,     Adjusted R-squared:  0.9989 
+F-statistic:  8352 on 1 and 8 DF,  p-value: 2.293e-13
+
+> plot(log(x),(y),main="SemilogX Plot for r=-5 and 1000 Steps")
+> plot((x),log(y),main="SemilogY Plot for r=-5 and 1000 Steps")
+> plot(log(x),log(y),main="Loglog Plot for r=-5 and 1000 Steps")
