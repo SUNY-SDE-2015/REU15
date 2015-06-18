@@ -32,7 +32,7 @@ huen <- function(steps,final)
     #  type = 'l',
     #  xlim = c(0,25),
     #  ylim = c(0,5),
-    #  # log = 'xy',
+    #  log = 'xy',
     #  ylab = 'Error', 
     #  xlab = 'Time', 
     #  main = 'r = -5 and dt = ')
@@ -42,9 +42,6 @@ huen <- function(steps,final)
 }
 
 
-x <- data.frame(,i,j);
+#x <- data.frame(dt=i,x=j);
+#write.csv(x,file="blah blah.csv")
 
-file.create("/Users/kylemcgrath/Documents/SDE-REU-2015/SUNY-SDE-2015/REU15/Runge-Kutta/R/error-dat.csv");
-data <- file("/Users/kylemcgrath/Documents/SDE-REU-2015/SUNY-SDE-2015/REU15/Runge-Kutta/R/error-dat.csv");
-write.table(c("dt", "step", "error"), file = data, row.names=FALSE, col.names=FALSE);
-write.table(x, file = data, row.names=FALSE, col.names=FALSE);
