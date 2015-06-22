@@ -23,7 +23,7 @@
 %
 
 
-randn('state',100)
+randn('state',0)
 r = 2; K = 1; beta = 0.25; Xzero = 0.5;   % problem parameters
 T = 1; N = 2^(11); dt = T/N;              %             
 M = 500;                                  % number of paths sampled
@@ -45,9 +45,9 @@ end
 Xref = Xmil(:,1);                             % Reference solution
 Xerr = abs(Xmil(:,2:5) - repmat(Xref,1,4));   % Error in each path
 mean(Xerr);                                   % Mean pathwise errors
-Dtvals = dt*R(2:5);                           % Milstein timesteps used
+                       % Milstein timesteps used
 
-subplot(224)                                  % lower RH picture
+%subplot(224)                                  % lower RH picture
 loglog(Dtvals,mean(Xerr),'b*-'), hold on
 loglog(Dtvals,Dtvals,'r--'), hold off         % reference slope of 1
 axis([1e-3 1e-1 1e-4 1])
