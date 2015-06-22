@@ -125,3 +125,7 @@ sympy-plots-for-*.tex/
 # WinEdt
 *.bak
 *.sav
+
+simulations/Runge-Kutta/R/RK (Autosaved).R
+
+simulations/Runge-Kutta/R/euler-milstein (Autosaved).R
