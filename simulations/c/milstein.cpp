@@ -39,7 +39,7 @@ void normalDistRand(double stdDev,double* randomNumbers)
 double theoretical(FILE *fp,
 				  int trial,
 				  double alpha, double beta,
-				  double dt,int steps) //does all the heavy lifting
+				  double dt,long steps) //does all the heavy lifting
 	{
 
 		double w,xzero,xtrue;
@@ -116,7 +116,7 @@ int main(void)
 					                                       // shows current progress
 					                                       // but slows down program		
 
-			    		for (int stepsTwo=0;stepsTwo<trials;++stepsTwo)
+			    		for (long stepsTwo=0;stepsTwo<trials;++stepsTwo)
 							    theoretical(fp,stepsTwo,alpha,beta,dt,steps);
 			     	}
 
