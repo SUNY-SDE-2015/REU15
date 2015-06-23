@@ -30,28 +30,28 @@ legend (0.7,1.1,c("M Nullcline","C Nullcline"),col=c(2,3), lty=c(1,1))
 vectorField <- function(mat,coral,a,g,gamma,r,d)
     {
         turf  <- 1.0 - mat - coral
-        fx    <- a*mat*coral-g*mat/(mat+turf)+gamma*mat*turf
+        fx    <- a*mat*coral-g*mat/(1.0-coral)+gamma*mat*turf
         fy    <- r*turf*coral-d*coral-a*mat*coral
         return(c(fx,fy))
     }
 
-m1 <- seq(0, 1.1, by=.10)
-c  <- m1
+m1 <- seq(0, 1.1, by=.06)
+c1 <- m1
 vx <- numeric(length(m1))
-vy <- numeric(length(c))
-dt <- 0.030;
-for (x in m1)
+vy <- numeric(length(c1))
+dt <- 0.025;
+for (m in m1)
 {
     lupe <- 0
-    for (y in y2)
+    for (c in c1)
         {
             lupe <- lupe + 1
-            v <- vectorField(m1,c,a,g,gamma,r,d)
+            v <- vectorField(m,c,a,g,gamma,r,d)
             vx[lupe] <- v[1]
             vy[lupe] <- v[2]
         }
     vecLength = sqrt(vx*vx+vy*vy)
-    endx <- x + vx*dt/vecLength
-    endy <- y2 + vy*dt/vecLength
-    arrows(x,y2, endx, endy,length=dt*3, col=1,angle=20);
+    endx <- m + vx*dt/vecLength
+    endy <- c1 + vy*dt/vecLength
+    arrows(m,c1, endx, endy,length=dt*3, col=1,angle=20);
 }
