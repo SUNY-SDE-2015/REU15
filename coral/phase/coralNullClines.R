@@ -16,12 +16,12 @@ m1 <- (a*c1-g/(1.0-c1)+gamma*(1.0-c1))/gamma    ### x null-cline
 plot(m1,c1, xlim=c(mMin, mMax),ylim=c(cMin, cMax),col=2,type="l",
      main="Phase Plane for Coral Without Delay",
      xlab="Macro-Algae Area",ylab="Coral Area")
-points (c(mMin,mMax),c(0.0,0.0),col=2,type="l")
+points (c(0.0,0.0),c(cMin,cMax),col=2,type="l")
 
 c2 <- seq(cMin, cMax, by=.01)
 m2 <- (r-r*c2-d)/(r+a)   ### y null-cline
 points (m2,c2,col=3,type="l")
-points (c(0.0,0.0),c(cMin,cMax),col=3,type="l")
+points (c(mMin,mMax),c(0.0,0.0),col=3,type="l")
 
 par(xpd=TRUE)
 
