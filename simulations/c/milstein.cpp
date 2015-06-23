@@ -86,7 +86,7 @@ int main(void)
 		FILE*fp;
 		fp=fopen("eulermaruyama_milstein_alpha0_beta400_ind_all-dt.csv","w");	
 
-//		double dt=0.0001;	//set dt value
+		double dt=0.0001;	//set dt value
 		double alpha,beta,x,k;
 		long steps;
 		long trials;
@@ -106,7 +106,6 @@ int main(void)
 		printf("Will make %ld trials\n",trials);
 		fprintf(fp,"dt,alpha,beta,xTrue,xEuler,xMilstein,ErrorEuler,ErrorMilstein\n");
 
-        double dt;
       //  for(dt= .0001; dt <= .01; dt += .0001)
 	    	for(alpha=-2.0;alpha<=2.0;alpha+=0.5)
 			    for(beta=0.25;beta<=4.0;beta+=0.25)
