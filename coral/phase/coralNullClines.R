@@ -1,8 +1,8 @@
 a <- 0.6
 g <- 0.2
 gamma <- 0.8
-r <- 0.05
-d <- 0.001
+r <- 0.8
+d <- 0.1
 
 cMin <- -0.1
 cMax <-  1.1
@@ -11,7 +11,7 @@ mMax <-  1.1
 par(xpd=FALSE)
 
 c1 <- seq(cMin, cMax, by=.01)
-m1 <- 1.0-(a+d)/(r-a)-(1-a/(r-a))*c1    ### x null-cline
+m1 <- (a*c1-g/(1.0-c1)+gamma*(1.0-c1))/gamma    ### x null-cline
 
 plot(m1,c1, xlim=c(mMin, mMax),ylim=c(cMin, cMax),col=2,type="l",
      main="Phase Plane for Coral Without Delay",
@@ -19,7 +19,7 @@ plot(m1,c1, xlim=c(mMin, mMax),ylim=c(cMin, cMax),col=2,type="l",
 points (c(mMin,mMax),c(0.0,0.0),col=2,type="l")
 
 c2 <- seq(cMin, cMax, by=.01)
-m2 <- 1.0+(1.0-gamma)/gamma*c2 -g/gamma/(1.0-c2)   ### y null-cline
+m2 <- (r-r*c2-d)/(r+a)   ### y null-cline
 points (m2,c2,col=3,type="l")
 points (c(0.0,0.0),c(cMin,cMax),col=3,type="l")
 
