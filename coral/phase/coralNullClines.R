@@ -11,7 +11,7 @@ mMax <-  1.1
 par(xpd=FALSE)
 
 c1 <- seq(cMin, cMax, by=.01)
-m1 <- (a*c1-g/(1.0-c1)+gamma*(1.0-c1))/gamma    ### x null-cline
+m1 <- (a/gamma*c1-(g/gamma)/(1.0-c1)+1.0-c1)    ### x null-cline
 
 plot(m1,c1, xlim=c(mMin, mMax),ylim=c(cMin, cMax),col=2,type="l",
      main="Phase Plane for Coral Without Delay",
@@ -35,7 +35,7 @@ vectorField <- function(mat,coral,a,g,gamma,r,d)
         return(c(fx,fy))
     }
 
-m1 <- seq(0, 1.1, by=.06)
+m1 <- seq(0, 1.1, by=.045)
 c1 <- m1
 vx <- numeric(length(m1))
 vy <- numeric(length(c1))
