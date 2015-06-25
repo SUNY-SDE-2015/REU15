@@ -6,8 +6,6 @@
 double linear(long steps, double a,double gamma,double r,double d,double g,double *x,double *y, double dt)
 	{
 		double *z;
-		y[0]=0.8;
-		y[1]=0.1;
 		for (double k=0;k<steps;k++)
 			{
 				x[0]=y[0]+(y[0]*(gamma-gamma*y[0]+(a-gamma)*y[1]-(g/(1-y[1]))))*dt;
@@ -35,6 +33,8 @@ int main(void)
 		g=0.6;
 		x=(double *) calloc(2,sizeof(double));
 		y=(double *) calloc(2,sizeof(double));
+		y[0]=0.8;
+		y[1]=0.1;		
 		dt=0.0000001;
 		steps=long(final/dt);
 		for (int k=0;k<trials;k++)
