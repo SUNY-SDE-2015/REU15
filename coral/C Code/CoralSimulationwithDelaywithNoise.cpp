@@ -71,7 +71,7 @@ int main(void)
 		d=0.44;
 		g=0.4;			//change g value
 		tau=0.1;		//change tau value
-		beta=1.0		//change beta value
+		beta=1.0;		//change beta value
 		//dt=0.0000001;	//change dt value
 		//printf("%f\n",index);
 		n=1;
