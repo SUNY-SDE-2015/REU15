@@ -7,7 +7,7 @@ double linear(long steps, double a,double gamma,double r,double d,double g,doubl
 	{
 		int m=0;
 		int p;
-		p=(m+n-1)%n;
+		p=(m+n-1)%(n-1);
 		for (double k=0;k<steps;k++)
 			{
 /*				
@@ -28,10 +28,12 @@ double linear(long steps, double a,double gamma,double r,double d,double g,doubl
 					{
 						x[1]=0;
 					}
-				y[m+1]=x[0];
-				z[m+1]=x[1];
-				m=(m+1)%n;
-				p=(m+1)%n;
+				m=(m+1)%(n-1);
+				p=(m+1)%(n-1);									
+				y[m]=x[0];
+				z[m]=x[1];
+
+
 				//printf("%i\t%i\n",m,p);
 			}
 		printf("%f\t%f\t%f\n",dt,x[0],x[1]);
@@ -49,8 +51,8 @@ int main(void)
 		gamma=0.8;
 		r=1;
 		d=0.44;
-		g=0.6;			//change g value
-		tau=0.5;		//change tau value
+		g=0.4;			//change g value
+		tau=0.1;		//change tau value
 		//dt=0.0000001;	//change dt value
 		//printf("%f\n",index);
 		n=1;
@@ -72,7 +74,7 @@ int main(void)
 								n--;
 							}
 						n++;
-						//printf("%i\n",n);
+						printf("%i\n",n);
 						if (dt==0.0001)
 							{
 								y=(double *) calloc(n,sizeof(double));
@@ -81,8 +83,8 @@ int main(void)
 						steps=long(final/dt);						
 						for (int k=0;k<trials;k++)
 							{
-								y[0]=0.8;		//initial Macroalgae level
-								z[0]=0.1;		//initial Coral level
+								y[0]=0.38692413985;		//initial Macroalgae level
+								z[0]=0.38;		//initial Coral level
 								for (int l=1;l<n;l++)		//fills in "negative" times for both y and z
 									{
 										y[l]=y[0];
