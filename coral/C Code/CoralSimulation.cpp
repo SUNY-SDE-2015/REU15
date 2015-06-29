@@ -31,25 +31,35 @@ double linear(long steps, double a,double gamma,double r,double d,double g,doubl
 **************************************************************** */
 int main(int argc,char **argv)
 	{
-		long steps;
-		double *x,*y;
+		long steps;    // The number of steps to take in a single simulation.
+		double *x,*y;  // The variables used for the state of the system.
 
+		/*
+			Define the constants.
+
+			These are the parameters that are used in the operator for the
+			differential equations.
+		 */
 		double a     = 0.1;
 		double g     = 0.6;
 		double gamma = 0.8;
 		double r     = 1.0;
 		double d     = 0.44;
 
-		double dt,final;
-		int trials;
+		double dt,final;    // The time step and the final time.
+		int trials;         // The number of simulations to make.
 		
-		final=1;
-		trials=1;
+		final=1;  // Set the final time.
+		trials=1; // Set the number of trials to perform.
 
+		// Allocate the space for the state of the system and define the
+		// initial condition.
 		x=(double *) calloc(2,sizeof(double));
 		y=(double *) calloc(2,sizeof(double));
 		y[0]=0.8;
 		y[1]=0.1;		
+
+		// Set the time step and iterate through for the number of trials.
 		dt=0.0000001;
 		steps=(long)(final/dt);
 		for (int k=0;k<trials;k++)
