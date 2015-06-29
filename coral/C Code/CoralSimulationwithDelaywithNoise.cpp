@@ -81,7 +81,9 @@ int main(void)
 		n=1;
 		x=(double *) calloc(2,sizeof(double));
 		dt=0.0001;
-        printf("dt\t\tbeta\t\ttau\t\tMacroalgae\tCoral\n");
+        	printf("dt\t\tbeta\t\ttau\t\tMacroalgae\tCoral\n");
+        	y=(double *) calloc(n,sizeof(double));
+		z=(double *) calloc(n,sizeof(double));
 		while (dt<=0.01)
 			{
 				//printf("%f\t%f\n",dt,fmod(tau,dt));
@@ -99,11 +101,6 @@ int main(void)
 							}
 						n++;
 						//printf("%i\n",n);
-						if (dt==0.0001)
-							{
-								y=(double *) calloc(n,sizeof(double));
-								z=(double *) calloc(n,sizeof(double));
-							}
 						steps=long(final/dt);						
 						for (int k=0;k<trials;k++)
 							{
