@@ -31,6 +31,8 @@
 *.synctex.gz
 *.synctex.gz(busy)
 *.pdfsync
+CoralSimulation.o
+CoralSimulation
 
 ## Auxiliary and intermediate files from other packages:
 
