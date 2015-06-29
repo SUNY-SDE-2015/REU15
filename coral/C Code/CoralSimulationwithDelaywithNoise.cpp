@@ -61,15 +61,19 @@ double linear(long steps, double a,double gamma,double r,double d,double g,doubl
 int main(void)
 	{
 		long steps;
-		double *x,*y,*z,a,g,gamma,r,d,dt,final,tau,index,beta;
+		double *x,*y,*z;
+
+		double a     = 0.1;
+		double g     = 0.8;
+		double gamma = 0.8;
+		double r     = 1.0;
+		double d     = 0.44;
+
+		dt,final,tau,index,beta;
 		int trials,n;
 		final=50;		//change time to value
 		trials=1;		//change number of trials
-		a=0.1;
-		gamma=0.8;
-		r=1;
-		d=0.44;
-		g=0.8;			//change g value
+
 		tau=1;		//change tau value
 		beta=.01;		//change beta value
 		//dt=0.0000001;	//change dt value
