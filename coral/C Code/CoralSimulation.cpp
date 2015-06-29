@@ -3,6 +3,11 @@
 #include <time.h>
 #include <math.h>
 
+/* ****************************************************************
+	 linear
+	 
+	 Function to evaluate the nonlinear operator.
+**************************************************************** */
 double linear(long steps, double a,double gamma,double r,double d,double g,double *x,double *y, double dt)
 	{
 		double *z;
@@ -19,26 +24,39 @@ double linear(long steps, double a,double gamma,double r,double d,double g,doubl
 		return 0;
 	}
 
-int main(void)
+/* ****************************************************************
+	 main
+	 
+	 The main function. Called at the start of the program.
+**************************************************************** */
+int main(int argc,char **argv)
 	{
 		long steps;
-		double *x,*y,a,g,gamma,r,d,dt,final;
+		double *x,*y;
+
+		double a     = 0.1;
+		double g     = 0.6;
+		double gamma = 0.8;
+		double r     = 1.0;
+		double d     = 0.44;
+
+		double dt,final;
 		int trials;
+		
 		final=1;
 		trials=1;
-		a=0.1;
-		gamma=0.8;
-		r=1;
-		d=0.44;
-		g=0.6;
+
 		x=(double *) calloc(2,sizeof(double));
 		y=(double *) calloc(2,sizeof(double));
 		y[0]=0.8;
 		y[1]=0.1;		
 		dt=0.0000001;
-		steps=long(final/dt);
+		steps=(long)(final/dt);
 		for (int k=0;k<trials;k++)
 			{
 				linear(steps,a,gamma,r,d,g,x,y,dt);
 			}
+
+		free(x);
+		free(y);
 	}
