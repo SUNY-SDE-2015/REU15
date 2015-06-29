@@ -56,14 +56,16 @@ int main(int argc,char **argv)
 		// initial condition.
 		x=(double *) calloc(2,sizeof(double));
 		y=(double *) calloc(2,sizeof(double));
-		y[0]=0.8;
-		y[1]=0.1;		
 
 		// Set the time step and iterate through for the number of trials.
 		dt=0.0000001;
 		steps=(long)(final/dt);
 		for (int k=0;k<trials;k++)
 			{
+				y[0]=0.8; // Initialize the value of x
+				y[1]=0.1;	// Initialize the value of y
+
+				// Perform a single simulation.
 				linear(steps,a,gamma,r,d,g,x,y,dt);
 			}
 
