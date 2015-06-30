@@ -59,41 +59,7 @@ double linear(long steps, double a,double gamma,double r,double d,double g,doubl
 **************************************************************** */
 int main(int argc,char **argv)
 	{
-		long steps;
-		double *x,*y,*z;
-
-		double a     = 0.1;
-		double g     = 0.8;
-		double gamma = 0.8;
-		double r     = 1.0;
-		double d     = 0.44;
-
-		dt,final,tau,index,beta;
-		int trials,n;
-		final=50;		//change time to value
-		trials=1;		//change number of trials
-
-		a=0.1;
-		gamma=0.8;
-		r=1;
-		d=0.44;
-		g=0.4;			//change g value
-		tau=0.1;		//change tau value
-		beta=1.0;		//change beta value
-		g=0.8;			//change g value
-
-		tau=1;		//change tau value
-		beta=.01;		//change beta value
-		//dt=0.0000001;	//change dt value
-		//printf("%f\n",index);
-		n=1;
-		x=(double *) calloc(2,sizeof(double));
-		dt=0.0001;
-        printf("dt\t\tbeta\t\ttau\t\tMacroalgae\tCoral\n");
-		while (dt<=0.01)
-		//printf("%f\t%f\n",dt,fmod(tau,dt));
-		if ((int)round(10000*tau)%(int)round(dt*10000)==0)
-
+		
 		long steps;    // The number of steps to take in a single simulation.
 		double *x,*y,*z;  // The variables used for the state of the system.
 
