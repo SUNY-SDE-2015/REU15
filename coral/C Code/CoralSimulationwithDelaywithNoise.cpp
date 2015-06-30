@@ -140,8 +140,8 @@ int main(int argc,char **argv)
 		//printf("dt\t\tbeta\t\ttau\t\tMacroalgae\tCoral\n");
 		
 		
-		for (double r=0.1;r<=1;r=r+0.1)
-		for (double s=0.1;s<=1-r;s=s+0.1)
+		for (double h=0.1;h<=1;h=h+0.1)
+		for (double s=0.1;s<=1-h;s=s+0.1)
 		{
 		dt=0.0001;
 		while (dt<=0.0001)
@@ -162,7 +162,7 @@ int main(int argc,char **argv)
 						y[l]=y[0];
 						z[l]=z[0];
 					}
-					linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k);
+					linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k, h, s);
 				}
 			}
 			dt=dt+0.0001;
