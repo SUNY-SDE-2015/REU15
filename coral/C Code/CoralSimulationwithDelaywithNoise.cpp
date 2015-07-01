@@ -13,25 +13,35 @@ void normalDistRand(double stdDev,double* randomNumbers)
 		randomNumbers[1] = stdDev*radius*cos(angle);
 	}
 
-double linear(long steps, double a,double gamma,double r,double d,double g,double *x,double *y,double *z, double dt,int n,double beta,double tau,FILE *fp,int q,double h,double s,double *v,double *w)
+double linear(long steps,
+			  double a,double gamma,double r,double d,double g,
+			  double *x,double *y,double *z, double dt,
+			  int n,
+			  double beta,double tau,
+			  FILE *fp,
+			  int q,
+			  double h,double s,double *v,double *w)
 	{
 		int m=0;
 		int p;
 		p=(m+n-1)%(n-1);
 		double B[2];
 		int calcRandom=0;
-		for (double k=0;k<steps;k++)
+		for (long k=0;k<steps;k++)
 		{
 			if(calcRandom==0)
 				normalDistRand(sqrt(dt),B); //noise in most recent time step
+
 			//x[0]=y[m]+(y[m]*(gamma-gamma*y[m]+(a-gamma)*z[m])-(g*y[p]/(1-z[p])))*dt
 			//x[0]=x[0]+beta*y[m]*(1-y[m])+0.5*beta*y[m]*(1-y[m])*beta*(1-2*y[m])*(B[calcRandom]*B[calcRandom]-dt);
 			
 			//Computes the deterministic component for Macroalgae
 			x[0]=y[m]+(y[m]*(gamma-gamma*y[m]+(a-gamma)*z[m])-(g*y[p]/(1-z[p])))*dt;
+			
 			//Adds in the noise	
 			//x[0]=x[0]+beta*y[m]*B[calcRandom]+0.5*beta*y[m]*beta*(B[calcRandom]*B[calcRandom]-dt);
 			x[0]=x[0]+beta*y[m]*B[calcRandom]+0.5*beta*beta*y[m]*(B[calcRandom]*B[calcRandom]-dt);
+			
 			//Computes the deterministic component for Coral
 			x[1]=z[m]+(z[m]*(r-d-(a+r)*y[m]-r*z[m]))*dt;
 			
@@ -39,25 +49,18 @@ double linear(long steps, double a,double gamma,double r,double d,double g,doubl
 			x[2]=v[m]+(v[m]*(gamma-gamma*v[m]+(a-gamma)*w[m])-(g*v[p]/(1-w[p])))*dt;
 			x[2]=x[2]+beta*v[m]*(1-v[m])*B[calcRandom]+0.5*beta*(1-2*v[m])*beta*v[m]*(1-v[m])*(B[calcRandom]*B[calcRandom]-dt);
 			x[3]=w[m]+(w[m]*(r-d-(a+r)*v[m]-r*w[m]))*dt;
+			
 	        /****************************************************************
 	            Account for extinction and overgrowing!!
 			****************************************************************/
-			if (x[0]<0)  
-				x[0]=0;
-			if (x[1]<0)
-				x[1]=0;
-			if (x[0]>1)
-				x[0]=1;
-			if (x[1]>1)
-				x[1]=1;	
-			if (x[2]<0)  
-				x[2]=0;
-			if (x[3]<0)
-				x[3]=0;
-			if (x[2]>1)
-				x[2]=1;
-			if (x[3]>1)
-				x[3]=1;					
+			for(int i=0;i<4;++i)
+				{
+					if(x[i]<0.0)
+						x[i] = 0.0;
+					else if (x[i]>1.0)
+						x[i] = 1.0;
+				}
+
 			//Updates delay and cell index
 			m=(m+1)%(n-1);
 			p=(m+1)%(n-1);
@@ -68,6 +71,7 @@ double linear(long steps, double a,double gamma,double r,double d,double g,doubl
 			calcRandom = (calcRandom+1)%2; // update which random number to use.
 			fprintf(fp,"%f,%f,%f,%f,%f,%f\n",x[0],x[1],1-x[0]-x[1],x[2],x[3],1-x[2]-x[3]);
 		}
+
 		//printf("%f\t%f\t%f\t%f\t%f\n",dt,beta,tau,x[0],x[1]);
 		//fprintf(fp,"%f,%f,%f,%i,%f,%f,%f,%f,%f,%f\n",dt,beta,tau,q+1,h,s,1-h-s,x[0],x[1],1-x[0]-x[1]);
 		return 0;
@@ -131,41 +135,43 @@ int main(int argc,char **argv)
 		
 		
 		for (double h=0.24;h<=0.24;h=h+0.1)
-		for (double s=0.27;s<=0.27;s=s+0.1)
-		{
-		dt=0.0001;
-		while (dt<=0.0001)
-		{
-			//printf("%f\t%f\n",dt,fmod(tau,dt));
-			if ((int)round(10000*tau)%(int)round(dt*10000)==0)
+			for (double s=0.27;s<=0.27;s=s+0.1)
 			{
-				//index = tau/dt;
-				n=(int) round(tau/dt);
-				//printf("%i\n",n);
-				steps=(long)(final/dt);
-				for (int k=0;k<trials;k++)
+				dt=0.0001;
+				while (dt<=0.0001)
 				{
-					y[0]=h; //initial Macroalgae level
-					z[0]=s; //initial Coral level
-					v[0]=h;
-					w[0]=s;
-					for (int l=1;l<n;l++) //fills in "negative" times for both y and z
+					//printf("%f\t%f\n",dt,fmod(tau,dt));
+					if ((int)round(10000*tau)%(int)round(dt*10000)==0)
 					{
-						y[l]=y[0];
-						z[l]=z[0];
-						v[l]=v[0];
-						w[l]=w[0];
+						//index = tau/dt;
+						n=(int) round(tau/dt);
+						//printf("%i\n",n);
+						steps=(long)(final/dt);
+						for (int k=0;k<trials;k++)
+						{
+							y[0]=h; //initial Macroalgae level
+							z[0]=s; //initial Coral level
+							v[0]=h;
+							w[0]=s;
+							for (int l=1;l<n;l++) //fills in "negative" times for both y and z
+							{
+								y[l]=y[0];
+								z[l]=z[0];
+								v[l]=v[0];
+								w[l]=w[0];
+							}
+							fprintf(fp,"%f,%f,%f,%f,%f,%f",x[0],x[1],1-x[0]-x[1],x[2],x[3],1-x[2]-x[3]);
+							linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k,h,s,v,w);
+						}
 					}
-					fprintf(fp,"%f,%f,%f,%f,%f,%f",x[0],x[1],1-x[0]-x[1],x[2],x[3],1-x[2]-x[3]);
-					linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k,h,s,v,w);
+					dt=dt+0.0001;
 				}
 			}
-			dt=dt+0.0001;
-		}
-		}
 		free(x);
 		free(y);
 		free(z);
+		free(v);
+		free(w);
 		fclose(fp);
 	    return 0;
 	}
