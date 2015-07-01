@@ -102,7 +102,7 @@ int main(int argc,char **argv)
 		double dt,final;    // The time step and the final time.
 		int trials;         // The number of simulations to make.
 		
-		final=1;  // Set the final time.
+		final=20;  // Set the final time.
 		trials=1; // Set the number of trials to perform.
 		
 		// Set the smallest time step
@@ -156,7 +156,7 @@ int main(int argc,char **argv)
 						v[l]=v[0];
 						w[l]=w[0];
 					}
-					fprintf(fp,"%f,%f,%f,%f,%f,%f",x[0],x[1],1-x[0]-x[1],x[2],x[3],1-x[2]-x[3]);
+					fprintf(fp,"%f,%f,%f,%f,%f,%f\n",y[0],z[0],1-y[0]-z[0],v[0],w[0],1-v[0]-w[0]);
 					linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k,h,s,v,w);
 				}
 			}
