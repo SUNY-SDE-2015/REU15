@@ -66,7 +66,7 @@ double linear(long steps, double a,double gamma,double r,double d,double g,doubl
 			v[m]=x[2];
 			w[m]=x[3];
 			calcRandom = (calcRandom+1)%2; // update which random number to use.
-			fprintf(fp,"%f,%f,%f,%f,%f,%f",x[0],x[1],1-x[0]-x[1],x[2],x[3],1-x[2]-x[3]);
+			fprintf(fp,"%f,%f,%f,%f,%f,%f\n",x[0],x[1],1-x[0]-x[1],x[2],x[3],1-x[2]-x[3]);
 		}
 		//printf("%f\t%f\t%f\t%f\t%f\n",dt,beta,tau,x[0],x[1]);
 		//fprintf(fp,"%f,%f,%f,%i,%f,%f,%f,%f,%f,%f\n",dt,beta,tau,q+1,h,s,1-h-s,x[0],x[1],1-x[0]-x[1]);
@@ -126,7 +126,7 @@ int main(int argc,char **argv)
 		FILE*fp;
 		fp=fopen("trials.csv","w");
 		//fprintf(fp,"dt,beta,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf\n");
-		frpintf(fp,"macroalgae,coral,turf,lgmacroalgae,lgcoral,lgturf\n");
+		fprintf(fp,"macroalgae,coral,turf,lgmacroalgae,lgcoral,lgturf\n");
 		//printf("dt\t\tbeta\t\ttau\t\tMacroalgae\tCoral\n");
 		
 		
@@ -139,7 +139,7 @@ int main(int argc,char **argv)
 			//printf("%f\t%f\n",dt,fmod(tau,dt));
 			if ((int)round(10000*tau)%(int)round(dt*10000)==0)
 			{
-				index = tau/dt;
+				//index = tau/dt;
 				n=(int) round(tau/dt);
 				//printf("%i\n",n);
 				steps=(long)(final/dt);
