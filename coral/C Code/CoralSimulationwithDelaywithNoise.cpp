@@ -13,7 +13,7 @@ void normalDistRand(double stdDev,double* randomNumbers)
 		randomNumbers[1] = stdDev*radius*cos(angle);
 	}
 
-double linear(long steps, double a,double gamma,double r,double d,double g,double *x,double *y,double *z, double dt,int n,double beta,double tau,FILE *fp,int q)
+double linear(long steps, double a,double gamma,double r,double d,double g,double *x,double *y,double *z, double dt,int n,double beta,double tau,FILE *fp,int q,double h,double s,double *v,double *w)
 	{
 		int m=0;
 		int p;
@@ -24,30 +24,52 @@ double linear(long steps, double a,double gamma,double r,double d,double g,doubl
 		{
 			if(calcRandom==0)
 				normalDistRand(sqrt(dt),B); //noise in most recent time step
-			//x[0]=y[m]+(y[m]*(gamma-gamma*y[m]+(a-gamma)*z[m])-(g*y[p]/(1-z[p])))*dt+beta*y[m]*(1-y[m])+0.5*beta*y[m]*(1-y[m])*beta*(1-2*y[m])*(B[calcRandom]*B[calcRandom]-dt);
+			//x[0]=y[m]+(y[m]*(gamma-gamma*y[m]+(a-gamma)*z[m])-(g*y[p]/(1-z[p])))*dt
+			//x[0]=x[0]+beta*y[m]*(1-y[m])+0.5*beta*y[m]*(1-y[m])*beta*(1-2*y[m])*(B[calcRandom]*B[calcRandom]-dt);
 			
 			//Computes the deterministic component for Macroalgae
-			x[0]=y[m]+(y[m]*(gamma-gamma*y[m]+(a-gamma)*z[m])-(g*y[p]/(1-z[p])))*dt
+			x[0]=y[m]+(y[m]*(gamma-gamma*y[m]+(a-gamma)*z[m])-(g*y[p]/(1-z[p])))*dt;
 			//Adds in the noise	
-			x[0]=beta*y[m]*B[calcRandom]+0.5*beta*y[m]*beta*(B[calcRandom]*B[calcRandom]-dt);
+			//x[0]=x[0]+beta*y[m]*B[calcRandom]+0.5*beta*y[m]*beta*(B[calcRandom]*B[calcRandom]-dt);
+			x[0]=x[0]+beta*y[m]*B[calcRandom]+0.5*beta*beta*y[m]*(B[calcRandom]*B[calcRandom]-dt);
 			//Computes the deterministic component for Coral
 			x[1]=z[m]+(z[m]*(r-d-(a+r)*y[m]-r*z[m]))*dt;
+			
+			
+			x[2]=v[m]+(v[m]*(gamma-gamma*v[m]+(a-gamma)*w[m])-(g*v[p]/(1-w[p])))*dt;
+			x[2]=x[2]+beta*v[m]*(1-v[m])*B[calcRandom]+0.5*beta*(1-2*v[m])*beta*v[m]*(1-v[m])*(B[calcRandom]*B[calcRandom]-dt);
+			x[3]=w[m]+(w[m]*(r-d-(a+r)*v[m]-r*w[m]))*dt;
 	        /****************************************************************
-	            Account for extinction!!
+	            Account for extinction and overgrowing!!
 			****************************************************************/
 			if (x[0]<0)  
 				x[0]=0;
 			if (x[1]<0)
 				x[1]=0;
+			if (x[0]>1)
+				x[0]=1;
+			if (x[1]>1)
+				x[1]=1;	
+			if (x[2]<0)  
+				x[2]=0;
+			if (x[3]<0)
+				x[3]=0;
+			if (x[2]>1)
+				x[2]=1;
+			if (x[3]>1)
+				x[3]=1;					
 			//Updates delay and cell index
 			m=(m+1)%(n-1);
 			p=(m+1)%(n-1);
 			y[m]=x[0];
 			z[m]=x[1];
+			v[m]=x[2];
+			w[m]=x[3];
 			calcRandom = (calcRandom+1)%2; // update which random number to use.
+			fprintf(fp,"%f,%f,%f,%f,%f,%f",x[0],x[1],1-x[0]-x[1],x[2],x[3],1-x[2]-x[3]);
 		}
 		//printf("%f\t%f\t%f\t%f\t%f\n",dt,beta,tau,x[0],x[1]);
-		fprintf(fp,"%f,%f,%f,%i,%f,%f\n",dt,beta,tau,q+1,x[0],x[1]);
+		//fprintf(fp,"%f,%f,%f,%i,%f,%f,%f,%f,%f,%f\n",dt,beta,tau,q+1,h,s,1-h-s,x[0],x[1],1-x[0]-x[1]);
 		return 0;
 	}
 
@@ -61,7 +83,7 @@ int main(int argc,char **argv)
 	{
 		
 		long steps;    // The number of steps to take in a single simulation.
-		double *x,*y,*z;  // The variables used for the state of the system.
+		double *v,*w,*x,*y,*z;  // The variables used for the state of the system.
 
 		/*
 			Define the constants.
@@ -94,20 +116,22 @@ int main(int argc,char **argv)
 		n=(int) round(tau/dt);
 		
 		// Allocate the space for the state of the system
-				x=(double *) calloc(2,sizeof(double));
-		y=(double *) calloc(n,sizeof(double));
-		z=(double *) calloc(n,sizeof(double));
+		x=(double *) calloc(4,sizeof(double));
+		y=(double *) calloc(n,sizeof(double));		//macroalgae for multiplicative noise
+		z=(double *) calloc(n,sizeof(double));		//coral for multiplicative noise
+		v=(double *) calloc(n,sizeof(double));		//macroalgae for logistic noise
+		w=(double *) calloc(n,sizeof(double));		//coral for logistic noise
 		
 		// Create a CSV File
 		FILE*fp;
 		fp=fopen("trials.csv","w");
-		fprintf(fp,"dt,beta,tau,trial,macroalgae,coral\n");
-		
+		//fprintf(fp,"dt,beta,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf\n");
+		frpintf(fp,"macroalgae,coral,turf,lgmacroalgae,lgcoral,lgturf\n");
 		//printf("dt\t\tbeta\t\ttau\t\tMacroalgae\tCoral\n");
 		
 		
-		for (double h=0.1;h<=1;h=h+0.1)
-		for (double s=0.1;s<=1-h;s=s+0.1)
+		for (double h=0.24;h<=0.24;h=h+0.1)
+		for (double s=0.27;s<=0.27;s=s+0.1)
 		{
 		dt=0.0001;
 		while (dt<=0.0001)
@@ -121,14 +145,19 @@ int main(int argc,char **argv)
 				steps=(long)(final/dt);
 				for (int k=0;k<trials;k++)
 				{
-					y[0]=0.38692413985; //initial Macroalgae level
-					z[0]=0.3141592; //initial Coral level
+					y[0]=h; //initial Macroalgae level
+					z[0]=s; //initial Coral level
+					v[0]=h;
+					w[0]=s;
 					for (int l=1;l<n;l++) //fills in "negative" times for both y and z
 					{
 						y[l]=y[0];
 						z[l]=z[0];
+						v[l]=v[0];
+						w[l]=w[0];
 					}
-					linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k, h, s);
+					fprintf(fp,"%f,%f,%f,%f,%f,%f",x[0],x[1],1-x[0]-x[1],x[2],x[3],1-x[2]-x[3]);
+					linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k,h,s,v,w);
 				}
 			}
 			dt=dt+0.0001;
