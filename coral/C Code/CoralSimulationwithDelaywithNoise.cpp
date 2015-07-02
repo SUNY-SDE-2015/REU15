@@ -69,11 +69,11 @@ double linear(long steps,
 			v[m]=x[2];
 			w[m]=x[3];
 			calcRandom = (calcRandom+1)%2; // update which random number to use.
-			fprintf(fp,"%f,%f,%f,%f,%f,%f\n",x[0],x[1],1-x[0]-x[1],x[2],x[3],1-x[2]-x[3]);
+			//fprintf(fp,"%f,%f,%f,%f,%f,%f\n",x[0],x[1],1-x[0]-x[1],x[2],x[3],1-x[2]-x[3]);
 		}
 
 		//printf("%f\t%f\t%f\t%f\t%f\n",dt,beta,tau,x[0],x[1]);
-		//fprintf(fp,"%f,%f,%f,%i,%f,%f,%f,%f,%f,%f\n",dt,beta,tau,q+1,h,s,1-h-s,x[0],x[1],1-x[0]-x[1]);
+		fprintf(fp,"%f,%f,%f,%i,%f,%f,%f,%f,%f,%f\n",dt,beta,tau,q+1,h,s,1-h-s,x[0],x[1],1-x[0]-x[1]);
 		return 0;
 	}
 
@@ -105,8 +105,8 @@ int main(int argc,char **argv)
 		double chi		 = r*gamma/(r+a)-gamma+a;					//Intermediate Step
 		double xi		 = -(d*gamma/(r+a)+a);						//Intermediate Step	
 		double cbar		 = (-xi-sqrt(xi*xi-4*chi*g))/(2*chi);		//Intermediate Step
-		double zeta		 = 1-cbar;									//Saddle point value for coral
-		double eta		 = (r-r*zeta-d)/(r+a);						//Saddle point value for macroalgae
+		double coralsaddle		 = 1-cbar;									//Saddle point value for coral
+		double macrosaddle		 = (r-r*zeta-d)/(r+a);						//Saddle point value for macroalgae
 		double gZero	 = ((d*a*r+d*d)*(gamma-a))/(r*r);
 		double gOne		 = (gamma*(a+d))/(a+r);
 		double omega	 = sqrt((r*r*(g*g-gNil*gNil))/(d*d));
@@ -141,14 +141,23 @@ int main(int argc,char **argv)
 		// Create a CSV File
 		FILE*fp;
 		fp=fopen("trials.csv","w");
-		//fprintf(fp,"dt,beta,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf\n");
-		fprintf(fp,"macroalgae,coral,turf,lgmacroalgae,lgcoral,lgturf\n");
+		fprintf(fp,"dt,beta,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf\n");
+		//fprintf(fp,"macroalgae,coral,turf,lgmacroalgae,lgcoral,lgturf\n");
 		//printf("dt\t\tbeta\t\ttau\t\tMacroalgae\tCoral\n");
 		
 		
-		//for (double h=0.24;h<=0.24;h=h+0.1)
-		//	for (double s=0.27;s<=0.27;s=s+0.1)
-		//	{
+		for (g=0.1;g<=0.8;g=g+0.2)
+			{
+				//Redefine initial conditions and critical points for varying g
+				cbar		 = (-xi-sqrt(xi*xi-4*chi*g))/(2*chi);
+				coralsaddle		 = 1-cbar;
+				macrosaddle		 = (r-r*zeta-d)/(r+a);		
+				omega	 = sqrt((r*r*(g*g-gNil*gNil))/(d*d));
+				tauZero	 = (1/omega)*acos(gNil/g);				
+				if (coralsaddle>0 && coralsaddle<1 && macrosaddle>0 && macrosaddle<1 && tauZero>0)
+			for (double aleph=0;aleph<=5;aleph=aleph+1)
+			{
+				tau=(1/3+1/3*aleph)*tauZero;
 				dt=0.0001;
 				while (dt<=0.0001)
 				{
@@ -161,10 +170,10 @@ int main(int argc,char **argv)
 						steps=(long)(final/dt);
 						for (int k=0;k<trials;k++)
 						{
-							y[0]=zeta; //initial Macroalgae level
-							z[0]=eta; //initial Coral level
-							v[0]=zeta;
-							w[0]=eta;
+							y[0]=macrosaddle; //initial Macroalgae level
+							z[0]=coralsaddle; //initial Coral level
+							v[0]=macrosaddle;
+							w[0]=coralsaddle;
 							for (int l=1;l<n;l++) //fills in "negative" times for both y and z
 							{
 								y[l]=y[0];
@@ -172,12 +181,13 @@ int main(int argc,char **argv)
 								v[l]=v[0];
 								w[l]=w[0];
 							}
-							fprintf(fp,"%f,%f,%f,%f,%f,%f\n",y[0],z[0],1-y[0]-z[0],v[0],w[0],1-v[0]-w[0]);
-							linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k,h,s,v,w);
+							//fprintf(fp,"%f,%f,%f,%f,%f,%f\n",y[0],z[0],1-y[0]-z[0],v[0],w[0],1-v[0]-w[0]);
+							linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k,macrosaddle,coralsaddle,v,w);
 						}
 					}
 					dt=dt+0.0001;
-		//		}
+				}
+			}
 			}
 		free(x);
 		free(y);
