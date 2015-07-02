@@ -106,23 +106,24 @@ int main(int argc,char **argv)
 		double xi		 = -(d*gamma/(r+a)+a);						//Intermediate Step	
 		double cbar		 = (-xi-sqrt(xi*xi-4*chi*g))/(2*chi);		//Intermediate Step
 		double coralsaddle		 = 1-cbar;									//Saddle point value for coral
-		double macrosaddle		 = (r-r*zeta-d)/(r+a);						//Saddle point value for macroalgae
+		double macrosaddle		 = (r-r*coralsaddle-d)/(r+a);						//Saddle point value for macroalgae
 		double gZero	 = ((d*a*r+d*d)*(gamma-a))/(r*r);
 		double gOne		 = (gamma*(a+d))/(a+r);
-		double omega	 = sqrt((r*r*(g*g-gNil*gNil))/(d*d));
-		double tauZero	 = (1/omega)*acos(gNil/g);		
+		double omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
+		double tauZero	 = (1/omega)*acos(gZero/g);		
 
 		double dt,final;    // The time step and the final time.
 		int trials;         // The number of simulations to make.
 		
-		final=25;  // Set the final time.
+		final=100;  // Set the final time.
 		trials=1; // Set the number of trials to perform.
 		
 		// Set the smallest time step
 		dt=0.0001;
 		
 		// Set tau
-		double tau		 = 2*tauZero;
+		double tau		 = .5;
+		printf("tau is %f", tau);
 		
 		// Sets the seed for the random numbers
 		srand48(time(NULL));
@@ -140,6 +141,7 @@ int main(int argc,char **argv)
 		
 		// Create a CSV File
 		FILE*fp;
+                //String fileName = "trials-g" + std::toString(g) + "-tau" + std::toString(tau);
 		fp=fopen("trials.csv","w");
 		fprintf(fp,"dt,beta,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf\n");
 		//fprintf(fp,"macroalgae,coral,turf,lgmacroalgae,lgcoral,lgturf\n");
