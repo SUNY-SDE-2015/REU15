@@ -12,7 +12,6 @@
 %\logo{\includegraphics[height=.125in]{img/ugaLogo}}
 
 \input{latexDefinitions}
-
 %\usebackgroundtemplate{
 %\includegraphics[width=\paperwidth,
 %height=\paperheight]{blue.jpg}
@@ -30,15 +29,15 @@
 \setbeamercolor{upper separation line head}{bg=red}
 \setbeamercolor{headline}{bg=red}
 \setbeamertemplate{headline}
-{%
-\begin{beamercolorbox}{section in head/foot}
+{
 \insertsectionnavigationhorizontal{.75\textwidth}{}{}
 \hfill \insertpagenumber /\insertdocumentendpage
-\end{beamercolorbox}%
+\end{beamercolorbox}
 }
+%\begin{center}\begin{flushleft}\end{flushleft}\end{center}
 \setbeamercolor{section number projected}{bg=red,fg=black}
 \setbeamercolor{subsection number projected}{bg=red,fg=black}
-%\setbeamercolor{frametitle}{bg=lightgray,fg=black}
+\setbeamercolor{frametitle}{bg=lightgray,fg=black}
 
 
 \bibliographystyle{apalike}
