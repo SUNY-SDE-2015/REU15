@@ -1,0 +1,15 @@
+\documentclass{beamer}
+
+\usepackage{etoolbox}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{verbatim}
+\usepackage{tikz}
+\newcommand{\HAT}[1]{\expandafter\hat#1}
+
+\usetheme{Frankfurt}%
+\usecolortheme{beaver}
+\begin{document}
+\include{modeling}
+\include{conclusions}
+\end{document}
