@@ -37,7 +37,7 @@ $$\begin{cases}\begin{array}{rl}
 Delay Differential Equation Model:
 $$\begin{cases}\begin{array}{rl}
 \frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)}+\gamma M T\\
-\frac{dC}{dt}\hspace{-.8em}&=rTC(t-\tau) - dC - aMC\\
+\frac{dC}{dt}\hspace{-.8em}&=rTC - dC - aMC\\
 \end{array}\end{cases}.$$
 \end{frame}
 
@@ -46,7 +46,7 @@ $$\begin{cases}\begin{array}{rl}
 We implemented statistical noise in this model in order to account for the stochastic features of parrotfish grazing habit: 
 $$\begin{cases}\begin{array}{rl}
 \frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)}+\gamma M T+\beta M(1-M)dW\\
-\frac{dC}{dt}\hspace{-.8em}&=rTC(t-\tau) - dC - aMC\\
+\frac{dC}{dt}\hspace{-.8em}&=rTC - dC - aMC\\
 \end{array}\end{cases}.$$
 \end{frame}
 

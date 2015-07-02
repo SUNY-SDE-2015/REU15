@@ -2,7 +2,7 @@
 
 \begin{frame}
 \frametitle{Coral Reef Dynamics}
-\hspace{1.5em}Coral reefs serve as a complex aquatic ecosystem physically supported by calcium carbonate secretions of the colorful stone coral. To model this ecosystem, one approach taken by Li-Wang-Zhang-Hastings is to describe the relationships between macroalgae, algal turfs, and corals.
+\hspace{1.5em}Coral reefs serve as a complex aquatic ecosystem physically supported by calcium carbonate secretions of the colorful stone coral. To model this ecosystem, one approach taken by Li-Wang-Zhang-Hastings is to describe the relationships between macroalgae, algal turfs, and corals \cite{Hastings}.
 \end{frame}
 
 \begin{frame}
@@ -37,7 +37,7 @@ $$\begin{cases}\begin{array}{rl}
 Delay Differential Equation Model:
 $$\begin{cases}\begin{array}{rl}
 \frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)}+\gamma M T\\
-\frac{dC}{dt}\hspace{-.8em}&=rTC(t-\tau) - dC - aMC\\
+\frac{dC}{dt}\hspace{-.8em}&=rTC - dC - aMC\\
 \end{array}\end{cases}.$$
 \end{frame}
 
@@ -46,7 +46,7 @@ $$\begin{cases}\begin{array}{rl}
 We implemented statistical noise in this model in order to account for the stochastic features of parrotfish grazing habit: 
 $$\begin{cases}\begin{array}{rl}
 \frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)}+\gamma M T+\beta M(1-M)dW\\
-\frac{dC}{dt}\hspace{-.8em}&=rTC(t-\tau) - dC - aMC\\
+\frac{dC}{dt}\hspace{-.8em}&=rTC - dC - aMC\\
 \end{array}\end{cases}.$$
 \end{frame}
 
