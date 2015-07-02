@@ -73,7 +73,7 @@ double linear(long steps,
 		}
 
 		//printf("%f\t%f\t%f\t%f\t%f\n",dt,beta,tau,x[0],x[1]);
-		fprintf(fp,"%f,%f,%f,%i,%f,%f,%f,%f,%f,%f\n",dt,beta,tau,q+1,h,s,1-h-s,x[0],x[1],1-x[0]-x[1]);
+		fprintf(fp,"%f,%f,%f,%f,%i,%f,%f,%f,%f,%f,%f\n",dt,beta,g,tau,q+1,h,s,1-h-s,x[0],x[1],1-x[0]-x[1]);
 		return 0;
 	}
 
@@ -143,7 +143,7 @@ int main(int argc,char **argv)
 		FILE*fp;
                 //String fileName = "trials-g" + std::toString(g) + "-tau" + std::toString(tau);
 		fp=fopen("trials.csv","w");
-		fprintf(fp,"dt,beta,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf\n");
+		fprintf(fp,"dt,beta,g,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf\n");
 		//fprintf(fp,"macroalgae,coral,turf,lgmacroalgae,lgcoral,lgturf\n");
 		//printf("dt\t\tbeta\t\ttau\t\tMacroalgae\tCoral\n");
 		
