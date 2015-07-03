@@ -1,4 +1,6 @@
 
+\section{Modeling Coral Reef Dynamics}
+
 \begin{frame}
 \frametitle{Coral Reef}
 \begin{itemize}
@@ -8,7 +10,9 @@
 \end{frame}
 
 \begin{frame}
-\frametitle{Coral Reef Ecosystem} McClanahan identifies three major component:
+\frametitle{Coral Reef Ecosystem} 
+
+McClanahan identifies three major components:
 \begin{itemize}
 \item primary producers (coral and algae)\\
 \item herbivores (e.g. parrotfish)\\
@@ -22,12 +26,15 @@
 \end{frame}
 
 \begin{frame}\frametitle{Coral Reef Dynamics}
-The ordinary differential equation model:
+The deterministic ordinary differential equation model:
 $$\begin{cases}\begin{array}{rl}
-\frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM}{M+T} + \gamma M T\\
-\frac{dC}{dt}\hspace{-.8em}&=rTC - dC - aMC\\
-\frac{dT}{dt}\hspace{-.8em}&=\frac{gM}{M + T} - \gamma MT - rTC + dC
-\end{array}\end{cases},$$ where \begin{itemize}\itemsep0pt
+\frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM}{M+T} + \gamma M T, \\
+\frac{dC}{dt}\hspace{-.8em}&=rTC - dC - aMC, \\
+\frac{dT}{dt}\hspace{-.8em}&=\frac{gM}{M + T} - \gamma MT - rTC + dC, 
+\end{array}\end{cases}$$ 
+
+where 
+\begin{itemize}\itemsep0pt
 \item $r$ is the rate corals overgrow upon algal turfs\\
 \item $d$ is the mortality rate of corals\\
 \item $a$ is the rate that macroalgae overgrow upon corals\\
@@ -37,14 +44,24 @@ $$\begin{cases}\begin{array}{rl}
 \end{frame}
 
 \begin{frame}\frametitle{Coral Reef Dynamics}
-\hspace{1.57em}\begin{itemize}
-\item \frac{dT}{dt}=-\frac{dM}{dt}-\frac{dC}{dt}$ implies $M+C+T$ is constant, say $M+C+T=1$.
-\item This limits our scope to regions entirely covered by coral, macroalgae, and algal turf. \end{itemize}
-Thus we reduce our system to, $$\begin{cases}
+
+\hspace{1.57em}
+
+\begin{itemize}
+\item $\frac{dT}{dt}=-\frac{dM}{dt}-\frac{dC}{dt}$ implies $M+C+T$ is
+  constant.
+\item We assume that $M+C+T=1$.
+\item This limits our scope to regions entirely covered by coral,
+  macroalgae, and algal turf. 
+\end{itemize}
+
+Thus we reduce our system to, 
+$$\begin{cases}
 \begin{array}{rl}
-\frac{dM}{dt}&= aMC-\frac{gM}{1-C} + \gamma M - \gamma M^2 -\gamma M C\\
-\frac{dC}{dt}&=rC - rC^2 - rCM - dC - aMC
-\end{array} \end{cases}.$$
+\frac{dM}{dt}&= aMC-\frac{gM}{1-C} + \gamma M - \gamma M^2 -\gamma M C,\\
+\frac{dC}{dt}&=rC - rC^2 - rCM - dC - aMC.
+\end{array} 
+\end{cases}.$$
 \end{frame}
 
 \begin{frame}
@@ -58,10 +75,12 @@ We can identify time delays in the coral ecosystem:
 
 \begin{frame}\frametitle{Coral Reef Dynamics}
 Delay Differential Equation Model:
-$$\begin{cases}\begin{array}{rl}
-\frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)}+\gamma M T\\
-\frac{dC}{dt}\hspace{-.8em}&=rTC - dC - aMC\\
-\end{array}\end{cases}.$$
+$$\begin{cases}
+\begin{array}{rl}
+\frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)}+\gamma M T,\\
+\frac{dC}{dt}\hspace{-.8em}&=rTC - dC - aMC.\\
+\end{array}
+\end{cases}$$
 \end{frame}
 
 \begin{frame}
@@ -71,8 +90,15 @@ $$\begin{cases}\begin{array}{rl}
 \begin{frame}
 \frametitle{Stochastic Model}
 Let's add noise!
-$$\begin{cases}\begin{array}{rl}
-\frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)}+\gamma M T+\beta M(1-M)dW\\
-\frac{dC}{dt}\hspace{-.8em}&=rTC - dC - aMC\\
-\end{array}\end{cases}.$$
+$$\begin{cases}
+\begin{array}{rl}
+\frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)}+\gamma M T+\beta M(1-M)dW,\\
+\frac{dC}{dt}\hspace{-.8em}&=rTC - dC - aMC.\\
+\end{array}
+\end{cases}$$
 \end{frame}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "Presentation2"
+%%% End:
