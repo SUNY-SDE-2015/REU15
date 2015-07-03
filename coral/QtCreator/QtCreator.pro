@@ -15,4 +15,4 @@ CONFIG      -= app_bundle
 
 
 # Input
-SOURCES += CoralSimulationWithDelayAndNoise.ccp.cpp
+SOURCES += CoralSimulationWithDelayAndNoise.cpp

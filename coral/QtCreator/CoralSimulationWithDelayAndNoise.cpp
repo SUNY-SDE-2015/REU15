@@ -206,7 +206,7 @@ int main(int argc, char *argv[])
                             //fprintf(fp,"%f,%f,%f,%f,%f,%f\n",y[0],z[0],1-y[0]-z[0],v[0],w[0],1-v[0]-w[0]);
                             linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k,macroSaddle,coralSaddle,v,w);
 #ifdef SHOW_PROGRESS
-                            if(k%25 == 0)
+                            if(k%20 == 0)
                                 std::cout << "  Simulation number " << k << std::endl;
 #endif
                         }
