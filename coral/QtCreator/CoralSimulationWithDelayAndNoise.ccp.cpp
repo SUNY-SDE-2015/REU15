@@ -1,5 +1,6 @@
 #include <QCoreApplication>
 
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -178,6 +179,7 @@ int main(int argc, char *argv[])
                 while (dt<=0.0001)
                 {
                     //printf("%f\t%f\n",dt,fmod(tau,dt));
+                    std::cout << "dt = " << dt << std::endl;
                     if ((int)(10000*tau+.5)%(int)(dt*10000+.5)==0)
                     {
                         //index = tau/dt;
