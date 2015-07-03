@@ -10,6 +10,8 @@
 #define M_PI 3.14159265359
 #endif
 
+#define SHOW_PROGRESS
+
 double drand48()
 {
     return((double)(rand())/((double)RAND_MAX));
@@ -179,7 +181,9 @@ int main(int argc, char *argv[])
                 while (dt<=0.0001)
                 {
                     //printf("%f\t%f\n",dt,fmod(tau,dt));
+#ifdef SHOW_PROGRESS
                     std::cout << "dt = " << dt << std::endl;
+#endif
                     if ((int)(10000*tau+.5)%(int)(dt*10000+.5)==0)
                     {
                         //index = tau/dt;
@@ -201,6 +205,10 @@ int main(int argc, char *argv[])
                             }
                             //fprintf(fp,"%f,%f,%f,%f,%f,%f\n",y[0],z[0],1-y[0]-z[0],v[0],w[0],1-v[0]-w[0]);
                             linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k,macroSaddle,coralSaddle,v,w);
+#ifdef SHOW_PROGRESS
+                            if(k%25 == 0)
+                                std::cout << "  Simulation number " << k << std::endl;
+#endif
                         }
                     }
                     dt=dt+0.0001;
