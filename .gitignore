@@ -16,6 +16,7 @@
 *.pdf
 *~
 *.pro.user
+build-*-Desktop-Debug
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl
