@@ -73,7 +73,7 @@ double linear(long steps,
 		}
 
 		//printf("%f\t%f\t%f\t%f\t%f\n",dt,beta,tau,x[0],x[1]);
-		fprintf(fp,"%f,%f,%f,%f,%i,%f,%f,%f,%f,%f,%f\n",dt,beta,g,tau,q+1,h,s,1-h-s,x[0],x[1],1-x[0]-x[1]);
+		fprintf(fp,"%f,%f,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f\n",dt,beta,g,tau,q+1,h,s,1-h-s,x[0],x[1],1-x[0]-x[1],x[2],x[3],1-x[2]-x[3]);
 		return 0;
 	}
 
@@ -100,13 +100,13 @@ int main(int argc,char **argv)
 		double gamma	 = 0.8;
 		double r    	 = 1.0;
 		double d    	 = 0.44;
-		double tau		 = 0.5;
-		double beta 	 = 0.1;
+	//	double tau		 = 0.5;
+		double beta 	 = .5;
 		double chi		 = r*gamma/(r+a)-gamma+a;					//Intermediate Step
 		double xi		 = -(d*gamma/(r+a)+a);						//Intermediate Step	
 		double cbar		 = (-xi-sqrt(xi*xi-4*chi*g))/(2*chi);		//Intermediate Step
-		double coralsaddle		 = 1-cbar;									//Saddle point value for coral
-		double macrosaddle		 = (r-r*coralsaddle-d)/(r+a);						//Saddle point value for macroalgae
+		double coralSaddle		 = 1-cbar;									//Saddle point value for coral
+		double macroSaddle		 = (r-r*coralSaddle-d)/(r+a);						//Saddle point value for macroalgae
 		double gZero	 = ((d*a*r+d*d)*(gamma-a))/(r*r);
 		double gOne		 = (gamma*(a+d))/(a+r);
 		double omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
@@ -116,51 +116,53 @@ int main(int argc,char **argv)
 		int trials;         // The number of simulations to make.
 		
 		final=100;  // Set the final time.
-		trials=1; // Set the number of trials to perform.
+		trials=10000; // Set the number of trials to perform.
 		
 		// Set the smallest time step
 		dt=0.0001;
 		
 		// Set tau
-		double tau		 = .5;
-		printf("tau is %f", tau);
-		
+		double tau = 0.5;
+
 		// Sets the seed for the random numbers
 		srand48(time(NULL));
 		
-		// The number of cells needed for the delay (changes with dt)
-		int n;				
-		n=(int) round(tau/dt);
-		
-		// Allocate the space for the state of the system
-		x=(double *) calloc(4,sizeof(double));
-		y=(double *) calloc(n,sizeof(double));		//macroalgae for multiplicative noise
-		z=(double *) calloc(n,sizeof(double));		//coral for multiplicative noise
-		v=(double *) calloc(n,sizeof(double));		//macroalgae for logistic noise
-		w=(double *) calloc(n,sizeof(double));		//coral for logistic noise
+
 		
 		// Create a CSV File
 		FILE*fp;
                 //String fileName = "trials-g" + std::toString(g) + "-tau" + std::toString(tau);
 		fp=fopen("trials.csv","w");
-		fprintf(fp,"dt,beta,g,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf\n");
+		//fprintf(fp,"dt,beta,g,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf\n");
+		fprintf(fp,"dt,beta,g,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf,lgMacro,lgCoral,lgTurf\n");
 		//fprintf(fp,"macroalgae,coral,turf,lgmacroalgae,lgcoral,lgturf\n");
 		//printf("dt\t\tbeta\t\ttau\t\tMacroalgae\tCoral\n");
 		
 		
-		for (g=0.1;g<=0.8;g=g+0.2)
+/*		for (g=0.1;g<=0.8;g=g+0.02)
 			{
 				//Redefine initial conditions and critical points for varying g
 				cbar		 = (-xi-sqrt(xi*xi-4*chi*g))/(2*chi);
-				coralsaddle		 = 1-cbar;
-				macrosaddle		 = (r-r*zeta-d)/(r+a);		
-				omega	 = sqrt((r*r*(g*g-gNil*gNil))/(d*d));
-				tauZero	 = (1/omega)*acos(gNil/g);				
-				if (coralsaddle>0 && coralsaddle<1 && macrosaddle>0 && macrosaddle<1 && tauZero>0)
+				coralSaddle		 = 1-cbar;
+				macroSaddle		 = (r-r*coralSaddle-d)/(r+a);		
+				omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
+				tauZero	 = (1/omega)*acos(gZero/g);				
+				if (coralSaddle>0 && coralSaddle<1 && macroSaddle>0 && macroSaddle<1 && tauZero>0)
 			for (double aleph=0;aleph<=5;aleph=aleph+1)
 			{
-				tau=(1/3+1/3*aleph)*tauZero;
+
+				tau=.3*(1+aleph)*tauZero;
 				dt=0.0001;
+*/			// The number of cells needed for the delay (changes with dt)
+			int n;				
+			n=(int) round(tau/dt);
+			
+			// Allocate the space for the state of the system
+			x=(double *) calloc(4,sizeof(double));
+			y=(double *) calloc(n,sizeof(double));		//macroalgae for multiplicative noise
+			z=(double *) calloc(n,sizeof(double));		//coral for multiplicative noise
+			v=(double *) calloc(n,sizeof(double));		//macroalgae for logistic noise
+			w=(double *) calloc(n,sizeof(double));		//coral for logistic noise
 				while (dt<=0.0001)
 				{
 					//printf("%f\t%f\n",dt,fmod(tau,dt));
@@ -172,10 +174,10 @@ int main(int argc,char **argv)
 						steps=(long)(final/dt);
 						for (int k=0;k<trials;k++)
 						{
-							y[0]=macrosaddle; //initial Macroalgae level
-							z[0]=coralsaddle; //initial Coral level
-							v[0]=macrosaddle;
-							w[0]=coralsaddle;
+							y[0]=macroSaddle; //initial Macroalgae level
+							z[0]=coralSaddle; //initial Coral level
+							v[0]=macroSaddle;
+							w[0]=coralSaddle;
 							for (int l=1;l<n;l++) //fills in "negative" times for both y and z
 							{
 								y[l]=y[0];
@@ -184,18 +186,19 @@ int main(int argc,char **argv)
 								w[l]=w[0];
 							}
 							//fprintf(fp,"%f,%f,%f,%f,%f,%f\n",y[0],z[0],1-y[0]-z[0],v[0],w[0],1-v[0]-w[0]);
-							linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k,macrosaddle,coralsaddle,v,w);
+							linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k,macroSaddle,coralSaddle,v,w);
 						}
 					}
 					dt=dt+0.0001;
 				}
-			}
-			}
-		free(x);
-		free(y);
-		free(z);
-		free(v);
-		free(w);
+			free(x);
+			free(y);
+			free(z);
+			free(v);
+			free(w);
+			//}
+			//}
+
 		fclose(fp);
 	    return 0;
 	}
