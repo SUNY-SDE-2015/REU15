@@ -100,8 +100,8 @@ int main(int argc,char **argv)
 		double gamma = 0.8;
 		double r     = 1.0;
 		double d     = 0.44;
-		double tau	 = 0.5;
-		double beta  = 0.1;
+		double tau	 = 1.7;
+		double beta  = 0.2;
 
 		double dt,final;    // The time step and the final time.
 		int trials;         // The number of simulations to make.
@@ -134,8 +134,8 @@ int main(int argc,char **argv)
 		//printf("dt\t\tbeta\t\ttau\t\tMacroalgae\tCoral\n");
 		
 		
-		for (double h=0.24;h<=0.24;h=h+0.1)
-			for (double s=0.27;s<=0.27;s=s+0.1)
+		for (double h=0.397;h<=0.397;h=h+0.1)
+			for (double s=0.417;s<=0.417;s=s+0.1)
 			{
 				dt=0.0001;
 				while (dt<=0.0001)
