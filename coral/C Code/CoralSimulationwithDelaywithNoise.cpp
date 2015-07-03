@@ -101,7 +101,7 @@ int main(int argc,char **argv)
 		double r    	 = 1.0;
 		double d    	 = 0.44;
 	//	double tau		 = 0.5;
-		double beta 	 = .5;
+		double beta 	 = .1;
 		double chi		 = r*gamma/(r+a)-gamma+a;					//Intermediate Step
 		double xi		 = -(d*gamma/(r+a)+a);						//Intermediate Step	
 		double cbar		 = (-xi-sqrt(xi*xi-4*chi*g))/(2*chi);		//Intermediate Step

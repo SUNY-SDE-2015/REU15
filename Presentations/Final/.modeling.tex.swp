@@ -1,13 +1,18 @@
 
 
 \begin{frame}
-\frametitle{Coral Reef Dynamics}
-\hspace{1.5em}Coral reefs serve as a complex aquatic ecosystem physically supported by calcium carbonate secretions of the colorful stone coral. To model this ecosystem, one approach taken by Li-Wang-Zhang-Hastings is to describe the relationships between macroalgae, algal turfs, and corals \cite{Hastings}.
+\frametitle{Coral Reef}
+\hspace{1.57em}Coral reefs serve as a complex aquatic ecosystem physically supported by calcium carbonate secretions of the colorful stone coral. To model this ecosystem, one approach taken by Li-Wang-Zhang-Hastings is to describe the relationships between macroalgae, algal turfs, and corals \cite{Hastings}.
+\end{frame}
+
+\begin{frame}
+\frametitle{Coral Reef Ecosystem}
+\hspace{1.57em}
 \end{frame}
 
 \begin{frame}
 \frametitle{Coral Reef Dynamics}
-\includegraphics[scale=.35]{./coral-reef-triangle.png}
+\includegraphics[scale=.175]{./coral-reef-triangle.png}
 \end{frame}
 
 \begin{frame}\frametitle{Coral Reef Dynamics}
@@ -33,6 +38,11 @@ $$\begin{cases}\begin{array}{rl}
 \end{array} \end{cases}.$$ 
 \end{frame}
 
+\begin{frame}
+\frametitle{Time Delay in the Coral Ecosystem}
+
+\end{frame}
+
 \begin{frame}\frametitle{Coral Reef Dynamics}
 Delay Differential Equation Model:
 $$\begin{cases}\begin{array}{rl}
@@ -40,6 +50,8 @@ $$\begin{cases}\begin{array}{rl}
 \frac{dC}{dt}\hspace{-.8em}&=rTC - dC - aMC\\
 \end{array}\end{cases}.$$
 \end{frame}
+
+
 
 \begin{frame}
 \frametitle{Stochastic Model}
