@@ -64,6 +64,32 @@ $$\begin{cases}
 \end{cases}.$$
 \end{frame}
 
+
+\begin{comment}\frametitle{Equilibria and Stability}
+Equilibrium point
+
+\end{comment}
+
+\begin{frame}\frametitle{Equilibria and Stability}
+To find equilibrium points analytically we first set the derivatives equal to zero to obtain the nullclines:
+$$\begin{cases}
+\begin{array}{rl}
+0\hspace{-.8em}&=M(aC + \gamma-\gamma M-\gamma C) - \frac{gM}{1-C}\\
+0\hspace{-.8em}&=C(r-Mr-Cr - d - aM)\\
+\end{array}
+\end{cases}.$$
+\end{frame}
+
+\begin{frame}\frametitle{Equilibria and Stability}\begin{itemize}
+\item $M'=0$ is satisfied when $M=0$ or $aC + \gamma - \gamma M - \gamma C - \frac{gM}{1-C}=0$.
+\item $C'=0$ is satisfied when $C=0$ or $r-Mr-Cr-d-aM=0$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Phase Plane} Our equilibrium points are located at the intersections of the nullclines:
+\includegraphics[scale=.22]{./nullclines.png}
+\end{frame}
+
 \begin{frame}
 \frametitle{Time Delay in the Coral Ecosystem}
 We can identify time delays in the coral ecosystem:
@@ -78,15 +104,22 @@ We can identify time delays in the coral ecosystem:
 Delay Differential Equation Model:
 $$\begin{cases}
 \begin{array}{rl}
-\frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)} + \gamma M T\\
-\frac{dC}{dt}\hspace{-.8em}&=rTC - dC - aMC\\
+\frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)} + \gamma M (1-M-C)\\
+\frac{dC}{dt}\hspace{-.8em}&=rC(1-M-C) - dC - aMC\\
 \end{array}
 \end{cases}.$$
 \end{frame}
 
+
 \begin{frame}
 \frametitle{Equilibria and Stability}
+There are three equilibrium points of interest to us: \begin{itemize}
+\item $(0,0)$ (Unstable for all $\tau\geq0$)\\
+\item $(1-\frac{g}{\gamma},0)$\\
+\item $(0,1-\frac{d}{r})$.
+\end{itemize}
 \end{frame}
+
 
 \begin{frame}
 \frametitle{Stochastic Model}
