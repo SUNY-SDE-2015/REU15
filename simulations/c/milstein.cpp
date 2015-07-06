@@ -94,9 +94,10 @@ int main(void)
 	   
 		fprintf(fp,"dt,alpha,beta,xTrue,xEuler,xMilstein,ErrorEuler,ErrorMilstein\n");
 
-        for(dt= .001; dt <= .01; dt += .001)
+        
 	    	for(alpha=-2.0;alpha<=2.0;alpha+=0.5)
 			    for(beta=0.25;beta<=4.0;beta+=0.25)
+			    for(dt= .0001; dt <= .01; dt += .0001)
 			    	{
 			     		steps=(long)(1.0/dt);
 			     		printf("%f\t%f\t%f\n",alpha,beta,dt);  //optional line.
