@@ -36,9 +36,8 @@ double linear(long steps,
               int q,
               double h,double s,double *v,double *w)
     {
-        int m=0;
-        int p;
-        p=(m+n-1)%(n-1);
+        long m=n-1;
+        long p=0;
         double B[2];
         int calcRandom=0;
         for (long k=0;k<steps;k++)
@@ -50,19 +49,19 @@ double linear(long steps,
             //x[0]=x[0]+beta*y[m]*(1-y[m])+0.5*beta*y[m]*(1-y[m])*beta*(1-2*y[m])*(B[calcRandom]*B[calcRandom]-dt);
 
             //Computes the deterministic component for Macroalgae
-            x[0]=y[m]+(y[m]*(gamma-gamma*y[m]+(a-gamma)*z[m])-(g*y[p]/(1-z[p])))*dt;
+            x[0] = y[m]+(y[m]*(gamma-gamma*y[m]+(a-gamma)*z[m])-(g*y[p]/(1-z[p])))*dt;
 
             //Adds in the noise
             //x[0]=x[0]+beta*y[m]*B[calcRandom]+0.5*beta*y[m]*beta*(B[calcRandom]*B[calcRandom]-dt);
-            x[0]=x[0]+beta*y[m]*B[calcRandom]+0.5*beta*beta*y[m]*(B[calcRandom]*B[calcRandom]-dt);
+            x[0] += beta*y[m]*B[calcRandom]+0.5*beta*beta*y[m]*(B[calcRandom]*B[calcRandom]-dt);
 
             //Computes the deterministic component for Coral
-            x[1]=z[m]+(z[m]*(r-d-(a+r)*y[m]-r*z[m]))*dt;
+            x[1] = z[m]+(z[m]*(r-d-(a+r)*y[m]-r*z[m]))*dt;
 
 
-            x[2]=v[m]+(v[m]*(gamma-gamma*v[m]+(a-gamma)*w[m])-(g*v[p]/(1-w[p])))*dt;
-            x[2]=x[2]+beta*v[m]*(1-v[m])*B[calcRandom]+0.5*beta*(1-2*v[m])*beta*v[m]*(1-v[m])*(B[calcRandom]*B[calcRandom]-dt);
-            x[3]=w[m]+(w[m]*(r-d-(a+r)*v[m]-r*w[m]))*dt;
+            x[2] =  v[m]+(v[m]*(gamma-gamma*v[m]+(a-gamma)*w[m])-(g*v[p]/(1-w[p])))*dt;
+            x[2] += beta*v[m]*(1-v[m])*B[calcRandom]+0.5*beta*(1-2*v[m])*beta*v[m]*(1-v[m])*(B[calcRandom]*B[calcRandom]-dt);
+            x[3] =  w[m]+(w[m]*(r-d-(a+r)*v[m]-r*w[m]))*dt;
 
             /****************************************************************
                 Account for extinction and overgrowing!!
@@ -76,8 +75,8 @@ double linear(long steps,
                 }
 
             //Updates delay and cell index
-            m=(m+1)%(n-1);
-            p=(m+1)%(n-1);
+            m=(m+1)%n;
+            p=(p+1)%n;
             y[m]=x[0];
             z[m]=x[1];
             v[m]=x[2];
@@ -168,7 +167,8 @@ int main(int argc, char *argv[])
 
                 tau=.3*(1+aleph)*tauZero;
                 dt=0.0001;
-*/			// The number of cells needed for the delay (changes with dt)
+*/
+            // The number of cells needed for the delay (changes with dt)
             int n;
             n=(int)abs(tau/dt+0.5);
 
