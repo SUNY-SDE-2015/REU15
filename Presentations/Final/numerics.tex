@@ -1,19 +1,13 @@
-\documentclass[10pt,a4paper]{beamer}
-\usepackage[latin5]{inputenc}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{graphicx}
-\author{Claudia Lucía Guerrero González}
-\begin{document}
 
+\section{Numerical Methods}
 
-\begin{frame}{It\^{o}'s Formulas}
-  \begin{itemize}
-   \item First version: $$f(B(b))-f(B(a))=\int_{a}^{b}{\frac{\partial f}{\partial B} dB}+\int_{a}^{b}{\frac{1}{2} \frac{\partial^2 f}{\partial B^2} dt} $$\\
-    \item Second version: $$f(b,B(b))-f(a,B(a))=\int_{a}^{b}{\frac{\partial f}{\partial B} dB}+\int_{a}^{b}{(\frac{\partial f}{\partial s}+\frac{1}{2}\frac{\partial ^2 f}{\partial B^2}) ds}$$\\
-  \item  Third version: The Stochastic Chain Rule $$d\theta=\frac{\partial\theta}{\partial t}dt+\frac{\partial\theta}{\partial x}f dB+\frac{\partial\theta}{\partial x}g dt+\frac{1}{2}\frac{\partial^2\theta}{\partial x^2}f^2dt$$
-  \end{itemize}
+%\begin{frame}{It\^{o}'s Formulas}
+\begin{frame}{Ito's Formulas}
+  	\begin{itemize}
+   		\item First version: $$f(B(b))-f(B(a))=\int_{a}^{b}{\frac{\partial f}{\partial B} 				dB}+\int_{a}^{b}{\frac{1}{2} \frac{\partial^2 f}{\partial B^2} dt} $$\\
+    		\item Second version: $$f(b,B(b))-f(a,B(a))=\int_{a}^{b}{\frac{\partial f}{\partial B} 			dB}+\int_{a}^{b}{(\frac{\partial f}{\partial s}+\frac{1}{2}\frac{\partial ^2 f}{\partial 		B^2}) ds}$$\\
+  		\item  Third version: The Stochastic Chain Rule $$d\theta=\frac{\partial\theta}{\partial 		t}dt+\frac{\partial\theta}{\partial x}f dB+\frac{\partial\theta}{\partial x}g 					dt+\frac{1}{2}\frac{\partial^2\theta}{\partial x^2}f^2dt$$
+  	\end{itemize}
 \end{frame}
 
 \begin{frame}{Numerical methods}
@@ -21,47 +15,79 @@ Integral form of a SDE:
 $$X(t)=X_0+\int_{0}^{t}f(X(s))ds+\int_{0}^{t}g(X(s))dW(s)$$
 
 X(t) is a random variable for each value of t. To apply numerical methods:
-\begin{itemize}
-\item Discretized time steps
-\item X(t) will be the limit as our stepsize goes to cero.
-\end{itemize}
+	\begin{itemize}
+		\item Discretized time steps	
+		\item X(t) will be the limit as our stepsize goes to cero.
+	\end{itemize}
 \end{frame}
 
 \begin{frame}{Euler-Maruyama method}
 Let $X_j=X(\tau_j)$ and $\tau_j=j\Delta t$. In the in the interval [0,L] we have:\\
 $$X_j=X_{j-1}+f(X_{j-1})\Delta t+g(X_{j-1})(W(\tau_j)-W(\tau_{j-1}))$$
-
 An approximation for:
 $$X(\tau_j)=X(\tau_{j-1})+\int_{\tau_{j-1}}^{\tau_{j}}f(X(s))ds+\int_
 {\tau_{j-1}}^{\tau_{j}}X(s))dW(s)$$
 We have Euler's method in the deterministic case ($g\equiv 0$)
-
 \end{frame}
 
 \begin{frame}
-The Euler-Maruyama method has strong order of convergence of \bigskip $\gamma=\frac{1}{2}$.
 We say that a method has strong order of convergence equal to $\gamma$ if there exists a constant C such that:
 $$E|X_n-X(\tau)|\leq C \Delta t^\gamma$$
 for any fixed $\tau=n \Delta t \in [0,T]$ and $\Delta t$ sufficiently small.
+\bigskip
+The Euler-Maruyama method has strong order of convergence of $\gamma=\frac{1}{2}$.
 \end{frame}
 
 \begin{frame}{Milstein's method}
 To raise the strong order of convergence we apply the stochastic chain rule and truncate the expansion at an appropriate point. 	
-
-\begin{equation*}
-\begin{split}
-X_{j} & =X_{j-1}+\Delta t f(X_{j-1})+g(X_{j-1})(W(\tau_j)-W(\tau_{j-1}))\\
+	\begin{equation*}
+	\begin{split}
+	X_{j} & =X_{j-1}+\Delta t f(X_{j-1})+g(X_{j-1})(W(\tau_j)-W(\tau_{j-1}))\\
 	  &\quad +\frac{1}{2}g(X_{j-1})g'(X_{j-1})((W(\tau_j)-W(\tau_{j-1}))^2-\Delta t)
-\end{split}
-\end{equation*}
+	\end{split}
+	\end{equation*}
+\end{frame}
 
+\begin{frame}
+	\begin{center}
+	\includegraphics[scale=0.55]{alfam15_beta05.png} 
+	\end{center}
 \end{frame}
 
 \begin{frame}
 For systems of equations:
+	\begin{eqnarray*}
+		dx&=&f_1(x,y)dt+g_1(x,y)dW\\
+		dy&=&f_2(x,y)dt+g_2(x,y)dW\\
+	\end{eqnarray*}
+
+	\begin{eqnarray*}
+		x_t=x_a+\int_{a}^{t}f_1 ds+\int_{a}^{t}g_1dW_1\\
+		y_t=y_a+\int_{a}^{t}f_2 ds+\int_{a}^{t}g_2dW_2\\
+	\end{eqnarray*}	
+\end{frame}
+
+\begin{frame}
+If we apply the chain rule for $f_1$:
+	\begin{equation*}
+	\begin{split}
+	f_1(t) &=f_1(a)+f_{1x}(a)(x-x_a)+f_{1y}(a)(y-y_a)+\frac{1}{2} f_{1xx}(a)(x-x_a)^2\\
+		   &\quad +f_{1xy}(a)(x-x_a)(y-y_a)+\frac{1}{2}f_{1yy}(a)(y-y_a)^2
+	\end{split}
+	\end{equation*}
+From the integral form:
+	\begin{equation*}
+	x-x_a=\int_{a}^{t}f_1 ds+\int_{a}^{t}g_1dW_1
+	\end{equation*}
+
+\end{frame}
+
+\begin{frame}
+Similarly for $g_1$ and ignoring the high order terms,we end up with:
+\begin{equation*}
+x(t)=x(a)+f_1(a)(t-a)+g_1(a)(W_1(t)-W_1(a))+g_{1x}(a)\int_{a}^{t} \int_{a}^{s}g_1dW_1dW_1+g_{iy}(a)\int_{a}^{t}\int_{a}^{t} g_2dW_2dW_1
+\end{equation*}
 
 \end{frame}
 
 
-
-\end{document}
