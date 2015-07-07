@@ -14,7 +14,7 @@
 #endif
 
 #define SHOW_PROGRESS
-#define SHOW_INTERMEDIATE
+//#define SHOW_INTERMEDIATE
 #define BASE_DT 0.0001
 
 double drand48()
