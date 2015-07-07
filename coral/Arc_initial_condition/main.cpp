@@ -90,6 +90,95 @@ double linear(long steps,
         return 0;
     }
 
+void Trials(double a,double gamma,double r,double d,double g,double dt,double macroSaddle, double coralSaddle,
+            double beta,double tau,double final,int trials,long steps, bool arc){
+
+    double *v,*w,*x,*y,*z;
+    FILE*fp;
+    if (arc==false){
+        fp=fopen("trials.csv","w");
+        fprintf(fp,"dt,beta,g,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf,lgMacro,lgCoral,lgTurf\n");
+    }
+    if (arc==true)
+    fp=fopen("arc.csv","w");
+
+
+    int n;
+    n=(int)abs(tau/dt+0.5);
+
+    x=(double *) calloc(4,sizeof(double));
+    y=(double *) calloc(n,sizeof(double));		//macroalgae for multiplicative noise
+    z=(double *) calloc(n,sizeof(double));		//coral for multiplicative noise
+    v=(double *) calloc(n,sizeof(double));		//macroalgae for logistic noise
+    w=(double *) calloc(n,sizeof(double));		//coral for logistic noise
+        while (dt<=0.0001)
+        {
+            //printf("%f\t%f\n",dt,fmod(tau,dt));
+#ifdef SHOW_PROGRESS
+            std::cout << "dt = " << dt << std::endl;
+#endif
+            if ((int)(10000*tau+.5)%(int)(dt*10000+.5)==0)
+            {
+                //index = tau/dt;
+                n=(int)(tau/dt+.5);
+                //printf("%i\n",n);
+                steps=(long)(final/dt);
+                for (int k=0;k<trials;k++)
+                {
+                    y[0]=macroSaddle; //initial Macroalgae level
+                    z[0]=coralSaddle; //initial Coral level
+                    v[0]=macroSaddle;
+                    w[0]=coralSaddle;
+                    for (int l=1;l<n;l++) //fills in "negative" times for both y and z
+                    {
+                        y[l]=y[0];
+                        z[l]=z[0];
+                        v[l]=v[0];
+                        w[l]=w[0];
+                    }
+                    //fprintf(fp,"%f,%f,%f,%f,%f,%f\n",y[0],z[0],1-y[0]-z[0],v[0],w[0],1-v[0]-w[0]);
+                    linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k,macroSaddle,coralSaddle,v,w);
+#ifdef SHOW_PROGRESS
+                    if(k%20 == 0)
+                        std::cout << "  Simulation number " << k << std::endl;
+#endif
+                }
+            }
+            dt=dt+0.0001;
+        }
+    free(x);
+    free(y);
+    free(z);
+    free(v);
+    free(w);
+    //}
+    //}
+
+fclose(fp);
+
+
+}
+
+void Arc(double a,double gamma,double r,double d,double g,double dt,double beta,double tau,
+         double final,int trials,long steps, double radius, int number_points){
+
+    int n=0;
+    double angle,x,y;
+    FILE*fp;
+        fp=fopen("arc.csv","w");
+        fprintf(fp,"dt,beta,g,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf,lgMacro,lgCoral,lgTurf\n");
+        fclose(fp);
+    while(n<number_points){
+        angle=2.0*M_PI*drand48();
+        x=fabs(radius*cos(angle));
+        y=fabs(radius*sin(angle));
+        std::cout << "Point number " << n << std::endl;
+        Trials(a,gamma,r,d,g,dt,x,y,beta,tau,final,trials,steps,true);
+        n++;
+    }
+
+
+}
 
 /* ****************************************************************
      main
@@ -99,10 +188,6 @@ double linear(long steps,
 int main(int argc, char *argv[])
 {
     QCoreApplication b(argc, argv);
-
-        long steps;    // The number of steps to take in a single simulation.
-        double *v,*w,*x,*y,*z;  // The variables used for the state of the system.
-
         /*
             Define the constants.
 
@@ -114,114 +199,41 @@ int main(int argc, char *argv[])
         double gamma	 = 0.8;
         double r    	 = 1.0;
         double d    	 = 0.44;
-    //	double tau		 = 0.5;
         double beta 	 = .5;
         double chi		 = r*gamma/(r+a)-gamma+a;					//Intermediate Step
         double xi		 = -(d*gamma/(r+a)+a);						//Intermediate Step
         double cbar		 = (-xi-sqrt(xi*xi-4*chi*g))/(2*chi);		//Intermediate Step
         double coralSaddle		 = 1-cbar;									//Saddle point value for coral
         double macroSaddle		 = (r-r*coralSaddle-d)/(r+a);						//Saddle point value for macroalgae
-        double gZero	 = ((d*a*r+d*d)*(gamma-a))/(r*r);
-        double gOne		 = (gamma*(a+d))/(a+r);
-        double omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
-        double tauZero	 = (1/omega)*acos(gZero/g);
+        //double gZero	 = ((d*a*r+d*d)*(gamma-a))/(r*r);
+        //double gOne		 = (gamma*(a+d))/(a+r);
+        //double omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
+        //double tauZero	 = (1/omega)*acos(gZero/g);
 
-        double dt,final;    // The time step and the final time.
-        int trials;         // The number of simulations to make.
-
-        final=100;  // Set the final time.
-        trials=10000; // Set the number of trials to perform.
+        double final=10;    // The time step and the final time.
+        int trials=100;         // The number of simulations to make.
 
         // Set the smallest time step
-        dt=0.0001;
+        double dt=0.0001;
 
         // Set tau
         double tau = 0.5;
+
+        // The number of steps to take in a single simulation.
+        long steps=final/dt;
 
         // Sets the seed for the random numbers
         srand(time(NULL));
 
 
+        //Trials(a,gamma,r,d,g,dt,macroSaddle,coralSaddle,beta,tau,final,trials,steps,false);
 
-        // Create a CSV File
-        FILE*fp;
-                //String fileName = "trials-g" + std::toString(g) + "-tau" + std::toString(tau);
-        fp=fopen("trials.csv","w");
-        //fprintf(fp,"dt,beta,g,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf\n");
-        fprintf(fp,"dt,beta,g,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf,lgMacro,lgCoral,lgTurf\n");
-        //fprintf(fp,"macroalgae,coral,turf,lgmacroalgae,lgcoral,lgturf\n");
-        //printf("dt\t\tbeta\t\ttau\t\tMacroalgae\tCoral\n");
+        //The equilibrium points
+        double macroalgae=0.1*(1-g/gamma);
+        double coral=0.1*(1-d/r);
+        double radius=sqrt(pow(macroalgae,2)+pow(coral,2));
+        int number_points=1000;
 
-
-/*		for (g=0.1;g<=0.8;g=g+0.02)
-            {
-                //Redefine initial conditions and critical points for varying g
-                cbar		 = (-xi-sqrt(xi*xi-4*chi*g))/(2*chi);
-                coralSaddle		 = 1-cbar;
-                macroSaddle		 = (r-r*coralSaddle-d)/(r+a);
-                omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
-                tauZero	 = (1/omega)*acos(gZero/g);
-                if (coralSaddle>0 && coralSaddle<1 && macroSaddle>0 && macroSaddle<1 && tauZero>0)
-            for (double aleph=0;aleph<=5;aleph=aleph+1)
-            {
-
-                tau=.3*(1+aleph)*tauZero;
-                dt=0.0001;
-*/
-            // The number of cells needed for the delay (changes with dt)
-            int n;
-            n=(int)abs(tau/dt+0.5);
-
-            // Allocate the space for the state of the system
-            x=(double *) calloc(4,sizeof(double));
-            y=(double *) calloc(n,sizeof(double));		//macroalgae for multiplicative noise
-            z=(double *) calloc(n,sizeof(double));		//coral for multiplicative noise
-            v=(double *) calloc(n,sizeof(double));		//macroalgae for logistic noise
-            w=(double *) calloc(n,sizeof(double));		//coral for logistic noise
-                while (dt<=0.0001)
-                {
-                    //printf("%f\t%f\n",dt,fmod(tau,dt));
-#ifdef SHOW_PROGRESS
-                    std::cout << "dt = " << dt << std::endl;
-#endif
-                    if ((int)(10000*tau+.5)%(int)(dt*10000+.5)==0)
-                    {
-                        //index = tau/dt;
-                        n=(int)(tau/dt+.5);
-                        //printf("%i\n",n);
-                        steps=(long)(final/dt);
-                        for (int k=0;k<trials;k++)
-                        {
-                            y[0]=macroSaddle; //initial Macroalgae level
-                            z[0]=coralSaddle; //initial Coral level
-                            v[0]=macroSaddle;
-                            w[0]=coralSaddle;
-                            for (int l=1;l<n;l++) //fills in "negative" times for both y and z
-                            {
-                                y[l]=y[0];
-                                z[l]=z[0];
-                                v[l]=v[0];
-                                w[l]=w[0];
-                            }
-                            //fprintf(fp,"%f,%f,%f,%f,%f,%f\n",y[0],z[0],1-y[0]-z[0],v[0],w[0],1-v[0]-w[0]);
-                            linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k,macroSaddle,coralSaddle,v,w);
-#ifdef SHOW_PROGRESS
-                            if(k%20 == 0)
-                                std::cout << "  Simulation number " << k << std::endl;
-#endif
-                        }
-                    }
-                    dt=dt+0.0001;
-                }
-            free(x);
-            free(y);
-            free(z);
-            free(v);
-            free(w);
-            //}
-            //}
-
-        fclose(fp);
-
+        Arc(a,gamma,r,d,g,dt,beta,tau,20,1,steps,radius,number_points);
         return b.exec();
 }
