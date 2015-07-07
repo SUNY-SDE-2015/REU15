@@ -1,6 +1,6 @@
 approximation<-read.csv("eulermaruyama_milstein.csv")
-alfa<--1.5;
-beta<-4;
+alfa<-2;
+beta<-0.5;
 
 euler_maruyama <-approximation$ErrorEuler[
                      (approximation$alpha==alfa) & (approximation$beta==beta)]

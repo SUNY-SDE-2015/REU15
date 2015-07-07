@@ -22,24 +22,26 @@ X(t) is a random variable for each value of t. To apply numerical methods:
 \end{frame}
 
 \begin{frame}{Euler-Maruyama method}
-Let $X_j=X(\tau_j)$ and $\tau_j=j\Delta t$. In the in the interval [0,L] we have:\\
+Let $X_j=X(\tau_j)$ and $\tau_j=j\Delta t$. In the in the interval [0,L] we have:\bigskip\\
 $$X_j=X_{j-1}+f(X_{j-1})\Delta t+g(X_{j-1})(W(\tau_j)-W(\tau_{j-1}))$$
-An approximation for:
+ An approximation for:
 $$X(\tau_j)=X(\tau_{j-1})+\int_{\tau_{j-1}}^{\tau_{j}}f(X(s))ds+\int_
 {\tau_{j-1}}^{\tau_{j}}X(s))dW(s)$$
-We have Euler's method in the deterministic case ($g\equiv 0$)
+%We have Euler's method in the deterministic case ($g\equiv 0$)
 \end{frame}
 
 \begin{frame}
-We say that a method has strong order of convergence equal to $\gamma$ if there exists a constant C such that:
+\begin{block}{Convergence}
+We say that a method has \textbf{strong order of convergence} equal to $\gamma$ if there exists a constant C such that:
 $$E|X_n-X(\tau)|\leq C \Delta t^\gamma$$
 for any fixed $\tau=n \Delta t \in [0,T]$ and $\Delta t$ sufficiently small.
+\end{block}
 \bigskip
-The Euler-Maruyama method has strong order of convergence of $\gamma=\frac{1}{2}$.
+The EM method has strong order of convergence of $\gamma=\frac{1}{2}$.
 \end{frame}
 
 \begin{frame}{Milstein's method}
-To raise the strong order of convergence we apply the stochastic chain rule and truncate the expansion at an appropriate point. 	
+To raise the strong order of convergence:	
 	\begin{equation*}
 	\begin{split}
 	X_{j} & =X_{j-1}+\Delta t f(X_{j-1})+g(X_{j-1})(W(\tau_j)-W(\tau_{j-1}))\\
@@ -60,7 +62,7 @@ For systems of equations:
 		dx&=&f_1(x,y)dt+g_1(x,y)dW\\
 		dy&=&f_2(x,y)dt+g_2(x,y)dW\\
 	\end{eqnarray*}
-
+In their integral form:
 	\begin{eqnarray*}
 		x_t=x_a+\int_{a}^{t}f_1 ds+\int_{a}^{t}g_1dW_1\\
 		y_t=y_a+\int_{a}^{t}f_2 ds+\int_{a}^{t}g_2dW_2\\
@@ -83,11 +85,32 @@ From the integral form:
 \end{frame}
 
 \begin{frame}
-Similarly for $g_1$ and ignoring the high order terms,we end up with:
-\begin{equation*}
-x(t)=x(a)+f_1(a)(t-a)+g_1(a)(W_1(t)-W_1(a))+g_{1x}(a)\int_{a}^{t} \int_{a}^{s}g_1dW_1dW_1+g_{iy}(a)\int_{a}^{t}\int_{a}^{t} g_2dW_2dW_1
-\end{equation*}
+Similarly for $g_1$ and ignoring the high order terms:
+	\begin{equation*}
+	\begin{split}
+	x(t)&=x(a)+f_1(a)(t-a)+g_1(a)(W_1(t)-W_1(a))+\\
+	&\quad g_{1x}(a)\int_{a}^{t}\int_{a}^{s}g_1dW_1dW_1 +g_{1y}(a)\int_{a}^{t}\int_{a}^{t} 		    g_2dW_2dW_1\\
+	\end{split}
+	\end{equation*}
+Applying the chain rule again:
+	\begin{equation*}
+	\begin{split}
+	x(t)&=x(a)+f_1(a)(t-a)+g_1(a)(W_1(t)-W_1(a))\\
+	&\quad +\frac{1}{2}g_{1x}(a)g_{1}(a)((W_1(a)-W_1(t))^2-(t-a))\\
+	&\quad +g_{1y}(a)g_2(a)(W_1(t)-W_1(a))(W_2(t)-W_2(a))\\
+	\end{split}
+	\end{equation*}
+\end{frame}
 
+\begin{frame}
+Similarly:
+\begin{equation*}
+	\begin{split}
+	y(t)&=y(a)+f_2(a)(t-a)+g_2(a)(W_2(t)-W_2(a))\\
+	&\quad +\frac{1}{2}g_{2x}(a)g_{1}(a)(W_1(t)-W_1(a))(W_2(t)-W_2(a))\\
+	&\quad +g_{2y}(a)g_2(a)((W_2(a)-W_2(t))^2-(t-a))\\
+	\end{split}
+	\end{equation*}
 \end{frame}
 
 
