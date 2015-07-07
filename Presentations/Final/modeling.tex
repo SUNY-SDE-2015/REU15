@@ -43,7 +43,7 @@ McClanahan identifies three major components:
 
 \begin{frame}
 \frametitle{Reef Food Web}
-\includegraphics[scale=.8]{./CoralfoodWeb}
+\includegraphics[scale=.8]{./CoralFoodWeb}
 \end{frame}
 
 \begin{frame}
@@ -182,7 +182,7 @@ We linearize our delay model:{\small $\begin{bmatrix} M'\\C'\end{bmatrix}=J_1\be
 Consider the Jacobians evaluated at the origin:$$J_1=\begin{bmatrix}
 \gamma & 0\\
 0 & r-d
-\end{bmatrix}, \text{ and}$$ $$\begin{bmatrix}
+\end{bmatrix}, \text{ and}$$ $$J_2=\begin{bmatrix}
 -g & 0\\
 0 & 0
 \end{bmatrix}.$$ 
@@ -204,7 +204,7 @@ Hence, \begin{itemize}{\itemsep .5in}\item $\lambda = r-d>0$ is an eigenvalue wi
 Now we consider postive $\tau$.
 \begin{itemize}
 \item Let $\lambda \tau=(\alpha+i\omega)\tau$.
-\item Apply Euler's Formula: $g-e^{-\lambda\tau}=g-\cos(\lambda\tau)-i\sin(\lambda\tau)$.
+\item Apply Euler's Formula: $\gamma-g(e^{-\lambda\tau})=\gamma-g(\cos(\lambda\tau)-i\sin(\lambda\tau))$.
 \end{itemize}
 \end{frame}
 
