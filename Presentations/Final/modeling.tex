@@ -140,10 +140,13 @@ We linearize our delay model:{\small $\begin{bmatrix} M'\\C'\end{bmatrix}=J_1\be
 \end{bmatrix}=\begin{bmatrix} \frac{-g}{1-C(t-\tau)} & \frac{-gM(t-\tau)}{(1-C(t-\tau))^2}\\ 0 & 0\end{bmatrix}.$$}
 \end{frame}
 
+\begin{comment}
+
 \begin{frame}\frametitle{Putting Jacobians to Use}
 { Suppose $\begin{bmatrix} x\\y\end{bmatrix}=\overrightarrow{v_1}e^{\lambda t}$.}\\\vspace{2em} 
 { Differentiating, setting equal to 1, and doing algebra stuff, we get $(J_1+J_2e^{-\lambda t} -\lambda I)\overrightarrow{v_1}=0$.} 
 \end{frame}
+\end{comment}
 
 \begin{frame}\frametitle{Putting Jacobians to Use}
 Consider the Jacobians evaluated at the origin:$$J_1=\begin{bmatrix}
@@ -155,13 +158,24 @@ Consider the Jacobians evaluated at the origin:$$J_1=\begin{bmatrix}
 \end{bmatrix}.$$ 
 \end{frame}
 
-\begin{frame}\frametitle{Putting Jacobians to Use}
-Recall, $(J_1+J_2e^{-\lambda t} -\lambda I)\overrightarrow{v_1}=0$. \\\vspace{2em}
-Taking determinants, we find the characteristic polynomial of $(J_1+J_2e^{-\lambda t} -\lambda I)$ evaluated at $M=0$, $C=0$ to be $(\lambda - r + d)(\lambda -\gamma + ge^{-\lambda\tau})=0$.
+
+\begin{frame}[c]\frametitle{Putting Jacobians to Use}
+%Recall, $(J_1+J_2e^{-\lambda t} -\lambda I)\overrightarrow{v_1}=0$. \\\vspace{2em} Taking determinants, we find the characteristic polynomial of $(J_1+J_2e^{-\lambda t} -\lambda I)$ evaluated at $M=0$, $C=0$ to be 
+The characteristic polynomial of $(J_1+J_2e^{-\lambda t} -\lambda I)$ is $(\lambda - r + d)(\lambda -\gamma + ge^{-\lambda\tau})=0$. 
 \end{frame}
 
-\begin{frame}
-Hence, $\lambda = r-d>0$ is an eigenvalue with positive real part, implying $(0,0)$ is an unstable equilibrium.
+\begin{frame}\frametitle{Get Them Eigenvalues}
+Hence, \begin{itemize}{\itemsep .5in}\item $\lambda = r-d>0$ is an eigenvalue with positive real part\item Other eigenvalues satisfy $\lambda=\gamma-ge^{-\lambda\tau}$. \item For $\tau=0$, $r-d$ and $\gamma - g$ are our eigenvalues. Since both are positive, our nondelay system is unstable at $(0,0)$. \end{itemize}
+
+%, implying $(0,0)$ is an unstable equilibrium.
+\end{frame}
+
+\begin{frame}\frametitle{Get Them Eigenvalues}
+Now we consider postive $\tau$.
+\begin{itemize}
+\item Let $\lambda \tau=(\alpha+i\omega)\tau$.
+\item Apply Euler's Formula: $g-e^{-\lambda\tau}=g-\cos(\lambda\tau)-i\sin(\lambda\tau)$.
+\end{itemize}
 \end{frame}
 
 \begin{frame}
