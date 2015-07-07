@@ -42,8 +42,6 @@ void linear(long steps,
               double h,double s,double *v,double *w)
     {
 
-    qDebug() << errno;
-
         long m=n-1;
         long p=0;
         double B[2];
