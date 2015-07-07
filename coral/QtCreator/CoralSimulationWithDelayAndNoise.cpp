@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
         int trials;         // The number of simulations to make.
 
         final=100;  // Set the final time.
-        trials=10000; // Set the number of trials to perform.
+        trials=400; // Set the number of trials to perform.
 
         // Set the smallest time step
         dt=0.0001;
@@ -190,12 +190,14 @@ int main(int argc, char *argv[])
                         n=(int)(tau/dt+.5);
                         //printf("%i\n",n);
                         steps=(long)(final/dt);
+                        for (theta=0;theta<=M_PI/2;theta+=(M_PI/2)/20)
+                        {
                         for (int k=0;k<trials;k++)
                         {
-                            y[0]=macroSaddle; //initial Macroalgae level
-                            z[0]=coralSaddle; //initial Coral level
-                            v[0]=macroSaddle;
-                            w[0]=coralSaddle;
+                            y[0]=0.06*cos(theta); //initial Macroalgae level
+                            z[0]=0.06*sin(theta); //initial Coral level
+                            v[0]=0.06*cos(theta);
+                            w[0]=0.06*sin(theta);
                             for (int l=1;l<n;l++) //fills in "negative" times for both y and z
                             {
                                 y[l]=y[0];
@@ -209,6 +211,7 @@ int main(int argc, char *argv[])
                             if(k%20 == 0)
                                 std::cout << "  Simulation number " << k << std::endl;
 #endif
+                        }
                         }
                     }
                     dt=dt+0.0001;
