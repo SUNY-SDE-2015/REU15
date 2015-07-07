@@ -100,7 +100,7 @@ void Trials(double a,double gamma,double r,double d,double g,double dt,double ma
         fprintf(fp,"dt,beta,g,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf,lgMacro,lgCoral,lgTurf\n");
     }
     if (arc==true)
-    fp=fopen("arc.csv","w");
+    fp=fopen("arc.csv","a+");
 
 
     int n;
@@ -234,6 +234,9 @@ int main(int argc, char *argv[])
         double radius=sqrt(pow(macroalgae,2)+pow(coral,2));
         int number_points=1000;
 
-        Arc(a,gamma,r,d,g,dt,beta,tau,20,1,steps,radius,number_points);
+        final=100;
+        trials=1;
+        Arc(a,gamma,r,d,g,dt,beta,tau,final,trials,steps,radius,number_points);
+        std::cout << " Done ";
         return b.exec();
 }
