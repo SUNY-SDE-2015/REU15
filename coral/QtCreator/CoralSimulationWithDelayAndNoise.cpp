@@ -6,13 +6,15 @@
 //#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <math.h>
+#include <cerrno>
+#include <cmath>
 
 #ifndef M_PI
 #define M_PI 3.14159265359
 #endif
 
 #define SHOW_PROGRESS
+#define SHOW_INTERMEDIATE
 #define BASE_DT 0.0001
 
 double drand48()
@@ -30,7 +32,7 @@ void normalDistRand(double stdDev,double* randomNumbers)
         randomNumbers[1] = stdDev*radius*cos(angle);
     }
 
-double linear(long steps,
+void linear(long steps,
               double a,double gamma,double r,double d,double g,
               double *x,double *y,double *z, double dt,
               int n,
@@ -39,6 +41,9 @@ double linear(long steps,
               int q,
               double h,double s,double *v,double *w)
     {
+
+    qDebug() << errno;
+
         long m=n-1;
         long p=0;
         double B[2];
@@ -85,7 +90,7 @@ double linear(long steps,
             v[m]=x[2];
             w[m]=x[3];
             calcRandom = (calcRandom+1)%2; // update which random number to use.
-            //fprintf(fp,"%f,%f,%f,%f,%f,%f\n",x[0],x[1],1-x[0]-x[1],x[2],x[3],1-x[2]-x[3]);
+
         }
 
         //printf("%f\t%f\t%f\t%f\t%f\n",dt,beta,tau,x[0],x[1]);
@@ -105,6 +110,7 @@ double linear(long steps,
             << 1-x[2]-x[3]
             << std::endl;
 
+ #ifdef SHOW_INTERMEDIATE
         qDebug() << dt << ","
             << beta << ","
             << g << ","
@@ -119,7 +125,9 @@ double linear(long steps,
             << x[2] << ","
             << x[3] << ","
             << 1-x[2]-x[3];
-        return 0;
+        qDebug() << errno << EDOM << ERANGE;
+#endif
+
     }
 
 
