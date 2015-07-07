@@ -1,4 +1,15 @@
+\documentclass{beamer}
 
+\usepackage{etoolbox}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{verbatim}
+\usepackage{tikz}
+\newcommand{\HAT}[1]{\expandafter\hat#1}
+
+\usetheme{Frankfurt}%
+\usecolortheme{beaver}
+\begin{document}
 \section{Modeling Coral Reef Dynamics}
 
 \begin{frame}
@@ -97,7 +108,7 @@ We can identify time delays in the coral ecosystem:
 \item the delay between overfishing of herbivores and growth of macroalgae.\\
 \item the delay between the growth of algae and the effect of algae on coral (Jompa, 2003).\\
 \item the delay between the grazing of macroalgae and growth of algal turf (Li et al., 2014).
-\end{itemize}
+\end{itemize} We focus on the third time delay.
 \end{frame}
 
 \begin{frame}\frametitle{Coral Reef Dynamics}
@@ -110,16 +121,48 @@ $$\begin{cases}
 \end{cases}.$$
 \end{frame}
 
-
 \begin{frame}
 \frametitle{Equilibria and Stability}
-There are three equilibrium points of interest to us: \begin{itemize}
+There are three equilibrium points of interest: \begin{itemize}
 \item $(0,0)$ (Unstable for all $\tau\geq0$)\\
-\item $(1-\frac{g}{\gamma},0)$\\
-\item $(0,1-\frac{d}{r})$.
-\end{itemize}
+\item $(1-\frac{g}{\gamma},0)$ (High Coral Cover)\\
+\item $(0,1-\frac{d}{r})$ (High Algae Cover).
+\end{itemize} Notice that time delay does not drastically affect the equilibria.
 \end{frame}
 
+\begin{frame}\frametitle{Jacobian Matrices}
+We linearize our delay model:{\small $\begin{bmatrix} M'\\C'\end{bmatrix}=J_1\begin{bmatrix} M\\C\end{bmatrix}+J_2\begin{bmatrix}M(t-\tau)\\C(t-\tau)\end{bmatrix}$ (call this eq'n 1), where $$J_1=\begin{bmatrix}
+\frac{\partial M}{\partial x} & \frac{\partial M}{\partial y}\\
+\frac{\partial C}{\partial x} & \frac{\partial C}{\partial y}
+\end{bmatrix}=\begin{bmatrix}\gamma-2\gamma M +(a-\gamma)C & (a-\gamma)M\\ -(a+r)C & r-d-(a+r)-2MC \end{bmatrix}, \text{ and}$$ $$J_2=\begin{bmatrix}
+\frac{\partial M}{\partial M(t-\tau)} & \frac{\partial M}{\partial C(t-\tau)}\\
+\frac{\partial C}{\partial M(t-\tau)} & \frac{\partial N}{\partial C(t-\tau)}
+\end{bmatrix}=\begin{bmatrix} \frac{-g}{1-C(t-\tau)} & \frac{-gM(t-\tau)}{(1-C(t-\tau))^2}\\ 0 & 0\end{bmatrix}.$$}
+\end{frame}
+
+\begin{frame}\frametitle{Putting Jacobians to Use}
+{ Suppose $\begin{bmatrix} x\\y\end{bmatrix}=\overrightarrow{v_1}e^{\lambda t}$.}\\\vspace{2em} 
+{ Differentiating, setting equal to 1, and doing algebra stuff, we get $(J_1+J_2e^{-\lambda t} -\lambda I)\overrightarrow{v_1}=0$.} 
+\end{frame}
+
+\begin{frame}\frametitle{Putting Jacobians to Use}
+Consider the Jacobians evaluated at the origin:$$J_1=\begin{bmatrix}
+\gamma & 0\\
+0 & r-d
+\end{bmatrix}, \text{ and}$$ $$\begin{bmatrix}
+-g & 0\\
+0 & 0
+\end{bmatrix}.$$ 
+\end{frame}
+
+\begin{frame}\frametitle{Putting Jacobians to Use}
+Recall, $(J_1+J_2e^{-\lambda t} -\lambda I)\overrightarrow{v_1}=0$. \\\vspace{2em}
+Taking determinants, we find the characteristic polynomial of $(J_1+J_2e^{-\lambda t} -\lambda I)$ evaluated at $M=0$, $C=0$ to be $(\lambda - r + d)(\lambda -\gamma + ge^{-\lambda\tau})=0$.
+\end{frame}
+
+\begin{frame}
+Hence, $\lambda = r-d>0$ is an eigenvalue with positive real part, implying $(0,0)$ is an unstable equilibrium.
+\end{frame}
 
 \begin{frame}
 \frametitle{Stochastic Model}
@@ -136,3 +179,4 @@ $$\begin{cases}
 %%% mode: latex
 %%% TeX-master: "Presentation2"
 %%% End:
+\end{document}
