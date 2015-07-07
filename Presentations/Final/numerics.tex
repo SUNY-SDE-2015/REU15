@@ -31,8 +31,8 @@ $$X(\tau_j)=X(\tau_{j-1})+\int_{\tau_{j-1}}^{\tau_{j}}f(X(s))ds+\int_
 \end{frame}
 
 \begin{frame}
-\begin{block}{Convergence}
-We say that a method has \textbf{strong order of convergence} equal to $\gamma$ if there exists a constant C such that:
+\begin{block}{Strong Convergence}
+We say that a method has strong order of convergence equal to $\gamma$ if there exists a constant C such that:
 $$E|X_n-X(\tau)|\leq C \Delta t^\gamma$$
 for any fixed $\tau=n \Delta t \in [0,T]$ and $\Delta t$ sufficiently small.
 \end{block}
@@ -41,7 +41,10 @@ The EM method has strong order of convergence of $\gamma=\frac{1}{2}$.
 \end{frame}
 
 \begin{frame}{Milstein's method}
-To raise the strong order of convergence:	
+To raise the strong order of convergence to 1:	
+
+*I need something else here.
+
 	\begin{equation*}
 	\begin{split}
 	X_{j} & =X_{j-1}+\Delta t f(X_{j-1})+g(X_{j-1})(W(\tau_j)-W(\tau_{j-1}))\\
@@ -73,31 +76,33 @@ In their integral form:
 If we apply the chain rule for $f_1$:
 	\begin{equation*}
 	\begin{split}
-	f_1(t) &=f_1(a)+f_{1x}(a)(x-x_a)+f_{1y}(a)(y-y_a)+\frac{1}{2} f_{1xx}(a)(x-x_a)^2\\
-		   &\quad +f_{1xy}(a)(x-x_a)(y-y_a)+\frac{1}{2}f_{1yy}(a)(y-y_a)^2
+	f_1(\tau_j) &=f_1(\tau_{j-1})+f_{1x}(\tau_{j-1})(x-x(\tau_{j-1}))+f_{1y}(\tau_{j-1})(y-y(\tau_{j-1}))+\frac{1}{2} f_{1xx}(\tau_{j-1})(x-x(\tau_{j-1}))^2\\
+		   &\quad +f_{1xy}(\tau_{j-1})(x-x(\tau_{j-1}))(y-y(\tau_{j-1}))+\frac{1}{2}f_{1yy}(\tau_{j-1})(y-y(\tau_{j-1}))^2
 	\end{split}
 	\end{equation*}
 From the integral form:
 	\begin{equation*}
-	x-x_a=\int_{a}^{t}f_1 ds+\int_{a}^{t}g_1dW_1
+	x(\tau_{j})-x(\tau_{j-1})=\int_{\tau_{j-1}}^{\tau_{j}}f_1 ds+\int_{\tau_{j-1}}^{\tau_{j}}g_1dW_1
 	\end{equation*}
 
 \end{frame}
 
 \begin{frame}
+
+%I need to fix how it looks
 Similarly for $g_1$ and ignoring the high order terms:
 	\begin{equation*}
 	\begin{split}
-	x(t)&=x(a)+f_1(a)(t-a)+g_1(a)(W_1(t)-W_1(a))+\\
-	&\quad g_{1x}(a)\int_{a}^{t}\int_{a}^{s}g_1dW_1dW_1 +g_{1y}(a)\int_{a}^{t}\int_{a}^{t} 		    g_2dW_2dW_1\\
+	x(\tau_{j})&=x(\tau_{j-1})+f_1(\tau_{j-1})\Delta t+g_1(\tau_{j-1})\Delta W_1+\\
+	&\quad g_{1x}(\tau_{j-1})\int_{\tau_{j-1}}^{\tau_{j}}\int_{\tau_{j-1}}^{s}g_1dW_1dW_1 +g_{1y}(\tau_{j-1})\int_{\tau_{j-1}}^{\tau_{j}}\int_{\tau_{j-1}}^{t} 		    g_2dW_2dW_1\\
 	\end{split}
 	\end{equation*}
 Applying the chain rule again:
 	\begin{equation*}
 	\begin{split}
-	x(t)&=x(a)+f_1(a)(t-a)+g_1(a)(W_1(t)-W_1(a))\\
-	&\quad +\frac{1}{2}g_{1x}(a)g_{1}(a)((W_1(a)-W_1(t))^2-(t-a))\\
-	&\quad +g_{1y}(a)g_2(a)(W_1(t)-W_1(a))(W_2(t)-W_2(a))\\
+	x(\tau_{j})&=x(\tau_{j-1})+f_1(\tau_{j-1})\Delta t+g_1(\tau_{j-1})\Delta W_1\\
+	&\quad +\frac{1}{2}g_{1x}(\tau_{j-1})g_{1}(\tau_{j-1})(\Delta W_1^2-\Delta t)\\
+	&\quad +g_{1y}(\tau_{j-1})g_2(\tau_{j-1})\Delta W_1 \Delta W_2\\
 	\end{split}
 	\end{equation*}
 \end{frame}
@@ -106,11 +111,13 @@ Applying the chain rule again:
 Similarly:
 \begin{equation*}
 	\begin{split}
-	y(t)&=y(a)+f_2(a)(t-a)+g_2(a)(W_2(t)-W_2(a))\\
-	&\quad +\frac{1}{2}g_{2x}(a)g_{1}(a)(W_1(t)-W_1(a))(W_2(t)-W_2(a))\\
-	&\quad +g_{2y}(a)g_2(a)((W_2(a)-W_2(t))^2-(t-a))\\
+	y(\tau_{j})&=y(\tau_{j-1})+f_2(\tau_{j-1})\Delta t+g_2(\tau_{j-1})(W_2(\tau_{j})-W_2(\tau_{j-1}))\\
+	&\quad +\frac{1}{2}g_{2x}(\tau_{j-1})g_{1}(\tau_{j-1})(W_1(\tau_{j})-W_1(\tau_{j-1}))(W_2(\tau_{j})-W_2(\tau_{j-1}))\\
+	&\quad +g_{2y}(\tau_{j-1})g_2(\tau_{j-1})((W_2(\tau_{j-1})-W_2(\tau_{j-1}))^2-\Delta t)\\
 	\end{split}
 	\end{equation*}
 \end{frame}
+
+
 
 
