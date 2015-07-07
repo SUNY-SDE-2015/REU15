@@ -1,7 +1,8 @@
 #include <QCoreApplication>
 
 #include <iostream>
-#include <stdio.h>
+#include <fstream>
+//#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
@@ -33,7 +34,7 @@ double linear(long steps,
               double *x,double *y,double *z, double dt,
               int n,
               double beta,double tau,
-              FILE *fp,
+              std::ofstream *fp,
               int q,
               double h,double s,double *v,double *w)
     {
@@ -87,7 +88,21 @@ double linear(long steps,
         }
 
         //printf("%f\t%f\t%f\t%f\t%f\n",dt,beta,tau,x[0],x[1]);
-        fprintf(fp,"%f,%f,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f\n",dt,beta,g,tau,q+1,h,s,1-h-s,x[0],x[1],1-x[0]-x[1],x[2],x[3],1-x[2]-x[3]);
+        *fp << dt << ","
+            << beta << ","
+            << g << ","
+            << tau << ","
+            << q+1 << ","
+            << h << ","
+            << s << ","
+            << 1-h-s << ","
+            << x[0] << ","
+            << x[1] << ","
+            << 1-x[0]-x[1] << ","
+            << x[2] << ","
+            << x[3] << ","
+            << 1-x[2]-x[3]
+            << std::endl;
         return 0;
     }
 
@@ -145,13 +160,11 @@ int main(int argc, char *argv[])
 
 
         // Create a CSV File
-        FILE*fp;
+        std::ofstream fp;
                 //String fileName = "trials-g" + std::toString(g) + "-tau" + std::toString(tau);
-        fp=fopen("trials.csv","w");
-        //fprintf(fp,"dt,beta,g,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf\n");
-        fprintf(fp,"dt,beta,g,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf,lgMacro,lgCoral,lgTurf\n");
-        //fprintf(fp,"macroalgae,coral,turf,lgmacroalgae,lgcoral,lgturf\n");
-        //printf("dt\t\tbeta\t\ttau\t\tMacroalgae\tCoral\n");
+        fp.open("trials.csv",std::ios::out | std::ios::trunc);
+
+        fp << "dt,beta,g,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf,lgMacro,lgCoral,lgTurf" << std::endl;
 
 
 /*		for (g=0.1;g<=0.8;g=g+0.02)
@@ -208,7 +221,7 @@ int main(int argc, char *argv[])
                                     w[l]=w[0];
                                 }
                                 //fprintf(fp,"%f,%f,%f,%f,%f,%f\n",y[0],z[0],1-y[0]-z[0],v[0],w[0],1-v[0]-w[0]);
-                                linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k,macroSaddle,coralSaddle,v,w);
+                                linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,&fp,k,macroSaddle,coralSaddle,v,w);
 #ifdef SHOW_PROGRESS
                                 if(k%20 == 0)
                                     std::cout << "  Simulation number " << k << std::endl;
@@ -226,7 +239,7 @@ int main(int argc, char *argv[])
             //}
             //}
 
-        fclose(fp);
+        fp.close();
 
 #ifdef SHOW_PROGRESS
             std::cout << "all done" << std::endl;
