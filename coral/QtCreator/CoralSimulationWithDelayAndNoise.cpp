@@ -11,6 +11,7 @@
 #endif
 
 #define SHOW_PROGRESS
+#define BASE_DT 0.0001
 
 double drand48()
 {
@@ -126,14 +127,14 @@ int main(int argc, char *argv[])
         double omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
         double tauZero	 = (1/omega)*acos(gZero/g);
 
-        double dt,final;    // The time step and the final time.
-        int trials;         // The number of simulations to make.
+        double dt;          // Set the initial time step
+        long   numberDT;    // The current iteration for the number assocated with the value of dt.
+        double final;       // The final time for each simulation.
+        long   trials;      // The number of simulations to make.
 
         final=100;  // Set the final time.
         trials=400; // Set the number of trials to perform.
 
-        // Set the smallest time step
-        dt=0.0001;
 
         // Set tau
         double tau = 0.5;
@@ -170,7 +171,7 @@ int main(int argc, char *argv[])
 */
             // The number of cells needed for the delay (changes with dt)
             int n;
-            n=(int)abs(tau/dt+0.5);
+            n=(int)(tau/BASE_DT+0.5);
 
             // Allocate the space for the state of the system
             x=(double *) calloc(4,sizeof(double));
@@ -178,44 +179,45 @@ int main(int argc, char *argv[])
             z=(double *) calloc(n,sizeof(double));		//coral for multiplicative noise
             v=(double *) calloc(n,sizeof(double));		//macroalgae for logistic noise
             w=(double *) calloc(n,sizeof(double));		//coral for logistic noise
-                while (dt<=0.0001)
+            for(numberDT=1;numberDT<5;++numberDT)
                 {
+                    dt = BASE_DT*(double)numberDT;
                     //printf("%f\t%f\n",dt,fmod(tau,dt));
 #ifdef SHOW_PROGRESS
                     std::cout << "dt = " << dt << std::endl;
 #endif
-                    if ((int)(10000*tau+.5)%(int)(dt*10000+.5)==0)
+                    if ((int)(10000.0*tau+.5)%(int)(dt*10000.0+.5)==0)
                     {
                         //index = tau/dt;
                         n=(int)(tau/dt+.5);
                         //printf("%i\n",n);
                         steps=(long)(final/dt);
-                        for (theta=0;theta<=M_PI/2;theta+=(M_PI/2)/20)
+                        for (double theta=0;theta<=M_PI/2;theta+=(M_PI*0.5)*0.05)
                         {
-                        for (int k=0;k<trials;k++)
-                        {
-                            y[0]=0.06*cos(theta); //initial Macroalgae level
-                            z[0]=0.06*sin(theta); //initial Coral level
-                            v[0]=0.06*cos(theta);
-                            w[0]=0.06*sin(theta);
-                            for (int l=1;l<n;l++) //fills in "negative" times for both y and z
+                            for (int k=0;k<trials;k++)
                             {
-                                y[l]=y[0];
-                                z[l]=z[0];
-                                v[l]=v[0];
-                                w[l]=w[0];
-                            }
-                            //fprintf(fp,"%f,%f,%f,%f,%f,%f\n",y[0],z[0],1-y[0]-z[0],v[0],w[0],1-v[0]-w[0]);
-                            linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k,macroSaddle,coralSaddle,v,w);
+                                y[0]=0.06*cos(theta); //initial Macroalgae level
+                                z[0]=0.06*sin(theta); //initial Coral level
+                                v[0]=0.06*cos(theta);
+                                w[0]=0.06*sin(theta);
+                                for (int l=1;l<n;l++) //fills in "negative" times for both y and z
+                                {
+                                    y[l]=y[0];
+                                    z[l]=z[0];
+                                    v[l]=v[0];
+                                    w[l]=w[0];
+                                }
+                                //fprintf(fp,"%f,%f,%f,%f,%f,%f\n",y[0],z[0],1-y[0]-z[0],v[0],w[0],1-v[0]-w[0]);
+                                linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,fp,k,macroSaddle,coralSaddle,v,w);
 #ifdef SHOW_PROGRESS
-                            if(k%20 == 0)
-                                std::cout << "  Simulation number " << k << std::endl;
+                                if(k%20 == 0)
+                                    std::cout << "  Simulation number " << k << std::endl;
 #endif
-                        }
+                            }
                         }
                     }
-                    dt=dt+0.0001;
-                }
+            }
+
             free(x);
             free(y);
             free(z);
@@ -225,6 +227,10 @@ int main(int argc, char *argv[])
             //}
 
         fclose(fp);
+
+#ifdef SHOW_PROGRESS
+            std::cout << "all done" << std::endl;
+#endif
 
         return b.exec();
 }
