@@ -1,4 +1,5 @@
 #include <QCoreApplication>
+#include <QtDebug>
 
 #include <iostream>
 #include <fstream>
@@ -103,6 +104,21 @@ double linear(long steps,
             << x[3] << ","
             << 1-x[2]-x[3]
             << std::endl;
+
+        qDebug() << dt << ","
+            << beta << ","
+            << g << ","
+            << tau << ","
+            << q+1 << ","
+            << h << ","
+            << s << ","
+            << 1-h-s << ","
+            << x[0] << ","
+            << x[1] << ","
+            << 1-x[0]-x[1] << ","
+            << x[2] << ","
+            << x[3] << ","
+            << 1-x[2]-x[3];
         return 0;
     }
 
