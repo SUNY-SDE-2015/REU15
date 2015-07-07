@@ -14,7 +14,7 @@
 #endif
 
 #define SHOW_PROGRESS
-#define SHOW_INTERMEDIATE
+//#define SHOW_INTERMEDIATE
 #define BASE_DT 0.0001
 
 double drand48()
@@ -41,8 +41,6 @@ void linear(long steps,
               int q,
               double h,double s,double *v,double *w)
     {
-
-    qDebug() << errno;
 
         long m=n-1;
         long p=0;
