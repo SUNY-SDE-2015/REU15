@@ -1,20 +1,8 @@
-\documentclass{beamer}
-
-\usepackage{etoolbox}
-\usepackage{graphicx}
-\usepackage{enumerate}
-\usepackage{verbatim}
-\usepackage{tikz}
-\newcommand{\HAT}[1]{\expandafter\hat#1}
-
-\usetheme{Frankfurt}%
-\usecolortheme{beaver}
-\begin{document}
 \section{Modeling Coral Reef Dynamics}
 
 \begin{frame}
 \frametitle{Coral Reef}
-\includegraphics[scale=.175]{./US-Wildlife-coral-1.jpg}
+\includegraphics[scale=.4]{./US-Wildlife-coral-1.jpg}
 \begin{itemize}
 \item A complex aquatic ecosystem physically supported by calcium carbonate secretions of the colorful stone coral. \\
 \item Modeling approach by Li-Wang-Zhang-Hastings is to describe the relationships between macroalgae, algal turfs, and corals (Li et al., 2014).
@@ -24,11 +12,7 @@
 \begin{frame}
 \frametitle{Positives}
 \begin{itemize}
-\item Naturally ntroduction}
-\include{modeling}
-\include{numerics}
-\include{conclusions}
-\end{document}filter aquarium water by reducing the available levels of phosphate and nitrogenous waste.
+\item Naturally filter aquarium water by reducing the available levels of phosphate and nitrogenous waste.
 \item Enhance overall aquarium aesthetics and provide valuable hiding places for many fish and invertebrates.
 \item Get their energy from the son and convert it unto “food” for the rest of the reef food web. 
 \end{itemize}
@@ -75,7 +59,7 @@ The deterministic ordinary differential equation model:
 $$\begin{cases}\begin{array}{rl}
 \frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM}{M+T} + \gamma M T, \\
 \frac{dC}{dt}\hspace{-.8em}&=rTC - dC - aMC, \\
-\frac{dT}{dt}\hspace{-.8em}&=\frac{gM}{M + T} - \gamma MT - rTC + dC, 
+\frac{dT}{dt}\hspace{-.8em}&=\frac{gM}{M + T} - \gamma MT - rTC + dC. 
 \end{array}\end{cases}$$ 
 
 where 
@@ -106,7 +90,7 @@ $$\begin{cases}
 \frac{dM}{dt}&= aMC-\frac{gM}{1-C} + \gamma M - \gamma M^2 -\gamma M C,\\
 \frac{dC}{dt}&=rC - rC^2 - rCM - dC - aMC.
 \end{array} 
-\end{cases}.$$
+\end{cases}$$
 \end{frame}
 
 
@@ -119,15 +103,15 @@ Equilibrium point
 To find equilibrium points analytically we first set the derivatives equal to zero to obtain the nullclines:
 $$\begin{cases}
 \begin{array}{rl}
-0\hspace{-.8em}&=M(aC + \gamma-\gamma M-\gamma C) - \frac{gM}{1-C}\\
-0\hspace{-.8em}&=C(r-Mr-Cr - d - aM)\\
+0\hspace{-.8em}&=M(aC + \gamma-\gamma M-\gamma C) - \frac{gM}{1-C},\\
+0\hspace{-.8em}&=C(r-Mr-Cr - d - aM).\\
 \end{array}
-\end{cases}.$$
+\end{cases}$$
 \end{frame}
 
 \begin{frame}\frametitle{Equilibria and Stability}\begin{itemize}
-\item $M'=0$ is satisfied when $M=0$ or $aC + \gamma - \gamma M - \gamma C - \frac{gM}{1-C}=0$.
-\item $C'=0$ is satisfied when $C=0$ or $r-Mr-Cr-d-aM=0$.
+\item $M'=0$ is satisfied when:\begin{itemize}\item $M=0$, or \item $aC + \gamma - \gamma M - \gamma C - \frac{gM}{1-C}=0$.\end{itemize}
+\item $C'=0$ is satisfied when:\begin{itemize} \item$C=0$, or \item $r-Mr-Cr-d-aM=0$. \end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -149,10 +133,10 @@ We can identify time delays in the coral ecosystem:
 Delay Differential Equation Model:
 $$\begin{cases}
 \begin{array}{rl}
-\frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)} + \gamma M (1-M-C)\\
-\frac{dC}{dt}\hspace{-.8em}&=rC(1-M-C) - dC - aMC\\
+\frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)} + \gamma M (1-M-C),\\
+\frac{dC}{dt}\hspace{-.8em}&=rC(1-M-C) - dC - aMC.\\
 \end{array}
-\end{cases}.$$
+\end{cases}$$
 \end{frame}
 
 \begin{frame}
@@ -195,7 +179,7 @@ Consider the Jacobians evaluated at the origin:$$J_1=\begin{bmatrix}
 
 \begin{frame}[c]\frametitle{Putting Jacobians to Use}
 %Recall, $(J_1+J_2e^{-\lambda t} -\lambda I)\overrightarrow{v_1}=0$. \\\vspace{2em} Taking determinants, we find the characteristic polynomial of $(J_1+J_2e^{-\lambda t} -\lambda I)$ evaluated at $M=0$, $C=0$ to be 
-The characteristic polynomial of $(J_1+J_2e^{-\lambda t} -\lambda I)$ is $(\lambda - r + d)(\lambda -\gamma + ge^{-\lambda\tau})=0$. 
+The characteristic polynomial of $$(J_1+J_2e^{-\lambda t} -\lambda I),\text{ is}$$ $$(\lambda - r + d)(\lambda -\gamma + ge^{-\lambda\tau})=0$$. 
 \end{frame}
 
 \begin{frame}\frametitle{Get Them Eigenvalues}
@@ -222,9 +206,3 @@ $$\begin{cases}
 \end{array}
 \end{cases}$$
 \end{frame}
-
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "Presentation2"
-%%% End:
-\end{document}
