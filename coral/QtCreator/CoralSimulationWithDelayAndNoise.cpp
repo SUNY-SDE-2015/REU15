@@ -8,6 +8,18 @@
 #include <time.h>
 #include <cerrno>
 #include <cmath>
+#include <thread>
+#include <mutex>
+
+
+#define OUTPUT_FILE "./shrimpPopMulNoiseFULL.csv"
+#define NUMBER_THREADS 7
+#define USE_MULTIPLE_THREADS
+// create a mutex that is used to protect the writing of the data to
+// the file.
+std::mutex writeToFile;
+
+
 
 #ifndef M_PI
 #define M_PI 3.14159265359
@@ -31,6 +43,39 @@ void normalDistRand(double stdDev,double* randomNumbers)
         randomNumbers[0] = stdDev*radius*sin(angle);
         randomNumbers[1] = stdDev*radius*cos(angle);
     }
+
+
+void printToCSVFile(double dt, double beta, double g,double tau,
+                    double q, double theta, double h,double s,
+                    double *x,std::ofstream *fp)
+{
+
+    std::lock_guard<std::mutex> guard(writeToFile);  // Make sure that
+                                                       // only this
+                                                       // routine can
+                                                       // access the file
+                                                       // at any one time.
+
+    *fp << dt << ","
+        << beta << ","
+        << g << ","
+        << tau << ","
+        << q+1 << ","
+        << theta << ","
+        << h << ","
+        << s << ","
+        << 1-h-s << ","
+        << x[0] << ","
+        << x[1] << ","
+        << 1-x[0]-x[1] << ","
+        << x[2] << ","
+        << x[3] << ","
+        << 1-x[2]-x[3]
+        << std::endl;
+
+    (*fp).flush();
+}
+
 
 void linear(long steps,
               double a,double gamma,double r,double d,double g,
@@ -92,22 +137,7 @@ void linear(long steps,
         }
 
         //printf("%f\t%f\t%f\t%f\t%f\n",dt,beta,tau,x[0],x[1]);
-        *fp << dt << ","
-            << beta << ","
-            << g << ","
-            << tau << ","
-            << q+1 << ","
-            << theta << ","
-            << h << ","
-            << s << ","
-            << 1-h-s << ","
-            << x[0] << ","
-            << x[1] << ","
-            << 1-x[0]-x[1] << ","
-            << x[2] << ","
-            << x[3] << ","
-            << 1-x[2]-x[3]
-            << std::endl;
+        printToCSVFile(dt,beta,g,tau,q,theta,h,s,x,fp);
 
  #ifdef SHOW_INTERMEDIATE
         qDebug() << dt << ","
@@ -177,6 +207,10 @@ int main(int argc, char *argv[])
         // Set tau
         double tau = 0.5;
 
+        // set up the variables for using different approximations on different threads.
+        std::thread simulation[NUMBER_THREADS];
+        int numberThreads = 0;
+
         // Sets the seed for the random numbers
         srand(time(NULL));
 
@@ -244,7 +278,32 @@ int main(int argc, char *argv[])
                                     w[l]=w[0];
                                 }
                                 //fprintf(fp,"%f,%f,%f,%f,%f,%f\n",y[0],z[0],1-y[0]-z[0],v[0],w[0],1-v[0]-w[0]);
+#ifdef USE_MULTIPLE_THREADS
+
+
+                                if(numberThreads >= NUMBER_THREADS)
+                                {
+                                    // There are too many threads. Wait for each run to end.
+                                    while(numberThreads>0)
+                                    {
+#ifdef THREAD_DEBUG
+                                        std::cout << "Waiting on thread "
+                                                  << simulation[numberThreads-1].get_id()
+                                                  << std::endl;
+#endif
+                                        simulation[--numberThreads].join();
+                                    }
+                                }
+
+
+                                // Make this run a separate thread.
+                                simulation[numberThreads++] = std::thread(linear,
+                                                                          steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,&fp,k,y[0],z[0],v,w,theta);
+
+#else
                                 linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,&fp,k,y[0],z[0],v,w,theta);
+#endif
+
 #ifdef SHOW_PROGRESS
                                 if(k%20 == 0)
                                     std::cout << "  Simulation number " << k << std::endl;
