@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
         double final;       // The final time for each simulation.
         long   trials;      // The number of simulations to make.
 
-        final=100;  // Set the final time.
+        final=50;  // Set the final time.
         trials=400; // Set the number of trials to perform.
 
 
