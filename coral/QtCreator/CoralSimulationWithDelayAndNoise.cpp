@@ -8,6 +8,18 @@
 #include <time.h>
 #include <cerrno>
 #include <cmath>
+#include <thread>
+#include <mutex>
+
+
+#define OUTPUT_FILE "./trials.csv"
+#define NUMBER_THREADS 7
+#define USE_MULTIPLE_THREADS
+// create a mutex that is used to protect the writing of the data to
+// the file.
+std::mutex writeToFile;
+
+
 
 #ifndef M_PI
 #define M_PI 3.14159265359
@@ -32,6 +44,39 @@ void normalDistRand(double stdDev,double* randomNumbers)
         randomNumbers[1] = stdDev*radius*cos(angle);
     }
 
+
+void printToCSVFile(double dt, double beta, double g,double tau,
+                    double q, double theta, double h,double s,
+                    double *x,std::ofstream *fp)
+{
+
+    std::lock_guard<std::mutex> guard(writeToFile);  // Make sure that
+                                                       // this routine
+                                                       // can only
+                                                       // access the file once
+                                                       // at any one time.
+
+    *fp << dt << ","
+        << beta << ","
+        << g << ","
+        << tau << ","
+        << q+1 << ","
+        << theta << ","
+        << h << ","
+        << s << ","
+        << 1-h-s << ","
+        << x[0] << ","
+        << x[1] << ","
+        << 1-x[0]-x[1] << ","
+        << x[2] << ","
+        << x[3] << ","
+        << 1-x[2]-x[3]
+        << std::endl;
+
+    (*fp).flush();
+}
+
+
 void linear(long steps,
               double a,double gamma,double r,double d,double g,
               double *x,double *y,double *z, double dt,
@@ -46,8 +91,12 @@ void linear(long steps,
         long p=0;
         double B[2];
         int calcRandom=0;
+
+        // Step through every time step.
         for (long k=0;k<steps;k++)
         {
+
+            // Calculate a new set of random numbers if necessary.
             if(calcRandom==0)
                 normalDistRand(sqrt(dt),B); //noise in most recent time step
 
@@ -92,22 +141,7 @@ void linear(long steps,
         }
 
         //printf("%f\t%f\t%f\t%f\t%f\n",dt,beta,tau,x[0],x[1]);
-        *fp << dt << ","
-            << beta << ","
-            << g << ","
-            << tau << ","
-            << q+1 << ","
-            << theta << ","
-            << h << ","
-            << s << ","
-            << 1-h-s << ","
-            << x[0] << ","
-            << x[1] << ","
-            << 1-x[0]-x[1] << ","
-            << x[2] << ","
-            << x[3] << ","
-            << 1-x[2]-x[3]
-            << std::endl;
+        printToCSVFile(dt,beta,g,tau,q,theta,h,s,x,fp);
 
  #ifdef SHOW_INTERMEDIATE
         qDebug() << dt << ","
@@ -158,8 +192,8 @@ int main(int argc, char *argv[])
         double chi		 = r*gamma/(r+a)-gamma+a;					//Intermediate Step
         double xi		 = -(d*gamma/(r+a)+a);						//Intermediate Step
         double cbar		 = (-xi-sqrt(xi*xi-4*chi*g))/(2*chi);		//Intermediate Step
-        double coralSaddle		 = 1-cbar;									//Saddle point value for coral
-        double macroSaddle		 = (r-r*coralSaddle-d)/(r+a);						//Saddle point value for macroalgae
+        double coralSaddle		 = 1-cbar;						    //Saddle point value for coral
+        double macroSaddle		 = (r-r*coralSaddle-d)/(r+a);		//Saddle point value for macroalgae
         double gZero	 = ((d*a*r+d*d)*(gamma-a))/(r*r);
         double gOne		 = (gamma*(a+d))/(a+r);
         double omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
@@ -170,12 +204,21 @@ int main(int argc, char *argv[])
         double final;       // The final time for each simulation.
         long   trials;      // The number of simulations to make.
 
+<<<<<<< HEAD
         final=50;  // Set the final time.
         trials=400; // Set the number of trials to perform.
+=======
+        final=50.0;  // Set the final time.
+        trials=50;   // Set the number of trials to perform.
+>>>>>>> afa3c18ff2f48dc4ee88e7e8158f5b78dae8cb48
 
 
-        // Set tau
+        // Set the time delay, tau
         double tau = 0.5;
+
+        // set up the variables for using different approximations on different threads.
+        std::thread simulation[NUMBER_THREADS];
+        int numberThreads = 0;
 
         // Sets the seed for the random numbers
         srand(time(NULL));
@@ -185,7 +228,7 @@ int main(int argc, char *argv[])
         // Create a CSV File
         std::ofstream fp;
                 //String fileName = "trials-g" + std::toString(g) + "-tau" + std::toString(tau);
-        fp.open("trials.csv",std::ios::out | std::ios::trunc);
+        fp.open(OUTPUT_FILE,std::ios::out | std::ios::trunc);
 
         fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,initTurf,macroalgae,coral,turf,lgMacro,lgCoral,lgTurf" << std::endl;
 
@@ -205,19 +248,30 @@ int main(int argc, char *argv[])
                 tau=.3*(1+aleph)*tauZero;
                 dt=0.0001;
 */
-            // The number of cells needed for the delay (changes with dt)
+
+           // Determine the number of time steps required to move back to the delay in time.
+           // The number of cells needed for the delay (changes with dt)
             int n;
             n=(int)(tau/BASE_DT+0.5);
 
-            // Allocate the space for the state of the system
+            // Allocate the space for the states of the system
             x=(double *) calloc(4,sizeof(double));
             y=(double *) calloc(n,sizeof(double));		//macroalgae for multiplicative noise
             z=(double *) calloc(n,sizeof(double));		//coral for multiplicative noise
             v=(double *) calloc(n,sizeof(double));		//macroalgae for logistic noise
             w=(double *) calloc(n,sizeof(double));		//coral for logistic noise
+<<<<<<< HEAD
             //for(numberDT=1;numberDT<5;++numberDT)
                     dt = BASE_DT; //(double)numberDT;
                     //printf("%f\t%f\n",dt,fmod(tau,dt));
+=======
+
+
+            // Make different approximations for different values for the time steps.
+            for(numberDT=1;numberDT<5;++numberDT)
+                {
+                    dt = BASE_DT*(double)numberDT;
+>>>>>>> afa3c18ff2f48dc4ee88e7e8158f5b78dae8cb48
 #ifdef SHOW_PROGRESS
                     std::cout << "dt = " << dt << std::endl;
 #endif
@@ -227,7 +281,14 @@ int main(int argc, char *argv[])
                         n=(int)(tau/dt+.5);
                         //printf("%i\n",n);
                         steps=(long)(final/dt);
+<<<<<<< HEAD
                         for (double theta=0;theta<=M_PI/2;theta+=(M_PI*0.5)*0.025)
+=======
+
+                        // Make an approximation for different initial conditions.
+                        // Make an arc through 0 to pi/2 radians from the origin.
+                        for (double theta=0;theta<=M_PI/2;theta+=(M_PI*0.5)*0.05)
+>>>>>>> afa3c18ff2f48dc4ee88e7e8158f5b78dae8cb48
                         {
                             for (int k=0;k<trials;k++)
                             {
@@ -235,7 +296,7 @@ int main(int argc, char *argv[])
                                 z[0]=0.06*sin(theta); //initial Coral level
                                 v[0]=0.06*cos(theta);
                                 w[0]=0.06*sin(theta);
-                                for (int l=1;l<n;l++) //fills in "negative" times for both y and z
+                                for (int l=1;l<n;l++) //fills in the past times for y, z, v, and w
                                 {
                                     y[l]=y[0];
                                     z[l]=z[0];
@@ -243,15 +304,48 @@ int main(int argc, char *argv[])
                                     w[l]=w[0];
                                 }
                                 //fprintf(fp,"%f,%f,%f,%f,%f,%f\n",y[0],z[0],1-y[0]-z[0],v[0],w[0],1-v[0]-w[0]);
+#ifdef USE_MULTIPLE_THREADS
+
+
+                                // Make a simulation for each of the available threads.
+                                // First check to see how many threads are running.
+                                if(numberThreads >= NUMBER_THREADS)
+                                {
+                                    // There are too many threads. Wait for each run to end.
+                                    while(numberThreads>0)
+                                    {
+#ifdef THREAD_DEBUG
+                                        std::cout << "Waiting on thread "
+                                                  << simulation[numberThreads-1].get_id()
+                                                  << std::endl;
+#endif
+                                        simulation[--numberThreads].join();
+                                    }
+                                }
+
+
+                                // Make a run in a separate thread.
+                                simulation[numberThreads++] = std::thread(linear,
+                                                                          steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,&fp,k,y[0],z[0],v,w,theta);
+
+#else
+
+                                // Ignore the different threads. Just make one approximation in this one thread.
                                 linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,&fp,k,y[0],z[0],v,w,theta);
+
+#endif
+
+
 #ifdef SHOW_PROGRESS
                                 if(k%20 == 0)
                                     std::cout << "  Simulation number " << k << std::endl;
 #endif
+
                             }
                         }
             }
 
+            // Free up the allocated memory.
             free(x);
             free(y);
             free(z);

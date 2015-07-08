@@ -7,7 +7,9 @@ QT       -= gui
 
 TEMPLATE     = app
 
-TARGET       = CoralSimulationWithDelayAndNoise
+TARGET          = CoralSimulationWithDelayAndNoise
+QMAKE_CXXFLAGS += -std=c++11 -O3
+
 DEPENDPATH  += .
 INCLUDEPATH += .
 CONFIG      += console
