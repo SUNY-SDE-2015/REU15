@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
         double r    	 = 1.0;
         double d    	 = 0.44;
     //	double tau		 = 0.5;
-        double beta 	 = .5;
+        double beta //	 = .5;
         double chi		 = r*gamma/(r+a)-gamma+a;					//Intermediate Step
         double xi		 = -(d*gamma/(r+a)+a);						//Intermediate Step
         double cbar		 = (-xi-sqrt(xi*xi-4*chi*g))/(2*chi);		//Intermediate Step
@@ -199,7 +199,7 @@ int main(int argc, char *argv[])
         double omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
         double tauZero	 = (1/omega)*acos(gZero/g);
 
-        double dt;          // Set the initial time step
+        double dt        = .0001;          // Set the initial time step
         long   numberDT;    // The current iteration for the number assocated with the value of dt.
         double final;       // The final time for each simulation.
         long   trials;      // The number of simulations to make.
@@ -268,9 +268,9 @@ int main(int argc, char *argv[])
 
 
             // Make different approximations for different values for the time steps.
-            for(numberDT=1;numberDT<5;++numberDT)
+            for(beta=.1;beta<=.45; beta += .05)
                 {
-                    dt = BASE_DT*(double)numberDT;
+                    //dt = BASE_DT*(double)numberDT;
 >>>>>>> afa3c18ff2f48dc4ee88e7e8158f5b78dae8cb48
 #ifdef SHOW_PROGRESS
                     std::cout << "dt = " << dt << std::endl;
