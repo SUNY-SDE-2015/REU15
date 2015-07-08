@@ -42,15 +42,15 @@ double theoretical(FILE *fp,
 				  double dt,long steps) //does all the heavy lifting
 	{
 
-		double w,xzero,xtrue;
-		xzero=1;
-		long m=0;
-		int calcRandom = 0;
+		double xzero=1;
+		double w=0;
 		double B[2];
-		w=0;
-		int R=4;
+		int calcRandom = 0;
+		long m=0;
+		
+		/*int R=4;
 		double Dt=R*dt;
-		double L=1/(R*dt);
+		double L=1/(R*dt);*/
 		double xtemptrue=1;
 		double xtemp=1;
 		double xmil=1;
@@ -61,7 +61,7 @@ double theoretical(FILE *fp,
 				w=w+B[calcRandom];				//keeps a running tab on the noise
 
 				//computes the theoretical values
-				xtemptrue=xzero*exp((alpha-0.5*beta*beta)+beta*w);
+				xtemptrue=xzero*exp((alpha-0.5*beta*beta)*(m*dt)+beta*w);
 
 				//computes the Euler-Maruyama values
 				xtemp += dt*alpha*xtemp+beta*xtemp*B[calcRandom];
@@ -83,32 +83,21 @@ double theoretical(FILE *fp,
 
 int main(void)
 	{
-		FILE*fp;
-		fp=fopen("eulermaruyama_milstein_alpha0_beta400_ind_all-dt.csv","w");	
-
-        double dt; //=0.0001;	//set dt value
-		double alpha,beta,x,k;
-		long steps;
-		long trials = 66400;
-	   
-
-		/* Set the initial seed for the random number generator. */
 		srand48(time(NULL));
+		
+		FILE*fp;
+		fp=fopen("eulermaruyama_milstein.csv","w");	
 
-		//printf("What value of alpha?\n");
-		//scanf("%f",&alpha);
-		//printf("What value of beta?\n");
-		//scanf("%f",&beta);
-		//printf("What value of dt?\n");
-		//scanf("%f",&dt);
-		//printf("How many trials?\n");
-		//scanf("%ld",&trials);
-		printf("Will make %ld trials\n",trials);
+        double dt,alpha,beta;
+		long steps;
+		long trials = 1;
+	   
 		fprintf(fp,"dt,alpha,beta,xTrue,xEuler,xMilstein,ErrorEuler,ErrorMilstein\n");
 
-        for(dt= .001; dt <= .01; dt += .001)
+        
 	    	for(alpha=-2.0;alpha<=2.0;alpha+=0.5)
 			    for(beta=0.25;beta<=4.0;beta+=0.25)
+			    for(dt= .0001; dt <= .01; dt += .0001)
 			    	{
 			     		steps=(long)(1.0/dt);
 			     		printf("%f\t%f\t%f\n",alpha,beta,dt);  //optional line.
