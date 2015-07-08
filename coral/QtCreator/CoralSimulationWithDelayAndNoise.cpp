@@ -39,7 +39,7 @@ void linear(long steps,
               double beta,double tau,
               std::ofstream *fp,
               int q,
-              double h,double s,double *v,double *w)
+              double h,double s,double *v,double *w, double theta)
     {
 
         long m=n-1;
@@ -97,6 +97,7 @@ void linear(long steps,
             << g << ","
             << tau << ","
             << q+1 << ","
+            << theta << ","
             << h << ","
             << s << ","
             << 1-h-s << ","
@@ -169,7 +170,7 @@ int main(int argc, char *argv[])
         double final;       // The final time for each simulation.
         long   trials;      // The number of simulations to make.
 
-        final=5;  // Set the final time.
+        final=50;  // Set the final time.
         trials=50; // Set the number of trials to perform.
 
 
@@ -186,7 +187,7 @@ int main(int argc, char *argv[])
                 //String fileName = "trials-g" + std::toString(g) + "-tau" + std::toString(tau);
         fp.open("trials.csv",std::ios::out | std::ios::trunc);
 
-        fp << "dt,beta,g,tau,trial,initMacro,initCoral,initTurf,macroalgae,coral,turf,lgMacro,lgCoral,lgTurf" << std::endl;
+        fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,initTurf,macroalgae,coral,turf,lgMacro,lgCoral,lgTurf" << std::endl;
 
 
 /*		for (g=0.1;g<=0.8;g=g+0.02)
@@ -243,7 +244,7 @@ int main(int argc, char *argv[])
                                     w[l]=w[0];
                                 }
                                 //fprintf(fp,"%f,%f,%f,%f,%f,%f\n",y[0],z[0],1-y[0]-z[0],v[0],w[0],1-v[0]-w[0]);
-                                linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,&fp,k,y[0],z[0],v,w);
+                                linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,&fp,k,y[0],z[0],v,w,theta);
 #ifdef SHOW_PROGRESS
                                 if(k%20 == 0)
                                     std::cout << "  Simulation number " << k << std::endl;
