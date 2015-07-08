@@ -1,55 +1,6 @@
 \section{Modeling Coral Reef Dynamics}
 
 \begin{frame}
-\frametitle{Coral Reef}
-\includegraphics[scale=.4]{./US-Wildlife-coral-1.jpg}
-\begin{itemize}
-\item A complex aquatic ecosystem physically supported by calcium carbonate secretions of the colorful stone coral. \\
-\item Modeling approach by Li-Wang-Zhang-Hastings is to describe the relationships between macroalgae, algal turfs, and corals (Li et al., 2014).
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Positives}
-\begin{itemize}
-\item Naturally filter aquarium water by reducing the available levels of phosphate and nitrogenous waste.
-\item Enhance overall aquarium aesthetics and provide valuable hiding places for many fish and invertebrates.
-\item Get their energy from the son and convert it unto “food” for the rest of the reef food web. 
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Coral Reef Ecosystem} 
-
-McClanahan identifies three major components:
-\begin{itemize}
-\item primary producers (coral and algae)\\
-\item herbivores (e.g. parrotfish)\\
-\item carnivores (McClanahan, 1994).
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Reef Food Web}
-\includegraphics[scale=.8]{./CoralFoodWeb}
-\end{frame}
-
-\begin{frame}
-\frametitle{Negatives}
-\begin{itemize}
-\item At low grazing levels, macro algae’s population increase and compete with corals for space.
-\item This competition alters the microbial communities associated with corals increasing pathogens on corals.
-\item Macroalgal abundance may lead to reef degradation.
-\item Coral mortality was universally followed by algal recruitment.
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Coral Reef Dynamics}
-\includegraphics[scale=.7]{./CoralDynamics}
-\end{frame}
-
-\begin{frame}
 \frametitle{Coral Reef Dynamics}
 \includegraphics[scale=.175]{./coral-reef-triangle.png}
 \end{frame}
@@ -84,7 +35,7 @@ where
   macroalgae, and algal turf. 
 \end{itemize}
 
-Thus we reduce our system to, 
+Thus, we reduce our system to, 
 $$\begin{cases}
 \begin{array}{rl}
 \frac{dM}{dt}&= aMC-\frac{gM}{1-C} + \gamma M - \gamma M^2 -\gamma M C,\\
@@ -134,9 +85,9 @@ Delay Differential Equation Model:
 $$\begin{cases}
 \begin{array}{rl}
 \frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)} + \gamma M (1-M-C),\\
-\frac{dC}{dt}\hspace{-.8em}&=rC(1-M-C) - dC - aMC.\\
+\frac{dC}{dt}\hspace{-.8em}&=rC(1-M-C) - dC - aMC,\\
 \end{array}
-\end{cases}$$
+\end{cases}$$ where $\tau$ is our time delay.
 \end{frame}
 
 \begin{frame}
@@ -145,17 +96,11 @@ There are three equilibrium points of interest: \begin{itemize}
 \item $(0,0)$ (Unstable for all $\tau\geq0$)\\
 \item $(1-\frac{g}{\gamma},0)$ (High Coral Cover)\\
 \item $(0,1-\frac{d}{r})$ (High Algae Cover).
-\end{itemize} Notice that time delay does not drastically affect the equilibria.
+\end{itemize} Notice that time delay does not affect the equilibria.
 \end{frame}
 
 \begin{frame}\frametitle{Jacobian Matrices}
-We linearize our delay model:{\small $\begin{bmatrix} M'\\C'\end{bmatrix}=J_1\begin{bmatrix} M\\C\end{bmatrix}+J_2\begin{bmatrix}M(t-\tau)\\C(t-\tau)\end{bmatrix}$ (call this eq'n 1), where $$J_1=\begin{bmatrix}
-\frac{\partial M}{\partial x} & \frac{\partial M}{\partial y}\\
-\frac{\partial C}{\partial x} & \frac{\partial C}{\partial y}
-\end{bmatrix}=\begin{bmatrix}\gamma-2\gamma M +(a-\gamma)C & (a-\gamma)M\\ -(a+r)C & r-d-(a+r)-2MC \end{bmatrix}, \text{ and}$$ $$J_2=\begin{bmatrix}
-\frac{\partial M}{\partial M(t-\tau)} & \frac{\partial M}{\partial C(t-\tau)}\\
-\frac{\partial C}{\partial M(t-\tau)} & \frac{\partial N}{\partial C(t-\tau)}
-\end{bmatrix}=\begin{bmatrix} \frac{-g}{1-C(t-\tau)} & \frac{-gM(t-\tau)}{(1-C(t-\tau))^2}\\ 0 & 0\end{bmatrix}.$$}
+We linearize our delay model:{\small $\begin{bmatrix} M'\\C'\end{bmatrix}=J_1\begin{bmatrix} M\\C\end{bmatrix}+J_2\begin{bmatrix}M(t-\tau)\\C(t-\tau)\end{bmatrix}$ (call this eq'n 1), where $$J_1=\begin{bmatrix}\gamma-2\gamma M +(a-\gamma)C & (a-\gamma)M\\ -(a+r)C & r-d-(a+r)-2MC \end{bmatrix}, \text{ and}$$ $$J_2=\begin{bmatrix} \frac{-g}{1-C(t-\tau)} & \frac{-gM(t-\tau)}{(1-C(t-\tau))^2}\\ 0 & 0\end{bmatrix}.$$}
 \end{frame}
 
 \begin{comment}
@@ -183,26 +128,36 @@ The characteristic polynomial of $$(J_1+J_2e^{-\lambda t} -\lambda I),\text{ is}
 \end{frame}
 
 \begin{frame}\frametitle{Get Them Eigenvalues}
-Hence, \begin{itemize}{\itemsep .5in}\item $\lambda = r-d>0$ is an eigenvalue with positive real part\item Other eigenvalues satisfy $\lambda=\gamma-ge^{-\lambda\tau}$. \item For $\tau=0$, $r-d$ and $\gamma - g$ are our eigenvalues. Since both are positive, our nondelay system is unstable at $(0,0)$. \end{itemize}
+Hence, \begin{itemize}{\itemsep .5in}\item $\lambda = r-d>0$ is an eigenvalue with positive real part\item Other eigenvalues satisfy $\lambda=\gamma-ge^{-\lambda\tau}$. \item For $\tau\geq0$, our system has two eigenvalues with positive real part. This implies our nondelay system is unstable at $(0,0)$. \end{itemize}\end{frame}
 
-%, implying $(0,0)$ is an unstable equilibrium.
-\end{frame}
-
+\begin{comment}
 \begin{frame}\frametitle{Get Them Eigenvalues}
 Now we consider postive $\tau$.
 \begin{itemize}
 \item Let $\lambda \tau=(\alpha+i\omega)\tau$.
 \item Apply Euler's Formula: $\gamma-g(e^{-\lambda\tau})=\gamma-g(\cos(\lambda\tau)-i\sin(\lambda\tau))$.
 \end{itemize}
+\end{frame}\end{comment}
+
+\begin{frame}
+The time delay model fails to account for stochastic features of the ecosystem:
+\begin{itemize}
+\item grazing habits of parrotfish, and;
+\item hurricanes.
+\end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{Stochastic Model}
-Let's add noise!
+To account for these stochastic feature we add noise!
 $$\begin{cases}
 \begin{array}{rl}
 \frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)}+\gamma M T+\beta M(1-M)dW,\\
 \frac{dC}{dt}\hspace{-.8em}&=rTC - dC - aMC.\\
 \end{array}
 \end{cases}$$
+\end{frame}
+
+\begin{frame}
+
 \end{frame}

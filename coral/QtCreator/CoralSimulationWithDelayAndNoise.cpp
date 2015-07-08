@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
         long   trials;      // The number of simulations to make.
 
         final=50;  // Set the final time.
-        trials=50; // Set the number of trials to perform.
+        trials=400; // Set the number of trials to perform.
 
 
         // Set tau
@@ -215,9 +215,8 @@ int main(int argc, char *argv[])
             z=(double *) calloc(n,sizeof(double));		//coral for multiplicative noise
             v=(double *) calloc(n,sizeof(double));		//macroalgae for logistic noise
             w=(double *) calloc(n,sizeof(double));		//coral for logistic noise
-            for(numberDT=1;numberDT<5;++numberDT)
-                {
-                    dt = BASE_DT*(double)numberDT;
+            //for(numberDT=1;numberDT<5;++numberDT)
+                    dt = BASE_DT; //(double)numberDT;
                     //printf("%f\t%f\n",dt,fmod(tau,dt));
 #ifdef SHOW_PROGRESS
                     std::cout << "dt = " << dt << std::endl;
@@ -228,7 +227,7 @@ int main(int argc, char *argv[])
                         n=(int)(tau/dt+.5);
                         //printf("%i\n",n);
                         steps=(long)(final/dt);
-                        for (double theta=0;theta<=M_PI/2;theta+=(M_PI*0.5)*0.05)
+                        for (double theta=0;theta<=M_PI/2;theta+=(M_PI*0.5)*0.025)
                         {
                             for (int k=0;k<trials;k++)
                             {
@@ -251,7 +250,6 @@ int main(int argc, char *argv[])
 #endif
                             }
                         }
-                    }
             }
 
             free(x);
