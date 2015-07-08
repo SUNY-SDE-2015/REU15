@@ -204,14 +204,8 @@ int main(int argc, char *argv[])
         double final;       // The final time for each simulation.
         long   trials;      // The number of simulations to make.
 
-<<<<<<< HEAD
         final=50;  // Set the final time.
         trials=400; // Set the number of trials to perform.
-=======
-        final=50.0;  // Set the final time.
-        trials=50;   // Set the number of trials to perform.
->>>>>>> afa3c18ff2f48dc4ee88e7e8158f5b78dae8cb48
-
 
         // Set the time delay, tau
         double tau = 0.5;
@@ -260,18 +254,15 @@ int main(int argc, char *argv[])
             z=(double *) calloc(n,sizeof(double));		//coral for multiplicative noise
             v=(double *) calloc(n,sizeof(double));		//macroalgae for logistic noise
             w=(double *) calloc(n,sizeof(double));		//coral for logistic noise
-<<<<<<< HEAD
+
             //for(numberDT=1;numberDT<5;++numberDT)
                     dt = BASE_DT; //(double)numberDT;
                     //printf("%f\t%f\n",dt,fmod(tau,dt));
-=======
-
 
             // Make different approximations for different values for the time steps.
             for(beta=.1;beta<=.45; beta += .05)
                 {
                     //dt = BASE_DT*(double)numberDT;
->>>>>>> afa3c18ff2f48dc4ee88e7e8158f5b78dae8cb48
 #ifdef SHOW_PROGRESS
                     std::cout << "dt = " << dt << std::endl;
 #endif
@@ -281,14 +272,11 @@ int main(int argc, char *argv[])
                         n=(int)(tau/dt+.5);
                         //printf("%i\n",n);
                         steps=(long)(final/dt);
-<<<<<<< HEAD
-                        for (double theta=0;theta<=M_PI/2;theta+=(M_PI*0.5)*0.025)
-=======
+
 
                         // Make an approximation for different initial conditions.
                         // Make an arc through 0 to pi/2 radians from the origin.
                         for (double theta=0;theta<=M_PI/2;theta+=(M_PI*0.5)*0.05)
->>>>>>> afa3c18ff2f48dc4ee88e7e8158f5b78dae8cb48
                         {
                             for (int k=0;k<trials;k++)
                             {
