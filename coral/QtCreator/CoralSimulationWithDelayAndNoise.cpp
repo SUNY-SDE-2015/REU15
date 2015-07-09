@@ -27,7 +27,9 @@ std::mutex writeToFile;
 
 #define SHOW_PROGRESS
 //#define SHOW_INTERMEDIATE
+#define THREAD_DEBUG
 #define BASE_DT 0.0001
+#define RADIUS 0.06
 
 double drand48()
 {
@@ -91,6 +93,10 @@ void linear(long steps,
         long p=0;
         double B[2];
         int calcRandom=0;
+
+#ifdef THREAD_DEBUG
+        std::cout << "My thread id: " << std::this_thread::get_id() << std::endl;
+#endif
 
         // Step through every time step.
         for (long k=0;k<steps;k++)
@@ -188,7 +194,7 @@ int main(int argc, char *argv[])
         double r    	 = 1.0;
         double d    	 = 0.44;
     //	double tau		 = 0.5;
-        double beta //	 = .5;
+        double beta; //	 = .5;
         double chi		 = r*gamma/(r+a)-gamma+a;					//Intermediate Step
         double xi		 = -(d*gamma/(r+a)+a);						//Intermediate Step
         double cbar		 = (-xi-sqrt(xi*xi-4*chi*g))/(2*chi);		//Intermediate Step
@@ -199,7 +205,7 @@ int main(int argc, char *argv[])
         double omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
         double tauZero	 = (1/omega)*acos(gZero/g);
 
-        double dt        = .0001;          // Set the initial time step
+        double dt        = BASE_DT;          // Set the initial time step
         long   numberDT;    // The current iteration for the number assocated with the value of dt.
         double final;       // The final time for each simulation.
         long   trials;      // The number of simulations to make.
@@ -280,10 +286,10 @@ int main(int argc, char *argv[])
                         {
                             for (int k=0;k<trials;k++)
                             {
-                                y[0]=0.06*cos(theta); //initial Macroalgae level
-                                z[0]=0.06*sin(theta); //initial Coral level
-                                v[0]=0.06*cos(theta);
-                                w[0]=0.06*sin(theta);
+                                y[0] = RADIUS*cos(theta); //initial Macroalgae level
+                                z[0] = RADIUS*sin(theta); //initial Coral level
+                                v[0] = RADIUS*cos(theta);
+                                w[0] = RADIUS*sin(theta);
                                 for (int l=1;l<n;l++) //fills in the past times for y, z, v, and w
                                 {
                                     y[l]=y[0];
@@ -329,9 +335,10 @@ int main(int argc, char *argv[])
                                     std::cout << "  Simulation number " << k << std::endl;
 #endif
 
-                            }
-                        }
-            }
+                            } // for(int k)
+                        } // for(double theta)
+                    } // if (int) 1000.0*tau+.5
+            } // for(beta)
 
             // Free up the allocated memory.
             free(x);
