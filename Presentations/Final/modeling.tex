@@ -85,7 +85,7 @@ $$\begin{cases}
 \begin{frame}\frametitle{Phase Plane} 
 
   Our equilibrium points are located at the intersections of the nullclines:\\
-  \includegraphics[scale=.2]{./nullclines.png}
+  \includegraphics[scale=.1]{./nullclines.png}
 
 \end{frame}
 
@@ -220,7 +220,7 @@ Now we consider postive $\tau$.
 \end{itemize}
 \end{frame}\end{comment}
 
-\begin{frame}
+\begin{frame}\frametitle{Stochastic Coral Features}
 The time delay model fails to account for stochastic features of the ecosystem:
 \begin{itemize}
 \item grazing habits of parrotfish, 
@@ -233,12 +233,9 @@ The time delay model fails to account for stochastic features of the ecosystem:
 To account for these stochastic feature we add noise!
 $$\begin{cases}
 \begin{array}{rl}
-\frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)}+\gamma M T+\beta M(1-M)dW,\\
-\frac{dC}{dt}\hspace{-.8em}&=rTC - dC - aMC.\\
+dM\hspace{-.8em}&=(aMC - \frac{gM(t-\tau)}{1-C(t-\tau)+\gamma M T)dt}+{\color{red}\beta M(1-M)dW},\\
+dC\hspace{-.8em}&=(rTC  - dC - aMC)dt.\\
 \end{array}
 \end{cases}$$
 \end{frame}
 
-\begin{frame}{Transition}
-  Need a transition slide here.
-\end{frame}
