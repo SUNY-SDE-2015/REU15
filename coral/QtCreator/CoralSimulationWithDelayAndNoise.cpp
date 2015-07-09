@@ -27,7 +27,7 @@ std::mutex writeToFile;
 
 #define SHOW_PROGRESS
 //#define SHOW_INTERMEDIATE
-#define THREAD_DEBUG
+//#define THREAD_DEBUG
 #define BASE_DT 0.0001
 #define RADIUS 0.06
 
