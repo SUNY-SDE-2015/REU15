@@ -207,6 +207,7 @@ int main(int argc, char *argv[])
         final=50;  // Set the final time.
         trials=400; // Set the number of trials to perform.
 
+
         final=50.0;  // Set the final time.
         trials=50;   // Set the number of trials to perform.
 
@@ -263,13 +264,10 @@ int main(int argc, char *argv[])
                     dt = BASE_DT; //(double)numberDT;
                     //printf("%f\t%f\n",dt,fmod(tau,dt));
 
-
-
             // Make different approximations for different values for the time steps.
             for(beta=.1;beta<=.45; beta += .05)
                 {
                     //dt = BASE_DT*(double)numberDT;
-
 #ifdef SHOW_PROGRESS
                     std::cout << "dt = " << dt << std::endl;
 #endif
@@ -285,7 +283,6 @@ int main(int argc, char *argv[])
                         // Make an approximation for different initial conditions.
                         // Make an arc through 0 to pi/2 radians from the origin.
 
-                        {
                             for (int k=0;k<trials;k++)
                             {
                                 y[0]=0.06*cos(theta); //initial Macroalgae level
@@ -339,7 +336,7 @@ int main(int argc, char *argv[])
 
                             }
                         }
-                   }
+
             }
 
             // Free up the allocated memory.
