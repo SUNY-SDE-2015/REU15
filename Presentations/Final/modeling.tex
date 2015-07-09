@@ -60,47 +60,109 @@ $$\begin{cases}
 \end{cases}$$
 \end{frame}
 
-\begin{frame}\frametitle{Equilibria and Stability}\begin{itemize}
-\item $M'=0$ is satisfied when:\begin{itemize}\item $M=0$, or \item $aC + \gamma - \gamma M - \gamma C - \frac{gM}{1-C}=0$.\end{itemize}
-\item $C'=0$ is satisfied when:\begin{itemize} \item$C=0$, or \item $r-Mr-Cr-d-aM=0$. \end{itemize}
-\end{itemize}
+
+
+\begin{frame}\frametitle{Equilibria and Stability}
+
+  \begin{itemize}
+  \item $M'=0$ is satisfied when:
+    \begin{itemize}
+    \item $M=0$, or 
+    \item
+      $aC + \gamma - \gamma M - \gamma C -
+      \frac{gM}{1-C}=0$.
+    \end{itemize}
+  \item $C'=0$ is satisfied when:
+    \begin{itemize} 
+    \item$C=0$, or 
+    \item $r-Mr-Cr-d-aM=0$. 
+    \end{itemize}
+  \end{itemize}
+
 \end{frame}
 
-\begin{frame}\frametitle{Phase Plane} Our equilibrium points are located at the intersections of the nullclines:
-\includegraphics[scale=.22]{./nullclines.png}
+
+\begin{frame}\frametitle{Phase Plane} 
+
+  Our equilibrium points are located at the intersections of the nullclines:\\
+  \includegraphics[scale=.2]{./nullclines.png}
+
 \end{frame}
+
+
 
 \begin{frame}
 \frametitle{Time Delay in the Coral Ecosystem}
+
 We can identify time delays in the coral ecosystem:
 \begin{itemize}
-\item the delay between overfishing of herbivores and growth of macroalgae.\\
-\item the delay between the growth of algae and the effect of algae on coral (Jompa, 2003).\\
-\item the delay between the grazing of macroalgae and growth of algal turf (Li et al., 2014).
+\item the delay between overfishing of herbivores and growth of
+  macroalgae,
+\item the delay between the growth of algae and the effect of algae on
+  coral (Jompa, 2003),
+\item the delay between the grazing of macroalgae and growth of algal
+  turf (Li et al., 2014).
 \end{itemize} We focus on the third time delay.
+
 \end{frame}
 
+
 \begin{frame}\frametitle{Coral Reef Dynamics}
-Delay Differential Equation Model:
+Scarid grazing has an impact for the macroalgae in the future:
 $$\begin{cases}
-\begin{array}{rl}
-\frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)} + \gamma M (1-M-C),\\
-\frac{dC}{dt}\hspace{-.8em}&=rC(1-M-C) - dC - aMC,\\
-\end{array}
+  \begin{array}{rl}
+    \frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)} + \gamma M (1-M-C),\\
+    \frac{dC}{dt}\hspace{-.8em}&=rC(1-M-C) - dC - aMC,\\
+  \end{array}
 \end{cases}$$ where $\tau$ is our time delay.
 \end{frame}
 
+
 \begin{frame}
 \frametitle{Equilibria and Stability}
-There are three equilibrium points of interest: \begin{itemize}
+There are three equilibrium points of interest: 
+\begin{itemize}
 \item $(0,0)$ (Unstable for all $\tau\geq0$)\\
 \item $(1-\frac{g}{\gamma},0)$ (High Coral Cover)\\
 \item $(0,1-\frac{d}{r})$ (High Algae Cover).
-\end{itemize} Notice that time delay does not affect the equilibria.
+\end{itemize} 
+Notice that time delay does not affect the equilibria.
 \end{frame}
 
+
 \begin{frame}\frametitle{Jacobian Matrices}
-We linearize our delay model:{\small $\begin{bmatrix} M'\\C'\end{bmatrix}=J_1\begin{bmatrix} M\\C\end{bmatrix}+J_2\begin{bmatrix}M(t-\tau)\\C(t-\tau)\end{bmatrix}$ (call this eq'n 1), where $$J_1=\begin{bmatrix}\gamma-2\gamma M +(a-\gamma)C & (a-\gamma)M\\ -(a+r)C & r-d-(a+r)-2MC \end{bmatrix}, \text{ and}$$ $$J_2=\begin{bmatrix} \frac{-g}{1-C(t-\tau)} & \frac{-gM(t-\tau)}{(1-C(t-\tau))^2}\\ 0 & 0\end{bmatrix}.$$}
+We linearize our delay model:
+
+\begin{eqnarray}
+  \label{eqn:linearizedDelayModel}
+  \begin{bmatrix} 
+    M'\\C'
+  \end{bmatrix}=J_1
+  \begin{bmatrix} 
+    M \\
+    C
+  \end{bmatrix} + 
+  J_2
+  \begin{bmatrix}
+    M(t-\tau) \\
+    C(t-\tau)
+  \end{bmatrix},
+\end{eqnarray}
+
+where 
+
+\begin{eqnarray*}
+  J_1 & = & \begin{bmatrix}
+    \gamma-2\gamma M +(a-\gamma)C & (a-\gamma)M\\
+    -(a+r)C & r-d-(a+r)-2MC 
+  \end{bmatrix},  \\
+  J_2 & = & 
+  \begin{bmatrix} 
+    \frac{-g}{1-C(t-\tau)} & \frac{-gM(t-\tau)}{(1-C(t-\tau))^2} \\ 
+    0 & 0
+  \end{bmatrix}.
+\end{eqnarray*}
+
 \end{frame}
 
 \begin{comment}
@@ -112,23 +174,42 @@ We linearize our delay model:{\small $\begin{bmatrix} M'\\C'\end{bmatrix}=J_1\be
 \end{comment}
 
 \begin{frame}\frametitle{Putting Jacobians to Use}
-Consider the Jacobians evaluated at the origin:$$J_1=\begin{bmatrix}
-\gamma & 0\\
-0 & r-d
-\end{bmatrix}, \text{ and}$$ $$J_2=\begin{bmatrix}
--g & 0\\
-0 & 0
-\end{bmatrix}.$$ 
+Consider the Jacobians evaluated at the origin:
+
+\begin{eqnarray*}
+  J_1 & = & 
+            \begin{bmatrix}
+              \gamma & 0\\
+              0 & r-d
+            \end{bmatrix}, \\
+  J_2 & = & 
+            \begin{bmatrix}
+              -g & 0\\
+              0 & 0
+            \end{bmatrix}.
+\end{eqnarray*}
+
 \end{frame}
 
 
 \begin{frame}[c]\frametitle{Putting Jacobians to Use}
 %Recall, $(J_1+J_2e^{-\lambda t} -\lambda I)\overrightarrow{v_1}=0$. \\\vspace{2em} Taking determinants, we find the characteristic polynomial of $(J_1+J_2e^{-\lambda t} -\lambda I)$ evaluated at $M=0$, $C=0$ to be 
-The characteristic polynomial of $$(J_1+J_2e^{-\lambda t} -\lambda I),\text{ is}$$ $$(\lambda - r + d)(\lambda -\gamma + ge^{-\lambda\tau})=0$$. 
+
+  The characteristic polynomial of
+  $(J_1+J_2e^{-\lambda t} -\lambda I)$, is
+$$(\lambda - r + d)(\lambda -\gamma + ge^{-\lambda\tau})=0.$$
+
 \end{frame}
 
 \begin{frame}\frametitle{Get Them Eigenvalues}
-Hence, \begin{itemize}{\itemsep .5in}\item $\lambda = r-d>0$ is an eigenvalue with positive real part\item Other eigenvalues satisfy $\lambda=\gamma-ge^{-\lambda\tau}$. \item For $\tau\geq0$, our system has two eigenvalues with positive real part. This implies our nondelay system is unstable at $(0,0)$. \end{itemize}\end{frame}
+Hence, 
+\begin{itemize}{\itemsep .5in}
+\item $\lambda = r-d>0$ is an eigenvalue with positive real part
+\item Other eigenvalues satisfy $\lambda=\gamma-ge^{-\lambda\tau}$.
+\item For $\tau\geq0$, our system has two eigenvalues with positive
+  real part. This implies our nondelay system is unstable at $(0,0)$.
+\end{itemize}
+\end{frame}
 
 \begin{comment}
 \begin{frame}\frametitle{Get Them Eigenvalues}
@@ -142,7 +223,7 @@ Now we consider postive $\tau$.
 \begin{frame}
 The time delay model fails to account for stochastic features of the ecosystem:
 \begin{itemize}
-\item grazing habits of parrotfish, and;
+\item grazing habits of parrotfish, 
 \item hurricanes.
 \end{itemize}
 \end{frame}
@@ -158,6 +239,6 @@ $$\begin{cases}
 \end{cases}$$
 \end{frame}
 
-\begin{frame}
-
+\begin{frame}{Transition}
+  Need a transition slide here.
 \end{frame}

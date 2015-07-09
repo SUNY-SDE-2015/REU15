@@ -44,14 +44,14 @@ $$X(t)=X_0+\int_{0}^{t}f(X(s))ds+\int_{0}^{t}g(X(s))dW(s)$$
 X(t) is a random variable for each value of t. To apply numerical methods:
 	\begin{itemize}
 		\item Discretized time steps	
-		\item X(t) will be the limit as our stepsize goes to cero.
+		\item X(t) will be the limit as our stepsize goes to zero.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Euler-Maruyama method}
 Let $\tau_j=j\Delta t$. In the in the interval [0,L] we have the EM method:\bigskip\\
 $$X_j=X_{j-1}+f(X_{j-1})\Delta t+g(X_{j-1})(W(\tau_j)-W(\tau_{j-1}))$$
- An approximation for:
+ which is an approximation for the equation
 $$X(\tau_j)=X(\tau_{j-1})+\int_{\tau_{j-1}}^{\tau_{j}}f(X(s))ds+\int_
 {\tau_{j-1}}^{\tau_{j}}X(s))dW(s)$$
 %We have Euler's method in the deterministic case ($g\equiv 0$)
@@ -71,7 +71,7 @@ The EM method has strong order of convergence of $\gamma=\frac{1}{2}$.
 The Milstein's method raises the strong order of convergence to 1:	
 	\begin{equation*}
 	\begin{split}
-	X_{j} & =X_{j-1}+\Delta t f(X_{j-1})+g(X_{j-1})(W(\tau_j)-W(\tau_{j-1}))\\
+	X_{j} & =X_{j-1}+ f(X_{j-1}) \; \Delta t + g(X_{j-1})(W(\tau_j)-W(\tau_{j-1}))\\
 	  &\quad +\frac{1}{2}g(X_{j-1})g'(X_{j-1})((W(\tau_j)-W(\tau_{j-1}))^2-\Delta t)
 	\end{split}
 	\end{equation*}
@@ -79,13 +79,13 @@ The Milstein's method raises the strong order of convergence to 1:
 
 \begin{frame}{Example}
 If we consider the differential equation:
-	\begin{equation*}
-	dX=\alpha X dt+ \beta X dW
-	\end{equation*}
+\begin{equation*}
+  dX=\alpha X dt+ \beta X dW,
+\end{equation*}
 the theoretical solution is: 
-	\begin{equation*}
-	X(t)=X_{0}\exp{\left((\alpha -\frac{1}{2}\beta ^2)t +\beta W(t)\right)}
-	\end{equation*}
+\begin{equation*}
+  X(t)=X_{0}\exp{\left((\alpha -\frac{1}{2}\beta ^2)t +\beta W(t)\right)}
+\end{equation*}
 \end{frame}
 
 \begin{frame}
@@ -95,12 +95,12 @@ the theoretical solution is:
 \end{frame}
 
 \begin{frame}
-For systems of equations:
+A system of equations can be expressed in differential form:
 	\begin{eqnarray*}
 		dx&=&f_1(x,y)dt+g_1(x,y)dW\\
 		dy&=&f_2(x,y)dt+g_2(x,y)dW\\
 	\end{eqnarray*}
-In their integral form:
+The equivalent integral form is the following:
 	\begin{eqnarray*}
 		x_t=x_a+\int_{a}^{t}f_1 ds+\int_{a}^{t}g_1dW_1\\
 		y_t=y_a+\int_{a}^{t}f_2 ds+\int_{a}^{t}g_2dW_2\\
@@ -109,7 +109,7 @@ In their integral form:
 
 
 \begin{frame}
-If we apply the chain rule for $f_1$:
+Applying the chain rule for $f_1$:
 	\begin{equation*}
 	\begin{split}
 	f_1(x_j,y_j) &=f_1(x_{j-1},y_{j-1})+f_{1x}(x_{j-1},y_{j-1})(x-x_{j-1})\\
@@ -119,10 +119,10 @@ If we apply the chain rule for $f_1$:
 	& \quad \frac{1}{2}f_{1yy}(x_{j-1},y_{j-1})(y-y_{j-1})^2
 	\end{split}
 	\end{equation*}
-From the integral form:
-	\begin{equation*}
-	x_j-x_{j-1}=\int_{\tau_{j-1}}^{\tau_{j}}f_1 ds+\int_{\tau_{j-1}}^{\tau_{j}}g_1dW_1
-	\end{equation*}
+Substitute into the integral form:
+	\begin{eqnarray*}
+	x_j-x_{j-1} & \approx & \int_{\tau_{j-1}}^{\tau_{j}}f_1 ds+\int_{\tau_{j-1}}^{\tau_{j}}g_1dW_1
+	\end{eqnarray*}
 \end{frame}
 
 
