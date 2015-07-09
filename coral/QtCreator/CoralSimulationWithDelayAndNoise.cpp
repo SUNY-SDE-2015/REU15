@@ -183,24 +183,23 @@ int main(int argc, char *argv[])
             differential equations.
          */
         double a    	 = 0.1;
-        double g    	 = 0.3;
+        double g    ;//	 = 0.3;
         double gamma	 = 0.8;
         double r    	 = 1.0;
         double d    	 = 0.44;
-    //	double tau		 = 0.5;
+        double tau;
         double beta ;//	 = .5;
-        double chi		 = r*gamma/(r+a)-gamma+a;					//Intermediate Step
-        double xi		 = -(d*gamma/(r+a)+a);						//Intermediate Step
-        double cbar		 = (-xi-sqrt(xi*xi-4*chi*g))/(2*chi);		//Intermediate Step
-        double coralSaddle		 = 1-cbar;						    //Saddle point value for coral
-        double macroSaddle		 = (r-r*coralSaddle-d)/(r+a);		//Saddle point value for macroalgae
-        double gZero	 = ((d*a*r+d*d)*(gamma-a))/(r*r);
-        double gOne		 = (gamma*(a+d))/(a+r);
-        double omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
-        double tauZero	 = (1/omega)*acos(gZero/g);
+//        double gZero	 = ((d*a*r+d*d)*(gamma-a))/(r*r);
+//        double gOne		 = (gamma*(a+d))/(a+r);
+//        double chi		 = r*gamma/(r+a)-gamma+a;					//Intermediate Step
+//        double xi		 = -(d*gamma/(r+a)+a);						//Intermediate Step
+//        double cbar		 = (-xi-sqrt(xi*xi-4*chi*g))/(2*chi);		//Intermediate Step
+//        double coralSaddle		 = 1-cbar;						    //Saddle point value for coral
+//        double macroSaddle		 = (r-r*coralSaddle-d)/(r+a);		//Saddle point value for macroalgae
+
 
         double dt        = .0001;          // Set the initial time step
-        long   numberDT;    // The current iteration for the number assocated with the value of dt.
+//        long   numberDT;    // The current iteration for the number assocated with the value of dt.
         double final;       // The final time for each simulation.
         long   trials;      // The number of simulations to make.
 
@@ -209,11 +208,11 @@ int main(int argc, char *argv[])
 
 
         final=50.0;  // Set the final time.
-        trials=50;   // Set the number of trials to perform.
+        trials=400;   // Set the number of trials to perform.
 
 
         // Set the time delay, tau
-        double tau = 0.5;
+        //double tau = 0.5;
 
         // set up the variables for using different approximations on different threads.
         std::thread simulation[NUMBER_THREADS];
@@ -248,11 +247,12 @@ int main(int argc, char *argv[])
                 dt=0.0001;
 */
 
-           // Determine the number of time steps required to move back to the delay in time.
-           // The number of cells needed for the delay (changes with dt)
-            int n;
-            n=(int)(tau/BASE_DT+0.5);
 
+        for(tau = 0; tau <= .4; tau += .2 ){
+        // Determine the number of time steps required to move back to the delay in time.
+        // The number of cells needed for the delay (changes with dt)
+         int n;
+         n=(int)(tau/BASE_DT+0.5);
             // Allocate the space for the states of the system
             x=(double *) calloc(4,sizeof(double));
             y=(double *) calloc(n,sizeof(double));		//macroalgae for multiplicative noise
@@ -264,10 +264,15 @@ int main(int argc, char *argv[])
                     dt = BASE_DT; //(double)numberDT;
                     //printf("%f\t%f\n",dt,fmod(tau,dt));
 
-            // Make different approximations for different values for the time steps.
-            for(beta=.1;beta<=.45; beta += .05)
+        for(g=.2; g<.8; g += .2) {
+            //double omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
+           // double tauZero	 = (1/omega)*acos(gZero/g);
+            // Make different approximations for different values of beta.
+            for(beta=.2;beta<=1; beta += .2)
                 {
                     //dt = BASE_DT*(double)numberDT;
+
+
 #ifdef SHOW_PROGRESS
                     std::cout << "dt = " << dt << std::endl;
 #endif
@@ -336,9 +341,9 @@ int main(int argc, char *argv[])
 
                             }
                         }
-
+                   }
             }
-
+        }
             // Free up the allocated memory.
             free(x);
             free(y);
