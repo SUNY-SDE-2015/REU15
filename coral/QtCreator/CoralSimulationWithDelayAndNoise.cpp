@@ -213,6 +213,11 @@ int main(int argc, char *argv[])
         final=50;  // Set the final time.
         trials=400; // Set the number of trials to perform.
 
+
+        final=50.0;  // Set the final time.
+        trials=50;   // Set the number of trials to perform.
+
+
         // Set the time delay, tau
         double tau = 0.5;
 
@@ -279,11 +284,12 @@ int main(int argc, char *argv[])
                         //printf("%i\n",n);
                         steps=(long)(final/dt);
 
+                        for (double theta=0;theta<=M_PI/2;theta+=(M_PI*0.5)*0.025)
+                        {
 
                         // Make an approximation for different initial conditions.
                         // Make an arc through 0 to pi/2 radians from the origin.
-                        for (double theta=0;theta<=M_PI/2;theta+=(M_PI*0.5)*0.05)
-                        {
+
                             for (int k=0;k<trials;k++)
                             {
                                 y[0] = RADIUS*cos(theta); //initial Macroalgae level
@@ -335,10 +341,13 @@ int main(int argc, char *argv[])
                                     std::cout << "  Simulation number " << k << std::endl;
 #endif
 
+
                             } // for(int k)
                         } // for(double theta)
                     } // if (int) 1000.0*tau+.5
             } // for(beta)
+
+
 
             // Free up the allocated memory.
             free(x);
