@@ -246,12 +246,6 @@ int main(int argc, char *argv[])
 
         fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,initTurf,macroalgae,coral,turf,lgMacro,lgCoral,lgTurf" << std::endl;
 
-        // Allocate the space for the states of the system
-        x=(double *) calloc(4,sizeof(double));
-        y=(double *) calloc(n,sizeof(double));		//macroalgae for multiplicative noise
-        z=(double *) calloc(n,sizeof(double));		//coral for multiplicative noise
-        v=(double *) calloc(n,sizeof(double));		//macroalgae for logistic noise
-        w=(double *) calloc(n,sizeof(double));		//coral for logistic noise
 
         for(tau = .2; tau <= .4; tau += .2 ){
         // Determine the number of time steps required to move back to the delay in time.
@@ -261,6 +255,12 @@ int main(int argc, char *argv[])
                 n=(int)(tau/BASE_DT+0.5);
             else
                 n = 1;
+            // Allocate the space for the states of the system
+            x=(double *) calloc(4,sizeof(double));
+            y=(double *) calloc(n,sizeof(double));		//macroalgae for multiplicative noise
+            z=(double *) calloc(n,sizeof(double));		//coral for multiplicative noise
+            v=(double *) calloc(n,sizeof(double));		//macroalgae for logistic noise
+            w=(double *) calloc(n,sizeof(double));		//coral for logistic noise
 
             for(g=.2; g<.8; g += .2) {
                 //double omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
@@ -339,10 +339,6 @@ int main(int argc, char *argv[])
                         } // for(theta<pi/2
                    }
             }
-        }
-
-
-
 
             // Free up the allocated memory.
             free(x);
@@ -350,6 +346,9 @@ int main(int argc, char *argv[])
             free(z);
             free(v);
             free(w);
+
+        }
+
 
         fp.close();
 
