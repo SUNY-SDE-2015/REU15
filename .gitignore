@@ -17,6 +17,7 @@
 *~
 *.pro.user
 build-*-Desktop-Debug
+build-*-Desktop-Release
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl
