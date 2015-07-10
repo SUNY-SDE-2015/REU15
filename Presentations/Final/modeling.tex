@@ -19,7 +19,7 @@ where
 \item $d$ is the mortality rate of corals\\
 \item $a$ is the rate that macroalgae overgrow upon corals\\
 \item $\gamma$ is the rate that macroalgae spread over algal turfs\\
-\item $g$ is the indiscriminate grazing rate of parrotfish.
+\item $g$ is the indiscriminate grazing rate of scarid.
 \end{itemize} \vspace{1em}
 (Li et al., 2014)
 \end{frame}
@@ -55,7 +55,7 @@ Equilibrium point
 To find equilibrium points analytically we first set the derivatives equal to zero to obtain the nullclines:
 $$\begin{cases}
 \begin{array}{rl}
-0\hspace{-.8em}&=M(aC + \gamma-\gamma M-\gamma C) - \frac{gM}{1-C},\\
+0\hspace{-.8em}&=M(aC + \gamma-\gamma M-\gamma C - \frac{g}{1-C}),\\
 0\hspace{-.8em}&=C(r-Mr-Cr - d - aM).
 \end{array}
 \end{cases}$$
@@ -71,7 +71,7 @@ $$\begin{cases}
     \item $M=0$, or 
     \item
       $aC + \gamma - \gamma M - \gamma C -
-      \frac{gM}{1-C}=0$.
+      \frac{g}{1-C}=0$.
     \end{itemize}
   \item $C'=0$ is satisfied when:
     \begin{itemize} 
@@ -103,7 +103,7 @@ We can identify time delays in the coral ecosystem:
   coral (Jompa, 2003),
 \item the delay between the grazing of macroalgae and growth of algal
   turf (Li et al., 2014).
-\end{itemize} We focus on the third time delay.
+\end{itemize} We focus on the third phenomena.
 
 \end{frame}
 
@@ -115,17 +115,17 @@ $$\begin{cases}
     \frac{dM}{dt}\hspace{-.8em}&=aMC - \frac{gM(t-\tau)}{1-C(t-\tau)} + \gamma M (1-M-C),\\
     \frac{dC}{dt}\hspace{-.8em}&=rC(1-M-C) - dC - aMC,\\
   \end{array}
-\end{cases}$$ where $\tau$ is our time delay.
+\end{cases}$$ where $\tau$ is a fixed time delay.
 \end{frame}
 
 
 \begin{frame}
 \frametitle{Equilibria and Stability}
-There are three equilibrium points of interest: 
+These are three equilibrium points of interest: 
 \begin{itemize}
 \item $(0,0)$ (Unstable for all $\tau\geq0$)\\
-\item $(1-\frac{g}{\gamma},0)$ (High Coral Cover)\\
-\item $(0,1-\frac{d}{r})$ (High Algae Cover).
+\item $(0,1-\frac{g}{\gamma})$ (High Coral Cover)\\
+\item $(1-\frac{d}{r},0)$ (High Algae Cover).
 \end{itemize} 
 Notice that time delay does not affect the equilibria.
 \end{frame}
@@ -154,12 +154,12 @@ where
 
 \begin{eqnarray*}
   J_1 & = & \begin{bmatrix}
-    \gamma-2\gamma M +(a-\gamma)C & (a-\gamma)M\\
-    -(a+r)C & r-d-(a+r)-2MC 
+    \gamma-2\gamma M^* +(a-\gamma)C^* & (a-\gamma)M^*\\
+    -(a+r)C^* & r-d-(a+r)-2M^*C^* 
   \end{bmatrix},  \\
   J_2 & = & 
   \begin{bmatrix} 
-    \frac{-g}{1-C(t-\tau)} & \frac{-gM(t-\tau)}{(1-C(t-\tau))^2} \\ 
+    \frac{-g}{1-C^*} & \frac{-gM^*}{(1-C^*)^2} \\ 
     0 & 0
   \end{bmatrix}.
 \end{eqnarray*}
@@ -208,7 +208,7 @@ Hence,
 \item $\lambda = r-d>0$ is an eigenvalue with positive real part
 \item Other eigenvalues satisfy $\lambda=\gamma-ge^{-\lambda\tau}$.
 \item For $\tau\geq0$, our system has two eigenvalues with positive
-  real part. This implies our nondelay system is unstable at $(0,0)$.
+  real part. This implies our nondelayed system is unstable at $(0,0)$.
 \end{itemize}
 \end{frame}
 
@@ -224,17 +224,18 @@ Now we consider postive $\tau$.
 \begin{frame}\frametitle{Stochastic Coral Features}
 The time delay model fails to account for stochastic features of the ecosystem:
 \begin{itemize}
-\item grazing habits of parrotfish, 
+\item human activities (e.g. fishing and boating)
+\item grazing habits of scarids, 
 \item hurricanes.
 \end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{Stochastic Model}
-To account for these stochastic feature we add noise!
+To account for these stochastic features we add noise!
 $$\begin{cases}
 \begin{array}{rl}
-dM\hspace{-.8em}&=(aMC - \frac{gM(t-\tau)}{1-C(t-\tau)+\gamma M T)dt}+{\color{red}\beta M(1-M)dW},\\
+dM\hspace{-.8em}&=(aMC - \frac{gM(t-\tau)}{1-C(t-\tau)+\gamma M T})dt+{\color{red}\beta M(1-M)dW},\\
 dC\hspace{-.8em}&=(rTC  - dC - aMC)dt.\\
 \end{array}
 \end{cases}$$
