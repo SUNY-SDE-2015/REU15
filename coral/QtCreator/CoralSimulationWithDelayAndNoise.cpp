@@ -31,10 +31,14 @@ std::mutex writeToFile;
 #define BASE_DT 0.00001
 #define RADIUS 0.06
 
+
+#ifndef Q_OS_UNIX
 double drand48()
 {
     return((double)(rand())/((double)RAND_MAX));
 }
+#endif
+
 
 void normalDistRand(double stdDev,double* randomNumbers)
     {
@@ -179,6 +183,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication b(argc, argv);
 
+
         long steps;    // The number of steps to take in a single simulation.
         double *v,*w,*x,*y,*z;  // The variables used for the state of the system.
 
@@ -225,7 +230,12 @@ int main(int argc, char *argv[])
         int numberThreads = 0;
 
         // Sets the seed for the random numbers
+#ifdef Q_OS_UNIX
+        srand48(time(NULL));
+        //qDebug() << "This is a POSIX system!" ;
+#else
         srand(time(NULL));
+#endif
 
 
 
@@ -255,6 +265,7 @@ int main(int argc, char *argv[])
             for(g=.2; g<.8; g += .2) {
                 //double omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
                 // double tauZero	 = (1/omega)*acos(gZero/g);
+
                 // Make different approximations for different values of beta.
                 for(beta=.2;beta<=1; beta += .2) {
 
@@ -304,7 +315,7 @@ int main(int argc, char *argv[])
 #endif
                                         simulation[--numberThreads].join();
                                     }
-                                }
+                                } // if(numberThreads)
 
 
                                 // Make a run in a separate thread.
@@ -324,8 +335,8 @@ int main(int argc, char *argv[])
                                     std::cout << "  Simulation number " << k << std::endl;
 #endif
 
-                            }
-                        }
+                            } // for(k<trials)
+                        } // for(theta<pi/2
                    }
             }
         }
@@ -339,13 +350,11 @@ int main(int argc, char *argv[])
             free(z);
             free(v);
             free(w);
-    //        }
-      //      }
 
         fp.close();
 
 #ifdef SHOW_PROGRESS
-            std::cout << "all done" << std::endl;
+        std::cout << "all done" << std::endl;
 #endif
 
         return b.exec();
