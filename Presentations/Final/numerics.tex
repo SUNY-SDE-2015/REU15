@@ -3,7 +3,7 @@
 
 \begin{frame}{Approximation for stochastic differential equations}
 	\begin{equation*}
-	dX=\alpha(X)dt+\beta(X)dW
+	dX=\alpha(X)dt+{\color{red}\beta(X)dW}
 	\end{equation*}
 	\begin{center}
 	$\alpha$, $\beta$ are functions of X.	
@@ -18,28 +18,19 @@
 \begin{frame}{Ito's Formulas}
   	\begin{itemize}
    		\item First version: $$f(B(b))-f(B(a))=\int_{a}^{b}{\frac{\partial f}{\partial B} 				dB}+\int_{a}^{b}{\frac{1}{2} \frac{\partial^2 f}{\partial B^2} dt} $$\\
-    		\item Second version: $$f(b,B(b))-f(a,B(a))=\int_{a}^{b}{\frac{\partial f}{\partial B} 			dB}+\int_{a}^{b}{(\frac{\partial f}{\partial s}+\frac{1}{2}\frac{\partial ^2 f}{\partial 		B^2}) ds}$$\\
-  	%\item  Third version: The Stochastic Chain Rule $$d\theta=\frac{\partial\theta}{\partial 		t}dt+\frac{\partial\theta}{\partial x}f dB+\frac{\partial\theta}{\partial x}g 					dt+\frac{1}{2}\frac{\partial^2\theta}{\partial x^2}f^2dt$$
-  		%\item Third version: The Stochastic Chain Rule
-  		%$$\theta(b,x_b)=\theta(a,x_a)+\int_{a}^{b}\frac{\partial\theta}{\partial
-  		%t}dt+\int_{a}^{b}\frac{\partial\theta}{\partial x}f dB+\int_{a}^{b}\frac{\partial\theta}
-  %		{\partial x}gdt+\int_{a}^{b}\frac{1}{2}\frac{\partial^2\theta}{\partial x^2}f^2dt$$
-  	\end{itemize}
-\end{frame}
-
-\begin{frame}
-	\begin{itemize}
-	\item Third version: The Stochastic Chain Rule
-  		$$\theta(b,x_b)=\theta(a,x_a)+\int_{a}^{b}\frac{\partial\theta}{\partial
-  		t}dt+\int_{a}^{b}\frac{\partial\theta}{\partial x}f dB$$\\
-  		$$+\int_{a}^{b}\frac{\partial\theta}{\partial x}gdt+\int_{a}^{b}\frac{1}
-  		{2}\frac{\partial^2\theta}{\partial x^2}f^2dt$$
+    		\item Second version: $$f(b,B(b))-f(a,B(a))=\int_{a}^{b}{\frac{\partial f}{\partial B} 			dB}+\int_{a}^{b}{\left(\frac{\partial f}{\partial s}+\frac{1}{2}\frac{\partial^2 f}
+    		{\partial B^2}\right) ds}$$\\
+    		\item Third version: The Stochastic Chain Rule
+    		$$\theta (t,x_t)=\theta(a,x_a)+\int_{a}^{t}\frac{\partial \theta}{\partial s}ds+
+    		\int_{a}^{t}f\frac{\partial \theta}{\partial x}dW+
+  		\int_{a}^{t}g\frac{\partial \theta}{\partial x}+f^2 \frac{1}{2} \frac{\partial ^2\theta}
+  		{\partial x^2}ds$$\\
   	\end{itemize}
 \end{frame}
 
 \begin{frame}{Numerical methods}
 Integral form of a SDE: 
-$$X(t)=X_0+\int_{0}^{t}f(X(s))ds+\int_{0}^{t}g(X(s))dW(s)$$
+$$X(t)=X_0+\int_{0}^{t}f(X(s))ds+{\color{red}\int_{0}^{t}g(X(s))dW(s)}$$
 
 X(t) is a random variable for each value of t. To apply numerical methods:
 	\begin{itemize}
@@ -53,7 +44,7 @@ Let $\tau_j=j\Delta t$. In the in the interval [0,L] we have the EM method:\bigs
 $$X_j=X_{j-1}+f(X_{j-1})\Delta t+g(X_{j-1})(W(\tau_j)-W(\tau_{j-1}))$$
  which is an approximation for the equation
 $$X(\tau_j)=X(\tau_{j-1})+\int_{\tau_{j-1}}^{\tau_{j}}f(X(s))ds+\int_
-{\tau_{j-1}}^{\tau_{j}}X(s))dW(s)$$
+{\tau_{j-1}}^{\tau_{j}}X(s)dW(s)$$
 %We have Euler's method in the deterministic case ($g\equiv 0$)
 \end{frame}
 
@@ -68,7 +59,7 @@ The EM method has strong order of convergence of $\gamma=\frac{1}{2}$.
 \end{frame}
 
 \begin{frame}{Milstein's method}
-The Milstein's method raises the strong order of convergence to 1:	
+The Milstein method raises the strong order of convergence to 1:	
 	\begin{equation*}
 	\begin{split}
 	X_{j} & =X_{j-1}+ f(X_{j-1}) \; \Delta t + g(X_{j-1})(W(\tau_j)-W(\tau_{j-1}))\\
@@ -97,13 +88,13 @@ the theoretical solution is:
 \begin{frame}
 A system of equations can be expressed in differential form:
 	\begin{eqnarray*}
-		dx&=&f_1(x,y)dt+g_1(x,y)dW\\
-		dy&=&f_2(x,y)dt+g_2(x,y)dW\\
+		dx&=&f_1(x,y)dt+{\color{red}g_1(x,y)dW}\\
+		dy&=&f_2(x,y)dt+{\color{red}g_2(x,y)dW}\\
 	\end{eqnarray*}
 The equivalent integral form is the following:
 	\begin{eqnarray*}
-		x_t=x_a+\int_{a}^{t}f_1 ds+\int_{a}^{t}g_1dW_1\\
-		y_t=y_a+\int_{a}^{t}f_2 ds+\int_{a}^{t}g_2dW_2\\
+		x_t=x_a+\int_{a}^{t}f_1 ds+{\color{red}\int_{a}^{t}g_1dW_1}\\
+		y_t=y_a+\int_{a}^{t}f_2 ds+{\color{red}\int_{a}^{t}g_2dW_2}\\
 	\end{eqnarray*}	
 \end{frame}
 
@@ -131,7 +122,7 @@ Substitute into the integral form:
 Similarly for $g_1$ and if we ignore the high order terms:
 	\begin{equation*}
 	\begin{split}
-	x_{j} &= x_{j-1}+f_1(x_{j-1},y_{j-1})\Delta t+g_1(x_{j-1},y_{j-1})\Delta W_1\\
+	x_{j} & \approx x_{j-1}+f_1(x_{j-1},y_{j-1})\Delta t+g_1(x_{j-1},y_{j-1})\Delta W_1\\
 	& \quad +g_{1x}(x_{j-1},y_{j-1})\int_{\tau_{j-1}}^{\tau_{j}}
 	\int_{\tau_{j-1}}^{s}g_1dW_1dW_1\\
 	& \quad	+g_{1y}(x_{j-1},y_{j-1})\int_{\tau_{j-1}}^{\tau_{j}}\int_{\tau_{j-1}}^{t}
