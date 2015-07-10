@@ -9,14 +9,14 @@ cMax <-  1.1
 mMin <- -0.1
 mMax <-  1.1
 par(xpd=FALSE)
-par(cex.main=1.5)
-par(cex.lab=1.5)
-par(cex.axis=2.0)
+par(cex.main=1.0)
+par(cex.lab=1.0)
+par(cex.axis=1.0)
 
 c1 <- seq(cMin, cMax, by=.01)
 m1 <- (a/gamma*c1-(g/gamma)/(1.0-c1)+1.0-c1)    ### x null-cline
 
-png("nullclines.png",width=2048,height=2048,pointsize=24)
+pdf("nullclines.pdf",width=10,height=10,pointsize=18)
 plot(m1,c1, xlim=c(mMin, mMax),ylim=c(cMin, cMax),col=2,type="l",lwd=5,
      main="",xlab="",ylab="",cex.axis=1.5)
 points (c(0.0,0.0),c(cMin,cMax),col=2,type="l",lwd=5)
@@ -27,10 +27,10 @@ points (m2,c2,col=3,type="l",lwd=5)
 points (c(mMin,mMax),c(0.0,0.0),col=3,type="l",lwd=5)
 
 par(xpd=TRUE)
-par(adj=0.01)
+par(adj=0.2)
 title(main="Phase Plane for Coral Without Delay",
       xlab="Macroalgae Area",ylab="Coral Area")
-legend (0.87,1.22,c("M Nullcline","C Nullcline"),col=c(2,3), lty=c(1,1), lwd=5)
+legend (0.87,1.33,c("M Nullcline","C Nullcline"),col=c(2,3), lty=c(1,1), lwd=5)
 
 vectorField <- function(mat,coral,a,g,gamma,r,d)
 	    {
