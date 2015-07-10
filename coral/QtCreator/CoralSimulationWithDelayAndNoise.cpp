@@ -28,7 +28,7 @@ std::mutex writeToFile;
 #define SHOW_PROGRESS
 //#define SHOW_INTERMEDIATE
 //#define THREAD_DEBUG
-#define BASE_DT 0.0001
+#define BASE_DT 0.00001
 #define RADIUS 0.06
 
 double drand48()
@@ -214,7 +214,7 @@ int main(int argc, char *argv[])
         long   trials;      // The number of simulations to make.
 
         final=50.0;  // Set the final time.
-        trials=50;   // Set the number of trials to perform.
+        trials=400;   // Set the number of trials to perform.
 
 
         // Set the time delay, tau
@@ -237,24 +237,7 @@ int main(int argc, char *argv[])
         fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,initTurf,macroalgae,coral,turf,lgMacro,lgCoral,lgTurf" << std::endl;
 
 
-/*		for (g=0.1;g<=0.8;g=g+0.02)
-            {
-                //Redefine initial conditions and critical points for varying g
-                cbar		 = (-xi-sqrt(xi*xi-4*chi*g))/(2*chi);
-                coralSaddle		 = 1-cbar;
-                macroSaddle		 = (r-r*coralSaddle-d)/(r+a);
-                omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
-                tauZero	 = (1/omega)*acos(gZero/g);
-                if (coralSaddle>0 && coralSaddle<1 && macroSaddle>0 && macroSaddle<1 && tauZero>0)
-            for (double aleph=0;aleph<=5;aleph=aleph+1)
-            {
-
-                tau=.3*(1+aleph)*tauZero;
-                dt=0.0001;
-*/
-
-
-        for(tau = 0; tau <= .4; tau += .2 ){
+        for(tau = .2; tau <= .4; tau += .2 ){
         // Determine the number of time steps required to move back to the delay in time.
         // The number of cells needed for the delay (changes with dt)
             int n;
@@ -269,9 +252,6 @@ int main(int argc, char *argv[])
             v=(double *) calloc(n,sizeof(double));		//macroalgae for logistic noise
             w=(double *) calloc(n,sizeof(double));		//coral for logistic noise
 
-                //for(numberDT=1;numberDT<5;++numberDT)
-                    //printf("%f\t%f\n",dt,fmod(tau,dt));
-
             for(g=.2; g<.8; g += .2) {
                 //double omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
                 // double tauZero	 = (1/omega)*acos(gZero/g);
@@ -282,8 +262,6 @@ int main(int argc, char *argv[])
 #ifdef SHOW_PROGRESS
                     std::cout << "dt = " << dt << std::endl;
 #endif
-                    if ((int)(10000.0*tau+.5)%(int)(dt*10000.0+.5)==0)
-                    {
                         //index = tau/dt;
 
                         //printf("%i\n",n);
@@ -351,7 +329,7 @@ int main(int argc, char *argv[])
                    }
             }
         }
-    }
+
 
 
 
