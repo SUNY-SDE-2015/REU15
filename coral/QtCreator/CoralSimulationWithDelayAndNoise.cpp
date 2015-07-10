@@ -13,7 +13,7 @@
 
 
 #define OUTPUT_FILE "./trials.csv"
-#define NUMBER_THREADS 7
+#define NUMBER_THREADS 1
 #define USE_MULTIPLE_THREADS
 // create a mutex that is used to protect the writing of the data to
 // the file.
@@ -214,7 +214,7 @@ int main(int argc, char *argv[])
         long   trials;      // The number of simulations to make.
 
         final=50.0;  // Set the final time.
-        trials=400;   // Set the number of trials to perform.
+        trials=50;   // Set the number of trials to perform.
 
 
         // Set the time delay, tau
@@ -258,7 +258,10 @@ int main(int argc, char *argv[])
         // Determine the number of time steps required to move back to the delay in time.
         // The number of cells needed for the delay (changes with dt)
             int n;
-            n=(int)(tau/BASE_DT+0.5);
+            if(tau != 0)
+                n=(int)(tau/BASE_DT+0.5);
+            else
+                n = 1;
             // Allocate the space for the states of the system
             x=(double *) calloc(4,sizeof(double));
             y=(double *) calloc(n,sizeof(double));		//macroalgae for multiplicative noise
