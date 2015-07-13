@@ -44,7 +44,7 @@ Let $\tau_j=j\Delta t$. In the interval [0,L] we have the EM method:\bigskip\\
 $$X_j=X_{j-1}+f(X_{j-1})\Delta t+g(X_{j-1})(W(\tau_j)-W(\tau_{j-1}))$$
  which is an approximation for the equation
 $$X(\tau_j)=X(\tau_{j-1})+\int_{\tau_{j-1}}^{\tau_{j}}f(X(s))ds+\int_
-{\tau_{j-1}}^{\tau_{j}}X(s)dW(s)$$
+{\tau_{j-1}}^{\tau_{j}}g(X(s))dW(s)$$
 %We have Euler's method in the deterministic case ($g\equiv 0$)
 \end{frame}
 
@@ -103,7 +103,7 @@ The equivalent integral form is the following:
 Applying the chain rule for $f_1$:
 	\begin{equation*}
 	\begin{split}
-	f_1(x_j,y_j) &=f_1(x_{j-1},y_{j-1})+f_{1x}(x_{j-1},y_{j-1})(x-x_{j-1})\\
+	f_1(x_j,y_j) & \approx f_1(x_{j-1},y_{j-1})+f_{1x}(x_{j-1},y_{j-1})(x-x_{j-1})\\
 	& \quad +f_{1y}(x_{j-1},y_{j-1})(y-y_{j-1})+\frac{1}{2} f_{1xx}(x_{j-1},y_{j-1})(x-
 	x_{j-1})^2\\
 	& \quad +f_{1xy}(x_{j-1},y_{j-1})(x-x_{j-1})(y-y_{j-1})\\
