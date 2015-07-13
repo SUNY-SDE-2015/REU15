@@ -1,0 +1,22 @@
+Call:
+glm(formula = cbind(succ[beta == 0.6], total[beta == 0.6] - succ[beta == 
+    0.6]) ~ theta[beta == 0.6], family = binomial(link = logit))
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-94.780   -4.339    0.317    7.952   14.957  
+
+Coefficients:
+                   Estimate Std. Error z value Pr(>|z|)    
+(Intercept)         0.90916    0.01478   61.50   <2e-16 ***
+theta[beta == 0.6]  2.43260    0.02654   91.66   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 22387  on 40  degrees of freedom
+Residual deviance: 11160  on 39  degrees of freedom
+AIC: 11439
+
+Number of Fisher Scoring iterations: 5

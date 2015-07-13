@@ -12,34 +12,44 @@
     \end{cases}$$\\
   We are interested in the effects of:
   \begin{itemize}
-  \item the initial condition\\
-  \item beta\\
-  \item tau\\
+  \item $\theta$ (the initial condition)\\
+  \item $\beta$\\
+  \item $\tau$\\
+  \item $g$\\
   \end{itemize}
+  
   
 
 \end{frame}
 
-\begin{frame}{Initial Conditions}
-Add arc to graph
-\includegraphics[scale=.325]{./nullclines.pdf}
+\begin{frame}{Theta}
+\includegraphics[scale=.325]{./nullclinesarc.pdf}
 
 \end{frame}
 
+\begin{frame}{The Simulation}
+We sampled the following values:
+\begin{itemize}
+\item $\theta$ = $\frac{\pi}{80}$ to $\frac{39\pi}{80}$ by $\frac{\pi}{80}$\\
+\item $\beta$ = 0 to 1 by 0.05\\
+\item $\tau$ = 0.5 to 1 by 0.05\\
+\item $g$ = 0.2 to 0.8 by 0.1\\
+\end{itemize}
+\end{frame}
 
 \begin{frame}{Initial Conditions}
-\includegraphics[scale=.425]{ic.png}
+\includegraphics[scale=.325]{./theta_ic.pdf}
 \end{frame}
 
 \begin{frame}{The Three Models}
 Based on the plot, we will try the following three models
 \begin{itemize}
 \item Binomial Logit\\
-Fits the model $logit(y)=a+bx$ where $logit(y)=log(\frac{y}{1-y})$\\
+Fits the model $logit(p)=a+b\theta$ where $logit(p)=log(\frac{p}{1-p})$\\
 \item Poisson Log\\
-Fits the model $log(y)=a+bx$\\
+Fits the model $log(y)=a+b\theta$\\
 \item Ordinary Least Squares (OLS)\\
-Fits the model $y=a+bx$\\
+Fits the model $p=a+b\theta$\\
 \end{itemize}
 \end{frame}
 
@@ -48,12 +58,12 @@ Fits the model $y=a+bx$\\
 \includegraphics[scale=.425]{theta_three_models.png}
 \end{frame}
 
-\begin{frame}{The Binomial Logit Model}
-\includegraphics[scale=.5]{theta_logit_summary.png}\\
-A goodness of fit test: $P(\chi^{2}_{1}>3288.10-927.62)$\\
-Do the same thing for the Poisson and OLS\\
-Test beta and tau\\
-Do interaction terms\\
+\begin{frame}\frametitle{The Binomial Logit Model}
+{\fontsize{8}{3} \color{blue} \verbatiminput{theta_logit_summary.txt}}
+
+Conducting a goodness of fit test: \\
+$P(\chi^{2}_{1}>3288.10-927.62)<0.0001$\\
+
 \end{frame}
 
 
