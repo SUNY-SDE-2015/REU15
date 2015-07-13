@@ -1,8 +1,11 @@
-data<-read.csv("trialsA.csv",header=TRUE)
+if(!exists('data'))
+    {
+        data<-read.csv("trialsA.csv",header=TRUE)
+    }
 
 thetaVals   <- unique(data$theta)
 numTheta    <- length(thetaVals)
-thetaCuts   <- c(0,0.5*(thetaVals[2:numTheta]+thetaVals[1:(numTheta-1)]),max(thetaCuts)+1.0)
+thetaCuts   <- c(0,0.5*(thetaVals[2:numTheta]+thetaVals[1:(numTheta-1)]),max(thetaVals)+1.0)
 thetaLabels <- format(thetaVals,digits=2)
 
 data$thetaVals <- cut(data$theta,thetaCuts,includelowest=TRUE,labels=thetaLabels,right=FALSE)
@@ -10,31 +13,37 @@ data$thetaVals <- cut(data$theta,thetaCuts,includelowest=TRUE,labels=thetaLabels
 
 for(beta in sort(unique(data$beta)))
     {
-        for(theta in sort(unique(data$theta)))
+        for(g in sort(unique(data$g)))
             {
-                which <- (data$beta==beta)&
-                    !is.na(data$macroalgae)&!is.na(data$coral)&
-                        data$theta==theta
-                algae <- data$macroalgae[which]
-                coral <- data$coral[which]
+                for(theta in sort(unique(data$theta)))
+                    {
+                        which <- (data$beta==beta)& (data$g==g) &
+                            !is.na(data$macroalgae)&!is.na(data$coral)&
+                                data$theta==theta
+                        algae <- data$macroalgae[which]
+                        coral <- data$coral[which]
 
-                t <- format(pi/theta,digits=2)
-                b <- format(beta,digits=2)
-                plot(algae,coral,
-                     xlim=c(0,1),ylim=c(0,1),
-                     main=substitute(paste("Coral/Macro Algae Endpoints for ",
-                         beta,"=",b,' and ',
-                         theta,"=",pi,'/(',t,')'),list(b=b,t=t)),
-                     xlab="Macroalgae",ylab="Coral")
+                        t    <- format(pi/theta,digits=2)
+                        b    <- format(beta,digits=2)
+                        gval <- format(g,digits=2)
+                        plot(algae,coral,
+                             xlim=c(0,1),ylim=c(0,1),
+                             main=substitute(paste("Coral/Macro Algae Endpoints for ",
+                                 beta,"=",b,' and ',
+                                 g,"=",gval,' and ',
+                                 theta,"=",pi,'/(',t,')'),list(b=b,t=t,gval=g)),
+                             xlab="Macroalgae",ylab="Coral")
 
-                #smoothScatter(algae,coral,
-                #     xlim=c(0,1),ylim=c(0,1),
-                #     main=substitute(paste("Coral/Macro Algae Endpoints for ",
-                #         beta,"=",t,' and ',
-                #         theta,"=",b),list(b=b,t=t)),
-                #     xlab="Macroalgae",ylab="Coral")
+                        #smoothScatter(algae,coral,
+                        #     xlim=c(0,1),ylim=c(0,1),
+                        #     main=substitute(paste("Coral/Macro Algae Endpoints for ",
+                        #         beta,"=",t,' and ',
+                        #         g,"=",gval,' and ',
+                        #         theta,"=",b),list(b=b,t=t)),
+                        #     xlab="Macroalgae",ylab="Coral")
 
-                         
+                        readline(prompt = "Press <Enter> for next plot")
+                    }
             }
 
 
