@@ -247,11 +247,12 @@ int main(int argc, char *argv[])
         fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,initTurf,macroalgae,coral,turf,lgMacro,lgCoral,lgTurf" << std::endl;
 
 
-        for(tau = .2; tau <= .4; tau += .2 ){
-        // Determine the number of time steps required to move back to the delay in time.
-        // The number of cells needed for the delay (changes with dt)
+        for(tau = .2; tau <= .4; tau += .2 )
+        {
+           // Determine the number of time steps required to move back to the delay in time.
+           // The number of cells needed for the delay (changes with dt)
             int n;
-            if(tau != 0)
+            if(tau > 0.0)
                 n=(int)(tau/BASE_DT+0.5);
             else
                 n = 1;
@@ -262,12 +263,23 @@ int main(int argc, char *argv[])
             v=(double *) calloc(n,sizeof(double));		//macroalgae for logistic noise
             w=(double *) calloc(n,sizeof(double));		//coral for logistic noise
 
+            if((x==NULL) || (y==NULL) || (z==NULL) || (w==NULL))
+            {
+                std::cout << "Error - unable to allocate necessary memory." << std::endl;
+                free(x);
+                free(y);
+                free(z);
+                free(v);
+                free(w);
+                return b.exec();
+            }
+
             for(g=.2; g<.8; g += .2) {
                 //double omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
                 // double tauZero	 = (1/omega)*acos(gZero/g);
 
                 // Make different approximations for different values of beta.
-                for(beta=.2;beta<=1; beta += .2) {
+                for(beta=.2;beta<=1.0; beta += .2) {
 
 
 #ifdef SHOW_PROGRESS
