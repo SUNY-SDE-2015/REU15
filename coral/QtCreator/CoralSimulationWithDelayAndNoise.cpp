@@ -263,7 +263,7 @@ int main(int argc, char *argv[])
             v=(double *) calloc(n,sizeof(double));		//macroalgae for logistic noise
             w=(double *) calloc(n,sizeof(double));		//coral for logistic noise
 
-            if((x==NULL) || (y==NULL) || (z==NULL) || (w==NULL))
+            if((x==NULL) || (y==NULL) || (z==NULL) || (v==NULL) || (w==NULL))
             {
                 std::cout << "Error - unable to allocate necessary memory." << std::endl;
                 free(x);
