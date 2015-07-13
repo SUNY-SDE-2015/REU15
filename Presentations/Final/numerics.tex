@@ -55,11 +55,11 @@ $$E|X_n-X(\tau)|\leq C \Delta t^\gamma$$
 for any fixed $\tau=n \Delta t \in [0,T]$ and $\Delta t$ sufficiently small.
 \end{block}
 \bigskip
-The EM method has strong order of convergence of $\gamma=\frac{1}{2}$.
+The EM method has strong order of convergence of $\gamma=\frac{1}{2}$\cite{doi:10.1137/S0036144500378302}.
 \end{frame}
 
 \begin{frame}{Milstein's method}
-The Milstein method raises the strong order of convergence to 1:	
+The Milstein method raises the strong order of convergence to 1\cite{doi:10.1137/S0036144500378302}:	
 	\begin{equation*}
 	\begin{split}
 	X_{j} & =X_{j-1}+ f(X_{j-1}) \; \Delta t + g(X_{j-1})(W(\tau_j)-W(\tau_{j-1}))\\
@@ -86,7 +86,7 @@ Where $\alpha, \beta$ are constants. The theoretical solution is:
 \end{frame}
 
 \begin{frame}
-A system of equations can be expressed in differential form:
+A system of equations can be expressed in differential form \cite{klodenNumerics}:
 	\begin{eqnarray*}
 		dx&=&f_1(x,y)dt+{\color{red}g_1(x,y)dW}\\
 		dy&=&f_2(x,y)dt+{\color{red}g_2(x,y)dW}\\
