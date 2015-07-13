@@ -3,14 +3,25 @@
 
 \begin{frame}{Approximation for stochastic differential equations}
 	\begin{equation*}
-	dX=\alpha(X)dt+{\color{red}\beta(X)dW}
+	dX=f(X)dt+{\color{red}g(X)dW}
 	\end{equation*}
 	\begin{center}
-	$\alpha$, $\beta$ are functions of X.	
+	$f,g$ are functions of X.	
 	\end{center}
 	\begin{itemize}
 		\item It's difficult to find an explicit solution.
 		\item We can make simulations.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Numerical methods}
+Integral form of a SDE: 
+$$X(t)=X_0+\int_{0}^{t}f(X(s))ds+{\color{red}\int_{0}^{t}g(X(s))dW(s)}$$
+
+X(t) is a random variable for each value of t. To apply numerical methods:
+	\begin{itemize}
+		\item Discretized time steps	
+		%\item X(t) will be the limit as our stepsize goes to zero.
 	\end{itemize}
 \end{frame}
 
@@ -28,19 +39,8 @@
   	\end{itemize}
 \end{frame}
 
-\begin{frame}{Numerical methods}
-Integral form of a SDE: 
-$$X(t)=X_0+\int_{0}^{t}f(X(s))ds+{\color{red}\int_{0}^{t}g(X(s))dW(s)}$$
-
-X(t) is a random variable for each value of t. To apply numerical methods:
-	\begin{itemize}
-		\item Discretized time steps	
-		\item X(t) will be the limit as our stepsize goes to zero.
-	\end{itemize}
-\end{frame}
-
 \begin{frame}{Euler-Maruyama method}
-Let $\tau_j=j\Delta t$. In the in the interval [0,L] we have the EM method:\bigskip\\
+Let $\tau_j=j\Delta t$. In the interval [0,L] we have the EM method:\bigskip\\
 $$X_j=X_{j-1}+f(X_{j-1})\Delta t+g(X_{j-1})(W(\tau_j)-W(\tau_{j-1}))$$
  which is an approximation for the equation
 $$X(\tau_j)=X(\tau_{j-1})+\int_{\tau_{j-1}}^{\tau_{j}}f(X(s))ds+\int_
@@ -73,7 +73,7 @@ If we consider the differential equation:
 \begin{equation*}
   dX=\alpha X dt+ \beta X dW,
 \end{equation*}
-the theoretical solution is: 
+Where $\alpha, \beta$ are constants. The theoretical solution is: 
 \begin{equation*}
   X(t)=X_{0}\exp{\left((\alpha -\frac{1}{2}\beta ^2)t +\beta W(t)\right)}
 \end{equation*}
@@ -106,8 +106,8 @@ Applying the chain rule for $f_1$:
 	f_1(x_j,y_j) &=f_1(x_{j-1},y_{j-1})+f_{1x}(x_{j-1},y_{j-1})(x-x_{j-1})\\
 	& \quad +f_{1y}(x_{j-1},y_{j-1})(y-y_{j-1})+\frac{1}{2} f_{1xx}(x_{j-1},y_{j-1})(x-
 	x_{j-1})^2\\
-	& \quad +f_{1xy}(x_{j-1},y_{j-1})(x-x_{j-1})(y-y_{j-1})+\\
-	& \quad \frac{1}{2}f_{1yy}(x_{j-1},y_{j-1})(y-y_{j-1})^2
+	& \quad +f_{1xy}(x_{j-1},y_{j-1})(x-x_{j-1})(y-y_{j-1})\\
+	& \quad +\frac{1}{2}f_{1yy}(x_{j-1},y_{j-1})(y-y_{j-1})^2
 	\end{split}
 	\end{equation*}
 Substitute into the integral form:
@@ -118,14 +118,13 @@ Substitute into the integral form:
 
 
 \begin{frame}
-%I need to fix how it looks
 Similarly for $g_1$ and if we ignore the high order terms:
 	\begin{equation*}
 	\begin{split}
 	x_{j} & \approx x_{j-1}+f_1(x_{j-1},y_{j-1})\Delta t+g_1(x_{j-1},y_{j-1})\Delta W_1\\
 	& \quad +g_{1x}(x_{j-1},y_{j-1})\int_{\tau_{j-1}}^{\tau_{j}}
 	\int_{\tau_{j-1}}^{s}g_1dW_1dW_1\\
-	& \quad	+g_{1y}(x_{j-1},y_{j-1})\int_{\tau_{j-1}}^{\tau_{j}}\int_{\tau_{j-1}}^{t}
+	& \quad	+g_{1y}(x_{j-1},y_{j-1})\int_{\tau_{j-1}}^{\tau_{j}}\int_{\tau_{j-1}}^{s}
 	g_2dW_2dW_1\\
 	\end{split}
 	\end{equation*}	
@@ -148,8 +147,8 @@ Similarly:
 \begin{equation*}
 	\begin{split}
 	y_{j}&=y_{j-1}+f_2(x_{j-1},y_{j-1})\Delta t+g_2(x_{j-1},y_{j-1})\Delta W_2\\
-	&\quad +\frac{1}{2}g_{2x}(x_{j-1},y_{j-1})g_{1}(x_{j-1},y_{j-1})\Delta W_1 \Delta W_2\\
-	&\quad +g_{2y}(x_{j-1},y_{j-1})g_2(x_{j-1},y_{j-1})(\Delta W_2^2-\Delta t)\\
+	&\quad +g_{2x}(x_{j-1},y_{j-1})g_{1}(x_{j-1},y_{j-1})\Delta W_1 \Delta W_2\\
+	&\quad +\frac{1}{2}g_{2y}(x_{j-1},y_{j-1})g_2(x_{j-1},y_{j-1})(\Delta W_2^2-\Delta t)\\
 	\end{split}
 	\end{equation*}
 \end{frame}
