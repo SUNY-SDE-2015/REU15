@@ -21,6 +21,14 @@
 std::mutex writeToFile;
 
 
+/* ********************************************
+ *  Define the values used for which parameters
+ *  are sampled.
+ ********************************************** */
+
+#define TAU_START 0.2
+#define TAU_END   0.6
+#define NUMBER_TAU 3
 
 #ifndef M_PI
 #define M_PI 3.14159265359
@@ -242,8 +250,10 @@ int main(int argc, char *argv[])
         fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,initTurf,macroalgae,coral,turf" << std::endl;
 #endif
 
-        for(tau = .2; tau <= .4; tau += .2 )
+        for(int tauStep=0;tauStep<NUMBER_TAU;++tauStep)
         {
+            tau = TAU_START+(TAU_END-TAU_START)/((double)(NUMBER_TAU-1))*((double)tauStep);
+
            // Determine the number of time steps required to move back to the delay in time.
            // The number of cells needed for the delay (changes with dt)
             int n;
