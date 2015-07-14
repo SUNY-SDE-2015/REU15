@@ -13,7 +13,7 @@
 
 
 #define OUTPUT_FILE "./trials.csv"
-#define NUMBER_THREADS 1
+#define NUMBER_THREADS 2
 #define USE_MULTIPLE_THREADS
 // create a mutex that is used to protect the writing of the data to
 // the file.
