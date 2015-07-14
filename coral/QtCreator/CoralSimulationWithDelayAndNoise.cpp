@@ -26,13 +26,24 @@ std::mutex writeToFile;
  *  are sampled.
  ********************************************** */
 
-#define TAU_START  0.2
-#define TAU_END    0.6
-#define NUMBER_TAU 3
+#define TAU_START    0.2
+#define TAU_END      0.6
+#define NUMBER_TAU   3
 
-#define G_START    0.2
-#define G_END      0.6
-#define NUMBER_G   3
+#define G_START      0.2
+#define G_END        0.6
+#define NUMBER_G     3
+
+#define BETA_START   0.2
+#define BETA_END     1.2
+#define NUMBER_BETA  6
+
+#define THETA_START  0.0
+#define THETA_END    M_PI*0.5
+#define NUMBER_THETA 20
+
+#define NUMBER_TRIALS 3
+#define FINAL_TIME    35.0
 
 #ifndef M_PI
 #define M_PI 3.14159265359
@@ -85,8 +96,7 @@ void printToCSVFile(double dt, double beta, double g,double tau,
         << s << ","
         << 1-h-s << ","
         << reefState[0] << ","
-        << reefState[1] << ","
-        << 1-reefState[0]-reefState[1]
+        << reefState[1]
         << std::endl;
 
     (*fp).flush();
@@ -205,6 +215,7 @@ int main(int argc, char *argv[])
 
         double tau;
         double beta ;//	 = .5;
+        double theta;
 //        double gZero	 = ((d*a*r+d*d)*(gamma-a))/(r*r);
 //        double gOne		 = (gamma*(a+d))/(a+r);
 //        double chi		 = r*gamma/(r+a)-gamma+a;					//Intermediate Step
@@ -219,11 +230,6 @@ int main(int argc, char *argv[])
 //        double tauZero	 = (1/omega)*acos(gZero/g);
 
         double dt        = BASE_DT;          // Set the initial time step
-        double final;       // The final time for each simulation.
-        long   trials;      // The number of simulations to make.
-
-        final=50.0;  // Set the final time.
-        trials=400;   // Set the number of trials to perform.
 
 
         // Set the time delay, tau
@@ -249,9 +255,9 @@ int main(int argc, char *argv[])
         fp.open(OUTPUT_FILE,std::ios::out | std::ios::trunc);
 
 #ifdef LOGISTIC_NOISE
-        fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,initTurf,lgMacro,lgCoral,lgTurf" << std::endl;
+        fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,initTurf,lgMacro,lgCoral" << std::endl;
 #else
-        fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,initTurf,macroalgae,coral,turf" << std::endl;
+        fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,initTurf,macroalgae,coral" << std::endl;
 #endif
 
         for(int tauStep=0;tauStep<NUMBER_TAU;++tauStep)
@@ -285,28 +291,31 @@ int main(int argc, char *argv[])
                 // double tauZero	 = (1/omega)*acos(gZero/g);
 
                 // Make different approximations for different values of beta.
-                for(beta=.2;beta<=1.0; beta += .2)
+                for(int betaStep=0;betaStep<NUMBER_BETA;++betaStep)
                 {
+                    beta = BETA_START+(BETA_END-BETA_START)/((double)(NUMBER_BETA-1))*((double)betaStep);
 
 
 #ifdef SHOW_PROGRESS
-                    std::cout << "dt = " << dt << std::endl;
+                    std::cout << "tau = " << tau << " and g = " << g << std::endl;
 #endif
                         //index = tau/dt;
 
                         //printf("%i\n",n);
-                        steps=(long)(final/dt);
+                        steps=(long)(FINAL_TIME/dt);
 
-                        for (double theta=0;theta<=M_PI/2;theta+=(M_PI*0.5)*0.025)
+                        for(int thetaStep=1;thetaStep<=NUMBER_THETA;++thetaStep)
                         {
 
-                        // Make an approximation for different initial conditions.
-                        // Make an arc through 0 to pi/2 radians from the origin.
+                            theta = THETA_START+(THETA_END-THETA_START)/((double)(NUMBER_THETA+1))*((double)thetaStep);
 
-                            for (int k=0;k<trials;k++)
+                            // Make an approximation for different initial conditions.
+                            // Make an arc through 0 to pi/2 radians from the origin.
+
+                            for (int k=0;k<NUMBER_TRIALS;k++)
                             {
                                 macroalgaePast[0] = RADIUS*cos(theta); //initial Macroalgae level
-                                coralPast[0] = RADIUS*sin(theta); //initial Coral level
+                                coralPast[0]      = RADIUS*sin(theta); //initial Coral level
                                 for (int l=1;l<n;l++) //fills in the past times for y, z, v, and w
                                 {
                                     macroalgaePast[l]=macroalgaePast[0];
@@ -351,8 +360,8 @@ int main(int argc, char *argv[])
 #endif
 
                             } // for(k<trials)
-                        } // for(theta)
-                   } // for(beta)
+                        } // for(thetaStep)
+                   } // for(betaStep)
             } // for(gStep)
 
             // Free up the allocated memory.
