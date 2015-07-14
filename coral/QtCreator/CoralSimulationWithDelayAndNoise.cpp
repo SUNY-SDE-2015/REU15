@@ -15,6 +15,7 @@
 #define OUTPUT_FILE "./trials.csv"
 #define NUMBER_THREADS 1
 #define USE_MULTIPLE_THREADS
+#define LOGISTIC_NOISE
 // create a mutex that is used to protect the writing of the data to
 // the file.
 std::mutex writeToFile;
@@ -73,10 +74,7 @@ void printToCSVFile(double dt, double beta, double g,double tau,
         << 1-h-s << ","
         << x[0] << ","
         << x[1] << ","
-        << 1-x[0]-x[1] << ","
-        << x[2] << ","
-        << x[3] << ","
-        << 1-x[2]-x[3]
+        << 1-x[0]-x[1]
         << std::endl;
 
     (*fp).flush();
@@ -90,7 +88,7 @@ void linear(long steps,
               double beta,double tau,
               std::ofstream *fp,
               int q,
-              double h,double s,double *v,double *w, double theta)
+              double h,double s,double theta)
     {
 
         long m=n-1;
@@ -110,28 +108,23 @@ void linear(long steps,
             if(calcRandom==0)
                 normalDistRand(sqrt(dt),B); //noise in most recent time step
 
-            //x[0]=y[m]+(y[m]*(gamma-gamma*y[m]+(a-gamma)*z[m])-(g*y[p]/(1-z[p])))*dt
-            //x[0]=x[0]+beta*y[m]*(1-y[m])+0.5*beta*y[m]*(1-y[m])*beta*(1-2*y[m])*(B[calcRandom]*B[calcRandom]-dt);
-
-            //Computes the deterministic component for Macroalgae
-            x[0] = y[m]+(y[m]*(gamma-gamma*y[m]+(a-gamma)*z[m])-(g*y[p]/(1-z[p])))*dt;
-
-            //Adds in the noise
-            //x[0]=x[0]+beta*y[m]*B[calcRandom]+0.5*beta*y[m]*beta*(B[calcRandom]*B[calcRandom]-dt);
+#ifdef LOGISTIC_NOISE
+            // Update the macroalgae term
+            x[0] =  y[m]+(y[m]*(gamma-gamma*y[m]+(a-gamma)*z[m])-(g*y[p]/(1.0-z[p])))*dt
+                    +  beta*y[m]*(1.0-y[m])*B[calcRandom]+0.5*beta*(1.0-2.0*y[m])*beta*y[m]*(1-y[m])*(B[calcRandom]*B[calcRandom]-dt);
+            //Computes the deterministic component for Coral
+            x[1] =  z[m]+(z[m]*(r-d-(a+r)*y[m]-r*z[m]))*dt;
+#else
+            // Update the macroalgae term
             x[0] += beta*y[m]*B[calcRandom]+0.5*beta*beta*y[m]*(B[calcRandom]*B[calcRandom]-dt);
-
             //Computes the deterministic component for Coral
             x[1] = z[m]+(z[m]*(r-d-(a+r)*y[m]-r*z[m]))*dt;
-
-
-            x[2] =  v[m]+(v[m]*(gamma-gamma*v[m]+(a-gamma)*w[m])-(g*v[p]/(1-w[p])))*dt;
-            x[2] += beta*v[m]*(1-v[m])*B[calcRandom]+0.5*beta*(1-2*v[m])*beta*v[m]*(1-v[m])*(B[calcRandom]*B[calcRandom]-dt);
-            x[3] =  w[m]+(w[m]*(r-d-(a+r)*v[m]-r*w[m]))*dt;
+#endif
 
             /****************************************************************
                 Account for extinction and overgrowing!!
             ****************************************************************/
-            for(int i=0;i<4;++i)
+            for(int i=0;i<2;++i)
                 {
                     if(x[i]<0.0)
                         x[i] = 0.0;
@@ -144,8 +137,6 @@ void linear(long steps,
             p=(p+1)%n;
             y[m]=x[0];
             z[m]=x[1];
-            v[m]=x[2];
-            w[m]=x[3];
             calcRandom = (calcRandom+1)%2; // update which random number to use.
 
         }
@@ -164,10 +155,7 @@ void linear(long steps,
             << 1-h-s << ","
             << x[0] << ","
             << x[1] << ","
-            << 1-x[0]-x[1] << ","
-            << x[2] << ","
-            << x[3] << ","
-            << 1-x[2]-x[3];
+            << 1-x[0]-x[1];
         qDebug() << errno << EDOM << ERANGE;
 #endif
 
@@ -185,7 +173,7 @@ int main(int argc, char *argv[])
 
 
         long steps;    // The number of steps to take in a single simulation.
-        double *v,*w,*x,*y,*z;  // The variables used for the state of the system.
+        double *x,*y,*z;  // The variables used for the state of the system.
 
         /*
             Define the constants.
@@ -244,8 +232,11 @@ int main(int argc, char *argv[])
                 //String fileName = "trials-g" + std::toString(g) + "-tau" + std::toString(tau);
         fp.open(OUTPUT_FILE,std::ios::out | std::ios::trunc);
 
-        fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,initTurf,macroalgae,coral,turf,lgMacro,lgCoral,lgTurf" << std::endl;
-
+#ifdef LOGISTIC_NOISE
+        fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,initTurf,lgMacro,lgCoral,lgTurf" << std::endl;
+#else
+        fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,initTurf,macroalgae,coral,turf" << std::endl;
+#endif
 
         for(tau = .2; tau <= .4; tau += .2 )
         {
@@ -257,29 +248,27 @@ int main(int argc, char *argv[])
             else
                 n = 1;
             // Allocate the space for the states of the system
-            x=(double *) calloc(4,sizeof(double));
-            y=(double *) calloc(n,sizeof(double));		//macroalgae for multiplicative noise
-            z=(double *) calloc(n,sizeof(double));		//coral for multiplicative noise
-            v=(double *) calloc(n,sizeof(double));		//macroalgae for logistic noise
-            w=(double *) calloc(n,sizeof(double));		//coral for logistic noise
+            x=(double *) calloc(2,sizeof(double));
+            y=(double *) calloc(n,sizeof(double));		//macroalgae density in the past
+            z=(double *) calloc(n,sizeof(double));		//coral density in the past
 
-            if((x==NULL) || (y==NULL) || (z==NULL) || (v==NULL) || (w==NULL))
+            if((x==NULL) || (y==NULL) || (z==NULL))
             {
                 std::cout << "Error - unable to allocate necessary memory." << std::endl;
                 free(x);
                 free(y);
                 free(z);
-                free(v);
-                free(w);
                 return b.exec();
             }
 
-            for(g=.2; g<.8; g += .2) {
+            for(g=.2; g<.8; g += .2)
+            {
                 //double omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
                 // double tauZero	 = (1/omega)*acos(gZero/g);
 
                 // Make different approximations for different values of beta.
-                for(beta=.2;beta<=1.0; beta += .2) {
+                for(beta=.2;beta<=1.0; beta += .2)
+                {
 
 
 #ifdef SHOW_PROGRESS
@@ -300,14 +289,10 @@ int main(int argc, char *argv[])
                             {
                                 y[0] = RADIUS*cos(theta); //initial Macroalgae level
                                 z[0] = RADIUS*sin(theta); //initial Coral level
-                                v[0] = RADIUS*cos(theta);
-                                w[0] = RADIUS*sin(theta);
                                 for (int l=1;l<n;l++) //fills in the past times for y, z, v, and w
                                 {
                                     y[l]=y[0];
                                     z[l]=z[0];
-                                    v[l]=v[0];
-                                    w[l]=w[0];
                                 }
                                 //fprintf(fp,"%f,%f,%f,%f,%f,%f\n",y[0],z[0],1-y[0]-z[0],v[0],w[0],1-v[0]-w[0]);
 #ifdef USE_MULTIPLE_THREADS
@@ -332,12 +317,12 @@ int main(int argc, char *argv[])
 
                                 // Make a run in a separate thread.
                                 simulation[numberThreads++] = std::thread(linear,
-                                                                          steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,&fp,k,y[0],z[0],v,w,theta);
+                                                                          steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,&fp,k,y[0],z[0],theta);
 
 #else
 
                                 // Ignore the different threads. Just make one approximation in this one thread.
-                                linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,&fp,k,y[0],z[0],v,w,theta);
+                                linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,&fp,k,y[0],z[0],theta);
 
 #endif
 
@@ -348,18 +333,16 @@ int main(int argc, char *argv[])
 #endif
 
                             } // for(k<trials)
-                        } // for(theta<pi/2
-                   }
-            }
+                        } // for(theta)
+                   } // for(beta)
+            } // for(g)
 
             // Free up the allocated memory.
             free(x);
             free(y);
             free(z);
-            free(v);
-            free(w);
 
-        }
+        } // for(tau)
 
 
         fp.close();
