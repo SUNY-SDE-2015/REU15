@@ -26,9 +26,13 @@ std::mutex writeToFile;
  *  are sampled.
  ********************************************** */
 
-#define TAU_START 0.2
-#define TAU_END   0.6
+#define TAU_START  0.2
+#define TAU_END    0.6
 #define NUMBER_TAU 3
+
+#define G_START    0.2
+#define G_END      0.6
+#define NUMBER_G   3
 
 #ifndef M_PI
 #define M_PI 3.14159265359
@@ -273,8 +277,10 @@ int main(int argc, char *argv[])
                 return b.exec();
             }
 
-            for(g=.2; g<.8; g += .2)
+            for(int gStep=0;gStep<NUMBER_G;++gStep)
             {
+                g = G_START+(G_END-G_START)/((double)(NUMBER_G-1))*((double)gStep);
+
                 //double omega	 = sqrt((r*r*(g*g-gZero*gZero))/(d*d));
                 // double tauZero	 = (1/omega)*acos(gZero/g);
 
@@ -347,13 +353,13 @@ int main(int argc, char *argv[])
                             } // for(k<trials)
                         } // for(theta)
                    } // for(beta)
-            } // for(g)
+            } // for(gStep)
 
             // Free up the allocated memory.
             free(macroalgaePast);
             free(coralPast);
 
-        } // for(tau)
+        } // for(tauStep)
 
 
         fp.close();
