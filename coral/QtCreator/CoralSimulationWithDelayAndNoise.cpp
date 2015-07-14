@@ -13,7 +13,7 @@
 
 
 #define OUTPUT_FILE "./trials.csv"
-#define NUMBER_THREADS 1
+#define NUMBER_THREADS 2
 #define USE_MULTIPLE_THREADS
 #define LOGISTIC_NOISE
 // create a mutex that is used to protect the writing of the data to
@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
         double r    	 = 1.0;
         double d    	 = 0.44;
 
-        double tau;
+        double tau       = .6;
         double beta ;//	 = .5;
         double theta;
 //        double gZero	 = ((d*a*r+d*d)*(gamma-a))/(r*r);
@@ -354,8 +354,11 @@ int main(int argc, char *argv[])
 
 
 #ifdef SHOW_PROGRESS
-                                if(k%20 == 0)
-                                    std::cout << "  Simulation number " << k << std::endl;
+                                if(k%100 == 0)
+                                    std::cout << "  Simulation number " << k
+                                              << "  g, beta, theta " << g << ", " << beta  << ", "
+                                              << theta
+                                              << std::endl;
 #endif
 
                             } // for(k<trials)
