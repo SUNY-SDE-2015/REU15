@@ -40,7 +40,7 @@ std::mutex writeToFile;
 
 #define THETA_START  0.0
 #define THETA_END    M_PI*0.5
-#define NUMBER_THETA 20
+#define NUMBER_THETA 15
 
 #define NUMBER_TRIALS 3
 #define FINAL_TIME    35.0
@@ -265,12 +265,11 @@ int main(int argc, char *argv[])
             tau = TAU_START+(TAU_END-TAU_START)/((double)(NUMBER_TAU-1))*((double)tauStep);
 
            // Determine the number of time steps required to move back to the delay in time.
-           // The number of cells needed for the delay (changes with dt)
-            int n;
+           // The number of cells needed for the delay depends on tau and dt
+            int n = 1;
             if(tau > 0.0)
                 n=(int)(tau/BASE_DT+0.5);
-            else
-                n = 1;
+
             // Allocate the space for the states of the system
             macroalgaePast = (double *) calloc(n,sizeof(double));		//macroalgae density in the past
             coralPast      = (double *) calloc(n,sizeof(double));		//coral density in the past
@@ -362,7 +361,21 @@ int main(int argc, char *argv[])
                             } // for(k<trials)
                         } // for(thetaStep)
                    } // for(betaStep)
+
             } // for(gStep)
+
+#ifdef USE_MULTIPLE_THREADS
+            // Clean up the threads. Make sure they have all finished.
+            while(numberThreads>0)
+            {
+#ifdef THREAD_DEBUG
+                std::cout << "Waiting on thread "
+                          << simulation[numberThreads-1].get_id()
+                          << std::endl;
+#endif
+                simulation[--numberThreads].join();
+            }
+#endif
 
             // Free up the allocated memory.
             free(macroalgaePast);
