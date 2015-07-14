@@ -54,7 +54,7 @@ void normalDistRand(double stdDev,double* randomNumbers)
 
 void printToCSVFile(double dt, double beta, double g,double tau,
                     double q, double theta, double h,double s,
-                    double *x,std::ofstream *fp)
+                    double *reefState,std::ofstream *fp)
 {
 
     std::lock_guard<std::mutex> guard(writeToFile);  // Make sure that
@@ -72,9 +72,9 @@ void printToCSVFile(double dt, double beta, double g,double tau,
         << h << ","
         << s << ","
         << 1-h-s << ","
-        << x[0] << ","
-        << x[1] << ","
-        << 1-x[0]-x[1]
+        << reefState[0] << ","
+        << reefState[1] << ","
+        << 1-reefState[0]-reefState[1]
         << std::endl;
 
     (*fp).flush();
@@ -83,7 +83,7 @@ void printToCSVFile(double dt, double beta, double g,double tau,
 
 void linear(long steps,
               double a,double gamma,double r,double d,double g,
-              double *x,double *y,double *z, double dt,
+              double *reefState,double *y,double *z, double dt,
               int n,
               double beta,double tau,
               std::ofstream *fp,
@@ -110,15 +110,15 @@ void linear(long steps,
 
 #ifdef LOGISTIC_NOISE
             // Update the macroalgae term
-            x[0] =  y[m]+(y[m]*(gamma-gamma*y[m]+(a-gamma)*z[m])-(g*y[p]/(1.0-z[p])))*dt
+            reefState[0] =  y[m]+(y[m]*(gamma-gamma*y[m]+(a-gamma)*z[m])-(g*y[p]/(1.0-z[p])))*dt
                     +  beta*y[m]*(1.0-y[m])*B[calcRandom]+0.5*beta*(1.0-2.0*y[m])*beta*y[m]*(1-y[m])*(B[calcRandom]*B[calcRandom]-dt);
             //Computes the deterministic component for Coral
-            x[1] =  z[m]+(z[m]*(r-d-(a+r)*y[m]-r*z[m]))*dt;
+            reefState[1] =  z[m]+(z[m]*(r-d-(a+r)*y[m]-r*z[m]))*dt;
 #else
             // Update the macroalgae term
-            x[0] += beta*y[m]*B[calcRandom]+0.5*beta*beta*y[m]*(B[calcRandom]*B[calcRandom]-dt);
+            reefState[0] += beta*y[m]*B[calcRandom]+0.5*beta*beta*y[m]*(B[calcRandom]*B[calcRandom]-dt);
             //Computes the deterministic component for Coral
-            x[1] = z[m]+(z[m]*(r-d-(a+r)*y[m]-r*z[m]))*dt;
+            reefState[1] = z[m]+(z[m]*(r-d-(a+r)*y[m]-r*z[m]))*dt;
 #endif
 
             /****************************************************************
@@ -126,23 +126,23 @@ void linear(long steps,
             ****************************************************************/
             for(int i=0;i<2;++i)
                 {
-                    if(x[i]<0.0)
-                        x[i] = 0.0;
-                    else if (x[i]>1.0)
-                        x[i] = 1.0;
+                    if(reefState[i]<0.0)
+                        reefState[i] = 0.0;
+                    else if (reefState[i]>1.0)
+                        reefState[i] = 1.0;
                 }
 
             //Updates delay and cell index
             m=(m+1)%n;
             p=(p+1)%n;
-            y[m]=x[0];
-            z[m]=x[1];
+            y[m]=reefState[0];
+            z[m]=reefState[1];
             calcRandom = (calcRandom+1)%2; // update which random number to use.
 
         }
 
-        //printf("%f\t%f\t%f\t%f\t%f\n",dt,beta,tau,x[0],x[1]);
-        printToCSVFile(dt,beta,g,tau,q,theta,h,s,x,fp);
+        //printf("%f\t%f\t%f\t%f\t%f\n",dt,beta,tau,reefState[0],reefState[1]);
+        printToCSVFile(dt,beta,g,tau,q,theta,h,s,reefState,fp);
 
  #ifdef SHOW_INTERMEDIATE
         qDebug() << dt << ","
@@ -153,9 +153,9 @@ void linear(long steps,
             << h << ","
             << s << ","
             << 1-h-s << ","
-            << x[0] << ","
-            << x[1] << ","
-            << 1-x[0]-x[1];
+            << reefState[0] << ","
+            << reefState[1] << ","
+            << 1-reefState[0]-reefState[1];
         qDebug() << errno << EDOM << ERANGE;
 #endif
 
@@ -172,8 +172,9 @@ int main(int argc, char *argv[])
     QCoreApplication b(argc, argv);
 
 
-        long steps;    // The number of steps to take in a single simulation.
-        double *x,*y,*z;  // The variables used for the state of the system.
+        long steps;           // The number of steps to take in a single simulation.
+        double reefState[2];  // The state of the system, coral and macroalgae
+        double *y,*z;         // The variables used for the state of the system.
 
         /*
             Define the constants.
@@ -248,14 +249,12 @@ int main(int argc, char *argv[])
             else
                 n = 1;
             // Allocate the space for the states of the system
-            x=(double *) calloc(2,sizeof(double));
             y=(double *) calloc(n,sizeof(double));		//macroalgae density in the past
             z=(double *) calloc(n,sizeof(double));		//coral density in the past
 
-            if((x==NULL) || (y==NULL) || (z==NULL))
+            if((y==NULL) || (z==NULL))
             {
                 std::cout << "Error - unable to allocate necessary memory." << std::endl;
-                free(x);
                 free(y);
                 free(z);
                 return b.exec();
@@ -317,12 +316,12 @@ int main(int argc, char *argv[])
 
                                 // Make a run in a separate thread.
                                 simulation[numberThreads++] = std::thread(linear,
-                                                                          steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,&fp,k,y[0],z[0],theta);
+                                                                          steps,a,gamma,r,d,g,reefState,y,z,dt,n,beta,tau,&fp,k,y[0],z[0],theta);
 
 #else
 
                                 // Ignore the different threads. Just make one approximation in this one thread.
-                                linear(steps,a,gamma,r,d,g,x,y,z,dt,n,beta,tau,&fp,k,y[0],z[0],theta);
+                                linear(steps,a,gamma,r,d,g,reefState,y,z,dt,n,beta,tau,&fp,k,y[0],z[0],theta);
 
 #endif
 
@@ -338,7 +337,6 @@ int main(int argc, char *argv[])
             } // for(g)
 
             // Free up the allocated memory.
-            free(x);
             free(y);
             free(z);
 
