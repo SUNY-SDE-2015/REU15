@@ -83,7 +83,7 @@ void printToCSVFile(double dt, double beta, double g,double tau,
 
 void linear(long steps,
               double a,double gamma,double r,double d,double g,
-              double *reefState,double *macroalgaePast,double *z, double dt,
+              double *reefState,double *macroalgaePast,double *coralPast, double dt,
               int n,
               double beta,double tau,
               std::ofstream *fp,
@@ -111,16 +111,16 @@ void linear(long steps,
 #ifdef LOGISTIC_NOISE
             // Update the macroalgae term
             reefState[0] =  macroalgaePast[m] +
-                    (macroalgaePast[m]*(gamma-gamma*macroalgaePast[m]+(a-gamma)*z[m])-(g*macroalgaePast[p]/(1.0-z[p])))*dt
+                    (macroalgaePast[m]*(gamma-gamma*macroalgaePast[m]+(a-gamma)*coralPast[m])-(g*macroalgaePast[p]/(1.0-coralPast[p])))*dt
                     + beta*macroalgaePast[m]*(1.0-macroalgaePast[m])*B[calcRandom]
                     + 0.5*beta*(1.0-2.0*macroalgaePast[m])*beta*macroalgaePast[m]*(1-macroalgaePast[m])*(B[calcRandom]*B[calcRandom]-dt);
             //Computes the deterministic component for Coral
-            reefState[1] =  z[m]+(z[m]*(r-d-(a+r)*macroalgaePast[m]-r*z[m]))*dt;
+            reefState[1] =  coralPast[m]+(coralPast[m]*(r-d-(a+r)*macroalgaePast[m]-r*coralPast[m]))*dt;
 #else
             // Update the macroalgae term
             reefState[0] += beta*macroalgaePast[m]*B[calcRandom]+0.5*beta*beta*macroalgaePast[m]*(B[calcRandom]*B[calcRandom]-dt);
             //Computes the deterministic component for Coral
-            reefState[1] = z[m]+(z[m]*(r-d-(a+r)*macroalgaePast[m]-r*z[m]))*dt;
+            reefState[1] = coralPast[m]+(coralPast[m]*(r-d-(a+r)*macroalgaePast[m]-r*coralPast[m]))*dt;
 #endif
 
             /****************************************************************
@@ -138,7 +138,7 @@ void linear(long steps,
             m=(m+1)%n;
             p=(p+1)%n;
             macroalgaePast[m]=reefState[0];
-            z[m]=reefState[1];
+            coralPast[m]=reefState[1];
             calcRandom = (calcRandom+1)%2; // update which random number to use.
 
         }
@@ -174,9 +174,10 @@ int main(int argc, char *argv[])
     QCoreApplication b(argc, argv);
 
 
-        long steps;           // The number of steps to take in a single simulation.
-        double reefState[2];  // The state of the system, coral and macroalgae
-        double *macroalgaePast,*z;         // The variables used for the state of the system.
+        long steps;             // The number of steps to take in a single simulation.
+        double reefState[2];    // The state of the system, coral and macroalgae
+        double *macroalgaePast; // Past values for the macroalgae density
+        double *coralPast;      // Past values for the coral density
 
         /*
             Define the constants.
@@ -252,13 +253,13 @@ int main(int argc, char *argv[])
                 n = 1;
             // Allocate the space for the states of the system
             macroalgaePast = (double *) calloc(n,sizeof(double));		//macroalgae density in the past
-            z=(double *) calloc(n,sizeof(double));		//coral density in the past
+            coralPast      = (double *) calloc(n,sizeof(double));		//coral density in the past
 
-            if((macroalgaePast==NULL) || (z==NULL))
+            if((macroalgaePast==NULL) || (coralPast==NULL))
             {
                 std::cout << "Error - unable to allocate necessary memory." << std::endl;
                 free(macroalgaePast);
-                free(z);
+                free(coralPast);
                 return b.exec();
             }
 
@@ -289,13 +290,13 @@ int main(int argc, char *argv[])
                             for (int k=0;k<trials;k++)
                             {
                                 macroalgaePast[0] = RADIUS*cos(theta); //initial Macroalgae level
-                                z[0] = RADIUS*sin(theta); //initial Coral level
+                                coralPast[0] = RADIUS*sin(theta); //initial Coral level
                                 for (int l=1;l<n;l++) //fills in the past times for y, z, v, and w
                                 {
                                     macroalgaePast[l]=macroalgaePast[0];
-                                    z[l]=z[0];
+                                    coralPast[l]=coralPast[0];
                                 }
-                                //fprintf(fp,"%f,%f,%f,%f,%f,%f\n",macroalgaePast[0],z[0],1-macroalgaePast[0]-z[0],v[0],w[0],1-v[0]-w[0]);
+                                //fprintf(fp,"%f,%f,%f,%f,%f,%f\n",macroalgaePast[0],coralPast[0],1-macroalgaePast[0]-coralPast[0],v[0],w[0],1-v[0]-w[0]);
 #ifdef USE_MULTIPLE_THREADS
 
 
@@ -318,12 +319,12 @@ int main(int argc, char *argv[])
 
                                 // Make a run in a separate thread.
                                 simulation[numberThreads++] = std::thread(linear,
-                                                                          steps,a,gamma,r,d,g,reefState,macroalgaePast,z,dt,n,beta,tau,&fp,k,macroalgaePast[0],z[0],theta);
+                                                                          steps,a,gamma,r,d,g,reefState,macroalgaePast,coralPast,dt,n,beta,tau,&fp,k,macroalgaePast[0],coralPast[0],theta);
 
 #else
 
                                 // Ignore the different threads. Just make one approximation in this one thread.
-                                linear(steps,a,gamma,r,d,g,reefState,macroalgaePast,z,dt,n,beta,tau,&fp,k,macroalgaePast[0],z[0],theta);
+                                linear(steps,a,gamma,r,d,g,reefState,macroalgaePast,coralPast,dt,n,beta,tau,&fp,k,macroalgaePast[0],coralPast[0],theta);
 
 #endif
 
@@ -340,7 +341,7 @@ int main(int argc, char *argv[])
 
             // Free up the allocated memory.
             free(macroalgaePast);
-            free(z);
+            free(coralPast);
 
         } // for(tau)
 
