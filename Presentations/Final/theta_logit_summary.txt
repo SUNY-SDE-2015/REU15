@@ -1,22 +1,22 @@
 Call:
-glm(formula = cbind(lgscount, lgfcount) ~ lgtheta, family = binomial(link = logit))
+glm(formula = cbind(lgscount, lgfcount) ~ lgtheta, family = binomial
+(link = logit))
 
 Deviance Residuals: 
      Min        1Q    Median        3Q       Max  
--26.7868   -3.7021    0.6524    3.9309   13.0475  
+-26.9616   -3.6306    0.8206    4.0161   12.5072  
 
 Coefficients:
             Estimate Std. Error z value Pr(>|z|)    
-(Intercept) -2.49484    0.05342  -46.70   <2e-16 ***
-lgtheta      5.89281    0.09913   59.45   <2e-16 ***
+(Intercept) -2.48378    0.05386  -46.11   <2e-16 ***
+lgtheta      6.01631    0.10220   58.87   <2e-16 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
-    Null deviance: 10522.7  on 38  degrees of freedom
-Residual deviance:  2205.6  on 37  degrees of freedom
-AIC: 2350
+    Null deviance: 10485  on 38  degrees of freedom
+Residual deviance:  2171  on 37  degrees of freedom
+AIC: 2315.4
 
 Number of Fisher Scoring iterations: 5
-

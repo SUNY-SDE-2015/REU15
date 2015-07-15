@@ -49,31 +49,26 @@ We sampled the following values:
 \includegraphics[scale=.325]{scatter_gpt4_betapt4.png}
 \end{frame}
 
-\begin{frame}{The Four (Two???) Models}
+\begin{frame}{The Three Models}
 Based on the plot, we will try the following three models
 \begin{itemize}
 \item Binomial Logit\\
 Fits the model $logit(p)=a+b\theta$ where $logit(p)=log(\frac{p}{1-p})$\\
 \item Poisson Log\\
-Fits the model $log(y)=a+b\theta$\\
-\item \color{red} Can we actually fit a linear model since the assumption of Gaussian error is not satisfied???\\
-\item \color{black} Ordinary Least Squares for a Line (OLS)\\
+Fits the model $log(n)=a+b\theta$\\
+\item Ordinary Least Squares (OLS)\\
 Fits the model $p=a+b\theta$\\
-\item Ordinary Least Squares for a Logarithm
-Fits the model $p=a+blog(\theta)$
 \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Binomial Logit, Poisson Log(, OLS, or OLS with Log)}
-\includegraphics[scale=.325]{theta_fourmodels.png}
-\end{frame}
+
 
 \begin{frame}\frametitle{The Binomial Logit Model}
 {\fontsize{8}{3} \color{RBlue} \verbatiminput{theta_logit_summary.txt}}
 
 Conducting a goodness of fit test: \\
-$P(\chi^{2}_{1}>10522.7-2205.6)<0.0001$\\
+$P(\chi^{2}_{1}>10485-2171)<0.0001$\\
 
 \end{frame}
 
@@ -81,12 +76,25 @@ $P(\chi^{2}_{1}>10522.7-2205.6)<0.0001$\\
 {\fontsize{8}{3} \color{RBlue} \verbatiminput{theta_log_summary.txt}}
 
 Conducting a goodness of fit test: \\
-$P(\chi^{2}_{1}>3808.5-2006.7)<0.0001$\\
+$P(\chi^{2}_{1}>3714.9-1970.4)<0.0001$\\
 
 \end{frame}
 
+%\begin{frame}\frametitle{Problematic Poisson}
+%From the summary statistics, there is a problem with overdispersion.\\
+%\\
+%$\frac{G^2}{df}\approx1$\\
+%$\frac{2006.7}{37}\approx54.2$\\
+%\\
+%Therefore, we fit a negative binomial model.\\
+%\end{frame}
+
+%\begin{frame}\frametitle{The Negative Binomial}
+
+%\end{frame}
+
 \begin{frame}\frametitle{Problematic Poisson}
-From the summary statistics, there are two problems with the Poisson model
+There may be a problem with the model.
 In the data, there is an overabundance of zeros.
 Therefore, we fit a zero-inflated Poisson model (ZIP).
 {\fontsize{8}{3} \color{RBlue} \verbatiminput{theta_zeros.txt}}
@@ -100,16 +108,38 @@ Therefore, we fit a zero-inflated Poisson model (ZIP).
 {\fontsize{8}{3} \color{RBlue} \verbatiminput{theta_ols_summary.txt}}
 
 Conducting a goodness of fit test: \\
-$P(\chi^{2}_{1}>3288.10-927.62)<0.0001$\\
+$P(\chi^{2}_{1}>4.5824-1.4317)\approx0.07589$\\
 
 \end{frame}
 
-\begin{frame}\frametitle{The OLS Log Model}
-{\fontsize{8}{3} \color{RBlue} \verbatiminput{theta_ols_log_summary.txt}}
+\begin{frame}\frametitle{Comparing the Models}
+Our three models are \\
+\begin{itemize}
+\item Binomial Logit $p=\frac{e^{-2.48378+6.01631\theta}}{1+e^{-2.48378+6.01631\theta}}$\\
+\item Poisson Log $n=e^{4.89295+0.90423\theta}$\\
+\item OLS $p=0.22856+0.64310\theta$\\
+\end{itemize}
+How do we determine which model is the most appropriate?\\
+\end{frame}
 
-Conducting a goodness of fit test: \\
-$P(\chi^{2}_{1}>3288.10-927.62)<0.0001$\\
+\begin{frame}{Binomial Logit, Poisson Log, or OLS}
+\includegraphics[scale=.325]{theta_threemodels.png}
+\end{frame}
 
+\begin{frame}\frametitle{The Whole Picture}
+\includegraphics[scale=.325]{unifiedplot.png}
+\end{frame}
+
+\begin{frame}\frametitle{The Binomial Logit}
+{\fontsize{8}{3} \color{RBlue} \verbatiminput{all_logit_summary.txt}}
+\end{frame}
+
+\begin{frame}\frametitle{Interpreting the Results}
+Keeping theta and beta constant, an increase in g of:
+\begin{itemize}
+\item 0.01 has an odds ratio of coral survival of 3.21\\
+\item 0.1 has an odds ratio of coral survival of 116413
+\end{itemize}
 \end{frame}
 
 %%% Local Variables:
