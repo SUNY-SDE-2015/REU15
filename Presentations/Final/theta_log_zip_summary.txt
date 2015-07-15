@@ -1,0 +1,21 @@
+Call:
+zeroinfl(formula = lgscount ~ lgtheta)
+
+Pearson residuals:
+      Min        1Q    Median        3Q       Max 
+-15.05735  -2.21709  -0.05253   2.78302   8.16771 
+
+Count model coefficients (poisson with log link):
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  5.11330    0.02453   208.5   <2e-16 ***
+lgtheta      0.70786    0.02360    30.0   <2e-16 ***
+
+Zero-inflation model coefficients (binomial with logit link):
+            Estimate Std. Error z value Pr(>|z|)
+(Intercept)    127.1    44047.7   0.003    0.998
+lgtheta       -924.6   315385.1  -0.003    0.998
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+Number of iterations in BFGS optimization: 6 
+Log-likelihood: -669.3 on 4 Df

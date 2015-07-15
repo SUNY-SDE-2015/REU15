@@ -37,35 +37,80 @@ We sampled the following values:
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Initial Conditions}
-\includegraphics[scale=.325]{./theta_ic.pdf}
+% %\begin{frame}\frametitle{At First Glance}
+% %\includegraphics[scale=.325]{qqplot_lgcoral.png}
+% %\end{frame}
+
+\begin{frame}
+\includegraphics[scale=.325]{scatter_lgcoral_gpt4_betapt4_theta10.png}
 \end{frame}
 
-\begin{frame}{The Three Models}
+\begin{frame}{Initial Conditions}
+\includegraphics[scale=.325]{scatter_gpt4_betapt4.png}
+\end{frame}
+
+\begin{frame}{The Four (Two???) Models}
 Based on the plot, we will try the following three models
 \begin{itemize}
 \item Binomial Logit\\
 Fits the model $logit(p)=a+b\theta$ where $logit(p)=log(\frac{p}{1-p})$\\
 \item Poisson Log\\
 Fits the model $log(y)=a+b\theta$\\
-\item Ordinary Least Squares (OLS)\\
+\item \color{red} Can we actually fit a linear model since the assumption of Gaussian error is not satisfied???\\
+\item \color{black} Ordinary Least Squares for a Line (OLS)\\
 Fits the model $p=a+b\theta$\\
+\item Ordinary Least Squares for a Logarithm
+Fits the model $p=a+blog(\theta)$
 \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Binomial Logit, Poisson Log, or OLS}
-\includegraphics[scale=.425]{theta_three_models.png}
+\begin{frame}{Binomial Logit, Poisson Log(, OLS, or OLS with Log)}
+\includegraphics[scale=.325]{theta_fourmodels.png}
 \end{frame}
 
 \begin{frame}\frametitle{The Binomial Logit Model}
-{\fontsize{8}{3} \color{blue} \verbatiminput{theta_logit_summary.txt}}
+{\fontsize{8}{3} \color{RBlue} \verbatiminput{theta_logit_summary.txt}}
+
+Conducting a goodness of fit test: \\
+$P(\chi^{2}_{1}>10522.7-2205.6)<0.0001$\\
+
+\end{frame}
+
+\begin{frame}\frametitle{The Poisson Log Model}
+{\fontsize{8}{3} \color{RBlue} \verbatiminput{theta_log_summary.txt}}
+
+Conducting a goodness of fit test: \\
+$P(\chi^{2}_{1}>3808.5-2006.7)<0.0001$\\
+
+\end{frame}
+
+\begin{frame}\frametitle{Problematic Poisson}
+From the summary statistics, there are two problems with the Poisson model
+In the data, there is an overabundance of zeros.
+Therefore, we fit a zero-inflated Poisson model (ZIP).
+{\fontsize{8}{3} \color{RBlue} \verbatiminput{theta_zeros.txt}}
+\end{frame}
+
+\begin{frame}\frametitle{The ZIP Model}
+{\fontsize{8}{3} \color{RBlue} \verbatiminput{theta_log_zip_summary.txt}}
+\end{frame}
+
+\begin{frame}\frametitle{The OLS Model}
+{\fontsize{8}{3} \color{RBlue} \verbatiminput{theta_ols_summary.txt}}
 
 Conducting a goodness of fit test: \\
 $P(\chi^{2}_{1}>3288.10-927.62)<0.0001$\\
 
 \end{frame}
 
+\begin{frame}\frametitle{The OLS Log Model}
+{\fontsize{8}{3} \color{RBlue} \verbatiminput{theta_ols_log_summary.txt}}
+
+Conducting a goodness of fit test: \\
+$P(\chi^{2}_{1}>3288.10-927.62)<0.0001$\\
+
+\end{frame}
 
 %%% Local Variables:
 %%% mode: latex

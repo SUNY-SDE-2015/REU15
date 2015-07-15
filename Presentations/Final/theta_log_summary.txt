@@ -1,0 +1,21 @@
+Call:
+glm(formula = lgscount ~ lgtheta, family = poisson(link = log))
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-18.997   -3.390    0.158    4.211    9.405  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  4.86425    0.02339  207.96   <2e-16 ***
+lgtheta      0.92428    0.02231   41.43   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 3808.5  on 38  degrees of freedom
+Residual deviance: 2006.7  on 37  degrees of freedom
+AIC: 2277.9
+
+Number of Fisher Scoring iterations: 5

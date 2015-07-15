@@ -1,0 +1,21 @@
+Call:
+glm(formula = lgsprop ~ lgtheta, family = gaussian(link = identity))
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-0.53298  -0.12630  -0.01137   0.14309   0.34988  
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.21600    0.06399   3.375  0.00174 ** 
+lgtheta      0.65028    0.07101   9.158 4.77e-11 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 0.03841311)
+
+    Null deviance: 4.6427  on 38  degrees of freedom
+Residual deviance: 1.4213  on 37  degrees of freedom
+AIC: -12.491
+
+Number of Fisher Scoring iterations: 2

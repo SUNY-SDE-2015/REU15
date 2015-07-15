@@ -1,27 +1,27 @@
-if(!exists('data'))
+if(!exists('dataVals'))
     {
-        data<-read.csv("trialsA.csv",header=TRUE)
+        dataVals<-read.csv("trialsA.csv",header=TRUE)
     }
 
-thetaVals   <- unique(data$theta)
+thetaVals   <- unique(dataVals$theta)
 numTheta    <- length(thetaVals)
 thetaCuts   <- c(0,0.5*(thetaVals[2:numTheta]+thetaVals[1:(numTheta-1)]),max(thetaVals)+1.0)
-thetaLabels <- format(thetaVals,digits=2)
+thetaLabels <- format(c(thetaVals),digits=2)
 
-data$thetaVals <- cut(data$theta,thetaCuts,includelowest=TRUE,labels=thetaLabels,right=FALSE)
+dataVals$thetaVals <- cut(dataVals$theta,thetaCuts,includelowest=TRUE,labels=thetaLabels,right=FALSE)
 
 
-for(beta in sort(unique(data$beta)))
+for(beta in sort(unique(dataVals$beta)))
     {
-        for(g in sort(unique(data$g)))
+        for(g in sort(unique(dataVals$g)))
             {
-                for(theta in sort(unique(data$theta)))
+                for(theta in sort(unique(dataVals$theta)))
                     {
-                        which <- (data$beta==beta)& (data$g==g) &
-                            !is.na(data$macroalgae)&!is.na(data$coral)&
-                                data$theta==theta
-                        algae <- data$macroalgae[which]
-                        coral <- data$coral[which]
+                        which <- (dataVals$beta==beta)& (dataVals$g==g) &
+                            !is.na(dataVals$lgMacro)&!is.na(dataVals$lgCoral)&
+                                dataVals$theta==theta
+                        algae <- dataVals$lgMacro[which]
+                        coral <- dataVals$lgCoral[which]
 
                         t    <- format(pi/theta,digits=2)
                         b    <- format(beta,digits=2)
@@ -48,10 +48,10 @@ for(beta in sort(unique(data$beta)))
 
 
         print(paste("Examination of impact of theta for beta = ",beta))
-        which <- (data$beta==beta)&
-            !is.na(data$macroalgae)&!is.na(data$coral)
-        algae <- data$macroalgae[which]
-        phi <- data$thetaVals[which]
+        which <- (dataVals$beta==beta)&
+            !is.na(dataVals$macroalgae)&!is.na(dataVals$coral)
+        algae <- dataVals$macroalgae[which]
+        phi <- dataVals$thetaVals[which]
         results <- cut(algae,c(0.0,0.4,1.1),labels=c("C","M"),include.lowest=TRUE)
         fit1 <- glm(results~phi,family=binomial(link=logit))
         print(summary(fit1))
