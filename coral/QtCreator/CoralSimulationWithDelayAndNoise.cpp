@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 //#include <stdio.h>
-#include <stdlib.h>
+//#include <stdlib.h>
 #include <time.h>
 #include <cerrno>
 #include <cmath>
@@ -13,7 +13,7 @@
 
 
 #define OUTPUT_FILE "./trials.csv"
-#define NUMBER_THREADS 2
+#define NUMBER_THREADS 1
 #define USE_MULTIPLE_THREADS
 #define LOGISTIC_NOISE
 // create a mutex that is used to protect the writing of the data to
@@ -50,6 +50,8 @@ std::mutex writeToFile;
 #endif
 
 #define SHOW_PROGRESS
+#define SHOW_DONE
+//#define SHOW_STEP_NUMBERS
 //#define SHOW_INTERMEDIATE
 //#define THREAD_DEBUG
 #define BASE_DT 0.00001
@@ -94,7 +96,6 @@ void printToCSVFile(double dt, double beta, double g,double tau,
         << theta << ","
         << h << ","
         << s << ","
-        << 1-h-s << ","
         << reefState[0] << ","
         << reefState[1]
         << std::endl;
@@ -127,8 +128,8 @@ void linear(long steps,
 #endif
 
         // Allocate the space for the states of the system
-        macroalgaePast = (double *) calloc(n,sizeof(double));		//macroalgae density in the past
-        coralPast      = (double *) calloc(n,sizeof(double));		//coral density in the past
+        macroalgaePast = new double[n];		//macroalgae density in the past
+        coralPast      = new double[n];		//coral density in the past
 
         if((macroalgaePast==NULL) || (coralPast==NULL))
         {
@@ -161,8 +162,10 @@ void linear(long steps,
                     (macroalgaePast[m]*(gamma-gamma*macroalgaePast[m]+(a-gamma)*coralPast[m])-(g*macroalgaePast[p]/(1.0-coralPast[p])))*dt
                     + beta*macroalgaePast[m]*(1.0-macroalgaePast[m])*B[calcRandom]
                     + 0.5*beta*(1.0-2.0*macroalgaePast[m])*beta*macroalgaePast[m]*(1-macroalgaePast[m])*(B[calcRandom]*B[calcRandom]-dt);
+
             //Computes the deterministic component for Coral
             reefState[1] =  coralPast[m]+(coralPast[m]*(r-d-(a+r)*macroalgaePast[m]-r*coralPast[m]))*dt;
+
 #else
             // Update the macroalgae term
             reefState[0] += beta*macroalgaePast[m]*B[calcRandom]+0.5*beta*beta*macroalgaePast[m]*(B[calcRandom]*B[calcRandom]-dt);
@@ -209,8 +212,8 @@ void linear(long steps,
 #endif
 
         // Free up the allocated memory.
-        free(macroalgaePast);
-        free(coralPast);
+        delete[] macroalgaePast;
+        delete[] coralPast;
 
 
     }
@@ -285,9 +288,9 @@ int main(int argc, char *argv[])
         fp.open(OUTPUT_FILE,std::ios::out | std::ios::trunc);
 
 #ifdef LOGISTIC_NOISE
-        fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,initTurf,lgMacro,lgCoral" << std::endl;
+        fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,lgMacro,lgCoral" << std::endl;
 #else
-        fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,initTurf,macroalgae,coral" << std::endl;
+        fp << "dt,beta,g,tau,trial,theta,initMacro,initCoral,macroalgae,coral" << std::endl;
 #endif
 
         for(int tauStep=0;tauStep<NUMBER_TAU;++tauStep)
@@ -333,10 +336,8 @@ int main(int argc, char *argv[])
                             {
                                 initialMacroalgae = RADIUS*cos(theta); //initial Macroalgae level
                                 initialCoral      = RADIUS*sin(theta); //initial Coral level
-                                //fprintf(fp,"%f,%f,%f,%f,%f,%f\n",macroalgaePast[0],coralPast[0],1-macroalgaePast[0]-coralPast[0],v[0],w[0],1-v[0]-w[0]);
+
 #ifdef USE_MULTIPLE_THREADS
-
-
                                 // Make a simulation for each of the available threads.
                                 // First check to see how many threads are running.
                                 if(numberThreads >= NUMBER_THREADS)
@@ -365,7 +366,10 @@ int main(int argc, char *argv[])
 
 #endif
 
-
+#ifdef SHOW_STEP_NUMBERS
+                                if(k%20 == 0)
+                                    std::cout << "  trial " << k << std::endl;
+#endif
 
                             } // for(k<trials)
                         } // for(thetaStep)
@@ -373,28 +377,28 @@ int main(int argc, char *argv[])
 
             } // for(gStep)
 
-#ifdef USE_MULTIPLE_THREADS
-            // Clean up the threads. Make sure they have all finished.
-            while(numberThreads>0)
-            {
-#ifdef THREAD_DEBUG
-                std::cout << "Waiting on thread "
-                          << simulation[numberThreads-1].get_id()
-                          << std::endl;
-#endif
-                simulation[--numberThreads].join();
-            }
-#endif
-
-
         } // for(tauStep)
 
 
         fp.close();
 
-#ifdef SHOW_PROGRESS
+#ifdef SHOW_DONE
         std::cout << "all done" << std::endl;
 #endif
+
+#ifdef USE_MULTIPLE_THREADS
+        // Clean up the threads. Make sure they have all finished.
+        while(numberThreads>0)
+        {
+#ifdef THREAD_DEBUG
+            std::cout << "Waiting on thread "
+                      << simulation[numberThreads-1].get_id()
+                      << std::endl;
+#endif
+            simulation[--numberThreads].join();
+        }
+#endif
+
 
         return b.exec();
 }
