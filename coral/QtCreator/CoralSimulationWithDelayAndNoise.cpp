@@ -16,7 +16,7 @@
 
 #define OUTPUT_FILE "./trials.csv"
 #define NUMBER_THREADS 1
-#define USE_MULTIPLE_THREADS
+//#define USE_MULTIPLE_THREADS
 #define LOGISTIC_NOISE
 // create a mutex that is used to protect the writing of the data to
 // the file.
@@ -28,23 +28,24 @@ std::mutex writeToFile;
  *  are sampled.
  ********************************************** */
 
+
 #define TAU_START    0.5
 #define TAU_END      1
 #define NUMBER_TAU   6
 
-#define G_START      0.2
+#define G_START      0.15
 #define G_END        0.6
-#define NUMBER_G     3
+#define NUMBER_G     10
 
-#define BETA_START   0.2
-#define BETA_END     1.2
-#define NUMBER_BETA  6
+#define BETA_START   0.1
+#define BETA_END     1
+#define NUMBER_BETA  19
 
 #define THETA_START  0.0
 #define THETA_END    M_PI*0.5
-#define NUMBER_THETA 15
+#define NUMBER_THETA 20
 
-#define NUMBER_TRIALS 800
+#define NUMBER_TRIALS 4000
 #define FINAL_TIME    35.0
 
 #ifndef M_PI
@@ -58,7 +59,6 @@ std::mutex writeToFile;
 //#define THREAD_DEBUG
 #define BASE_DT 0.00001
 #define RADIUS 0.06
-
 
 #ifndef Q_OS_UNIX
 double drand48()
@@ -272,10 +272,10 @@ int main(int argc, char *argv[])
         std::thread simulation[NUMBER_THREADS];
         int numberThreads = 0;
 
-        // Sets the seed for the random numbers
+        // Sets the seQ_Os UNIXed for the random numbers
 #ifdef Q_OS_UNIX
         srand48(time(NULL));
-        //qDebug() << "This is a POSIX system!" ;
+        qDebug() << "This is a POSIX system!" ;
 #else
         srand(time(NULL));
 #endif
