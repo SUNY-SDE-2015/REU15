@@ -45,8 +45,8 @@ std::mutex writeToFile;
 #define THETA_END    M_PI*0.5
 #define NUMBER_THETA 20
 
-#define NUMBER_TRIALS 4000
-#define FINAL_TIME    35.0
+#define NUMBER_TRIALS 100
+#define FINAL_TIME    1.0
 
 #ifndef M_PI
 #define M_PI 3.14159265359
