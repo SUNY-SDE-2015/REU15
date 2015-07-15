@@ -26,9 +26,10 @@ std::mutex writeToFile;
  *  are sampled.
  ********************************************** */
 
-#define TAU_START    0.8
-#define TAU_END      0.8
-#define NUMBER_TAU   1
+
+#define TAU_START    0.5
+#define TAU_END      1
+#define NUMBER_TAU   6
 
 #define G_START      0.15
 #define G_END        0.6
@@ -104,7 +105,7 @@ void printToCSVFile(double dt, double beta, double g,double tau,
 
 void linear(long steps,
               double a,double gamma,double r,double d,double g,
-              double *reefState,double *macroalgaePast,double *coralPast, double dt,
+              double *reefState,double *macroalgaePastOrig,double *coralPastOrig, double dt,
               int n,
               double beta,double tau,
               std::ofstream *fp,
@@ -116,6 +117,14 @@ void linear(long steps,
         long p=0;
         double B[2];
         int calcRandom=0;
+
+        double *macroalgaePast;
+        double *coralPast;
+        macroalgaePast         = (double*) calloc(n, sizeof(double));
+        coralPast              = (double*) calloc(n, sizeof(double));
+
+        macroalgaePast         = std::copy(macroalgaePastOrig,macroalgaePastOrig + n, macroalgaePast);
+        coralPast              = std::copy(coralPastOrig, coralPastOrig + n, coralPast);
 
 #ifdef THREAD_DEBUG
         std::cout << "My thread id: " << std::this_thread::get_id() << std::endl;
@@ -352,13 +361,6 @@ int main(int argc, char *argv[])
 #endif
 
 
-#ifdef SHOW_PROGRESS
-                                if(k%100 == 0)
-                                    std::cout << "  Simulation number " << k
-                                              << "  g, beta, theta " << g << ", " << beta  << ", "
-                                              << theta
-                                              << std::endl;
-#endif
 
                             } // for(k<trials)
                         } // for(thetaStep)
