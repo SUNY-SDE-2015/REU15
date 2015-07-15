@@ -105,8 +105,7 @@ void printToCSVFile(double dt, double beta, double g,double tau,
 
 void linear(long steps,
               double a,double gamma,double r,double d,double g,
-              double *reefState,double *macroalgaePast,double *coralPast, double dt,
-              int n,
+              double dt,int n,
               double beta,double tau,
               std::ofstream *fp,
               int q,
@@ -118,9 +117,35 @@ void linear(long steps,
         double B[2];
         int calcRandom=0;
 
+        double reefState[2];    // The state of the system, coral and macroalgae
+        double *macroalgaePast; // Past values for the macroalgae density
+        double *coralPast;      // Past values for the coral density
+
+
 #ifdef THREAD_DEBUG
         std::cout << "My thread id: " << std::this_thread::get_id() << std::endl;
 #endif
+
+        // Allocate the space for the states of the system
+        macroalgaePast = (double *) calloc(n,sizeof(double));		//macroalgae density in the past
+        coralPast      = (double *) calloc(n,sizeof(double));		//coral density in the past
+
+        if((macroalgaePast==NULL) || (coralPast==NULL))
+        {
+            std::cout << "Error - unable to allocate necessary memory." << std::endl;
+            free(macroalgaePast);
+            free(coralPast);
+            return;
+        }
+
+        reefState[0] = h;
+        reefState[1] = s;
+        for (int l=1;l<n;l++) //fills in the past times for y, z, v, and w
+        {
+            macroalgaePast[l] = h;
+            coralPast[l] = s;
+        }
+
 
         // Step through every time step.
         for (long k=0;k<steps;k++)
@@ -183,6 +208,11 @@ void linear(long steps,
         qDebug() << errno << EDOM << ERANGE;
 #endif
 
+        // Free up the allocated memory.
+        free(macroalgaePast);
+        free(coralPast);
+
+
     }
 
 
@@ -197,9 +227,6 @@ int main(int argc, char *argv[])
 
 
         long steps;             // The number of steps to take in a single simulation.
-        double reefState[2];    // The state of the system, coral and macroalgae
-        double *macroalgaePast; // Past values for the macroalgae density
-        double *coralPast;      // Past values for the coral density
 
         /*
             Define the constants.
@@ -216,6 +243,9 @@ int main(int argc, char *argv[])
         double tau       = .6;
         double beta ;//	 = .5;
         double theta;
+
+        double initialMacroalgae;
+        double initialCoral;
 //        double gZero	 = ((d*a*r+d*d)*(gamma-a))/(r*r);
 //        double gOne		 = (gamma*(a+d))/(a+r);
 //        double chi		 = r*gamma/(r+a)-gamma+a;					//Intermediate Step
@@ -270,18 +300,6 @@ int main(int argc, char *argv[])
             if(tau > 0.0)
                 n=(int)(tau/BASE_DT+0.5);
 
-            // Allocate the space for the states of the system
-            macroalgaePast = (double *) calloc(n,sizeof(double));		//macroalgae density in the past
-            coralPast      = (double *) calloc(n,sizeof(double));		//coral density in the past
-
-            if((macroalgaePast==NULL) || (coralPast==NULL))
-            {
-                std::cout << "Error - unable to allocate necessary memory." << std::endl;
-                free(macroalgaePast);
-                free(coralPast);
-                return b.exec();
-            }
-
             for(int gStep=0;gStep<NUMBER_G;++gStep)
             {
                 g = G_START+(G_END-G_START)/((double)(NUMBER_G-1))*((double)gStep);
@@ -313,13 +331,8 @@ int main(int argc, char *argv[])
 
                             for (int k=0;k<NUMBER_TRIALS;k++)
                             {
-                                macroalgaePast[0] = RADIUS*cos(theta); //initial Macroalgae level
-                                coralPast[0]      = RADIUS*sin(theta); //initial Coral level
-                                for (int l=1;l<n;l++) //fills in the past times for y, z, v, and w
-                                {
-                                    macroalgaePast[l]=macroalgaePast[0];
-                                    coralPast[l]=coralPast[0];
-                                }
+                                initialMacroalgae = RADIUS*cos(theta); //initial Macroalgae level
+                                initialCoral      = RADIUS*sin(theta); //initial Coral level
                                 //fprintf(fp,"%f,%f,%f,%f,%f,%f\n",macroalgaePast[0],coralPast[0],1-macroalgaePast[0]-coralPast[0],v[0],w[0],1-v[0]-w[0]);
 #ifdef USE_MULTIPLE_THREADS
 
@@ -343,12 +356,12 @@ int main(int argc, char *argv[])
 
                                 // Make a run in a separate thread.
                                 simulation[numberThreads++] = std::thread(linear,
-                                                                          steps,a,gamma,r,d,g,reefState,macroalgaePast,coralPast,dt,n,beta,tau,&fp,k,macroalgaePast[0],coralPast[0],theta);
+                                                                          steps,a,gamma,r,d,g,dt,n,beta,tau,&fp,k,initialMacroalgae,initialCoral,theta);
 
 #else
 
                                 // Ignore the different threads. Just make one approximation in this one thread.
-                                linear(steps,a,gamma,r,d,g,reefState,macroalgaePast,coralPast,dt,n,beta,tau,&fp,k,macroalgaePast[0],coralPast[0],theta);
+                                linear(steps,a,gamma,r,d,g,dt,n,beta,tau,&fp,k,initialMacroalgae,initialCoral,theta);
 
 #endif
 
@@ -373,9 +386,6 @@ int main(int argc, char *argv[])
             }
 #endif
 
-            // Free up the allocated memory.
-            free(macroalgaePast);
-            free(coralPast);
 
         } // for(tauStep)
 
