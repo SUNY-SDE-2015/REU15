@@ -26,9 +26,9 @@ std::mutex writeToFile;
  *  are sampled.
  ********************************************** */
 
-#define TAU_START    0.2
-#define TAU_END      0.6
-#define NUMBER_TAU   3
+#define TAU_START    0.5
+#define TAU_END      1
+#define NUMBER_TAU   6
 
 #define G_START      0.2
 #define G_END        0.6
@@ -42,7 +42,7 @@ std::mutex writeToFile;
 #define THETA_END    M_PI*0.5
 #define NUMBER_THETA 15
 
-#define NUMBER_TRIALS 3
+#define NUMBER_TRIALS 800
 #define FINAL_TIME    35.0
 
 #ifndef M_PI
@@ -353,13 +353,6 @@ int main(int argc, char *argv[])
 #endif
 
 
-#ifdef SHOW_PROGRESS
-                                if(k%100 == 0)
-                                    std::cout << "  Simulation number " << k
-                                              << "  g, beta, theta " << g << ", " << beta  << ", "
-                                              << theta
-                                              << std::endl;
-#endif
 
                             } // for(k<trials)
                         } // for(thetaStep)
