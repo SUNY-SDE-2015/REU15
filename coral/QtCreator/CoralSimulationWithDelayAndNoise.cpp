@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <algorithm>
+#include <vector>
 //#include <stdio.h>
 //#include <stdlib.h>
 #include <time.h>
@@ -103,14 +105,13 @@ void printToCSVFile(double dt, double beta, double g,double tau,
     (*fp).flush();
 }
 
-
 void linear(long steps,
               double a,double gamma,double r,double d,double g,
               double dt,int n,
               double beta,double tau,
               std::ofstream *fp,
               int q,
-              double h,double s,double theta)
+              double macroalgaePastOrig,double coralPastOrig,double theta)
     {
 
         long m=n-1;
@@ -122,14 +123,22 @@ void linear(long steps,
         double *macroalgaePast; // Past values for the macroalgae density
         double *coralPast;      // Past values for the coral density
 
+        macroalgaePast         = (double*) calloc(n, sizeof(double));
+        coralPast              = (double*) calloc(n, sizeof(double));
+        reefState[0]           = macroalgaePastOrig;
+        reefState[1]           = coralPastOrig;
+        //macroalgaePast         = std::copy(macroalgaePastOrig,macroalgaePastOrig + n, macroalgaePast);
+        //coralPast              = std::copy(coralPastOrig, coralPastOrig + n, coralPast);
+        for(int l=0;l<n;++l)
+        {
+            macroalgaePast[l] = macroalgaePastOrig;
+            coralPast[l]      = coralPastOrig;
+        }
 
 #ifdef THREAD_DEBUG
         std::cout << "My thread id: " << std::this_thread::get_id() << std::endl;
 #endif
 
-        // Allocate the space for the states of the system
-        macroalgaePast = new double[n];		//macroalgae density in the past
-        coralPast      = new double[n];		//coral density in the past
 
         if((macroalgaePast==NULL) || (coralPast==NULL))
         {
@@ -138,15 +147,6 @@ void linear(long steps,
             free(coralPast);
             return;
         }
-
-        reefState[0] = h;
-        reefState[1] = s;
-        for (int l=1;l<n;l++) //fills in the past times for y, z, v, and w
-        {
-            macroalgaePast[l] = h;
-            coralPast[l] = s;
-        }
-
 
         // Step through every time step.
         for (long k=0;k<steps;k++)
@@ -194,7 +194,7 @@ void linear(long steps,
         }
 
         //printf("%f\t%f\t%f\t%f\t%f\n",dt,beta,tau,reefState[0],reefState[1]);
-        printToCSVFile(dt,beta,g,tau,q,theta,h,s,reefState,fp);
+        printToCSVFile(dt,beta,g,tau,q,theta,macroalgaePastOrig,coralPastOrig,reefState,fp);
 
  #ifdef SHOW_INTERMEDIATE
         qDebug() << dt << ","
@@ -212,8 +212,8 @@ void linear(long steps,
 #endif
 
         // Free up the allocated memory.
-        delete[] macroalgaePast;
-        delete[] coralPast;
+        free(macroalgaePast);
+        free(coralPast);
 
 
     }
