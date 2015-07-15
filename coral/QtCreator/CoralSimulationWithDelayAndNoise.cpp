@@ -105,7 +105,7 @@ void printToCSVFile(double dt, double beta, double g,double tau,
 
 void linear(long steps,
               double a,double gamma,double r,double d,double g,
-              double *reefState,double *macroalgaePast,double *coralPast, double dt,
+              double *reefState,double *macroalgaePastOrig,double *coralPastOrig, double dt,
               int n,
               double beta,double tau,
               std::ofstream *fp,
@@ -117,6 +117,14 @@ void linear(long steps,
         long p=0;
         double B[2];
         int calcRandom=0;
+
+        double *macroalgaePast;
+        double *coralPast;
+        macroalgaePast         = (double*) calloc(n, sizeof(double));
+        coralPast              = (double*) calloc(n, sizeof(double));
+
+        macroalgaePast         = std::copy(macroalgaePastOrig,macroalgaePastOrig + n, macroalgaePast);
+        coralPast              = std::copy(coralPastOrig, coralPastOrig + n, coralPast);
 
 #ifdef THREAD_DEBUG
         std::cout << "My thread id: " << std::this_thread::get_id() << std::endl;
