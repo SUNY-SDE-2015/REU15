@@ -18,7 +18,7 @@ $\gamma$ is the rate that macroalgae spread over algal turfs, and;
 $g$ is the indiscriminate grazing rate of scarid,
 and we also assume $a<d<\gamma<r<2\gamma$ and $0<g<\gamma$ \cite{Hastings}. 
 
-Notice that algal turf (i.e. the third element of the ecosystem being considered) is given by $1-C-M$, as we assume that $M+C+T=1$, given that $\frac{dM}{dt}+\frac{dC}{dt}+\frac{dT}{dt}=0$. By analyzing the nullcline of this system, three equilibrium points are discovered:\begin{inparaenum}[(A)]
+Notice that algal turf is given by $1-C-M$, as we assume that $M+C+T=1$, given that $\frac{dM}{dt}+\frac{dC}{dt}+\frac{dT}{dt}=0$. By analyzing the nullcline of this system, three equilibrium points are discovered:\begin{inparaenum}[(A)]
 \setcounter{enumi}{13}
 \item $(0,0)$;\setcounter{enumi}{1}
 \item $(0,1-\frac{g}{\gamma})$, and;\setcounter{enumi}{3}
@@ -29,8 +29,8 @@ We extended the DDE model to a Stochastic DDE Model (SDDE) by accounting for noi
 $$\begin{cases}
 \begin{array}{rl}
 dM\hspace{-.8em}&=(aMC - \frac{gM(t-\tau)}{1-C(t-\tau)+\gamma M T})dt+{\color{red}\beta M(1-M)dW},\\
-dC\hspace{-.8em}&=(rTC  - dC - aMC)dt.\\
+dC\hspace{-.8em}&=(rTC  - dC - aMC)dt,\\
 \end{array}
-\end{cases}$$ 
+\end{cases}$$ where $\beta$ is constant. The coefficient $M(1-M)$ is used so that noise has the greatest impact when $M$ is the midpoint of the interval $[0,1]$.
 
 We denote the initial condition with $\theta$ in radians, such that $C=\sin(\theta)$ and $M=\cos(\theta)$. The impact of noise on the stability of the equilibrium points was studied using Monte Carlo simulations with varying values for $g\in[0.2,0.8]$, $\tau\in[0.5,1]$, $\beta\in[0,1]$, and $\theta\in(0,\frac{\pi}{2}]$.
